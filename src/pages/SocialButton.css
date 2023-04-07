@@ -1,0 +1,56 @@
+.facebook-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #fff;
+  color: #1877f2;
+  border: 1px solid #1877f2;
+  border-radius: 4px;
+  padding: 10px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.facebook-icon {
+  width: 24px;
+  height: 24px;
+  margin-right: 10px;
+  fill: #1877f2;
+}
+
+.facebook-button:hover {
+  background-color: #e9ebee;
+}
+
+.google-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #fff;
+  color: #db4a39;
+  border: 1px solid #db4a39;
+  border-radius: 4px;
+  padding: 10px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  padding-right: 20px;
+}
+
+.google-icon {
+  width: 24px;
+  height: 24px;
+  margin-right: 20px;
+  fill: #db4a39;
+}
+
+.google-button:hover {
+  background-color: #f1f3f4;
+}
+
+.google-button:disabled {
+  background-color: #ccc;
+  border-color: #ccc;
+  cursor: not-allowed;
+}
