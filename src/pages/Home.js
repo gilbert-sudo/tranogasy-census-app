@@ -1,8 +1,7 @@
 import TopPropertyDetails from "../components/TopPropertyDetails";
 import Paging from "../components/Paging";
-import SearchForm from "../components/SearchForm";
+import SearchBar from "../components/SearchBar";
 import PropertyFilter from "../components/PropertyFilter";
-import HomeSlider from "../components/HomeSlider";
 import { setTotalPage } from "../redux/redux";
 import { useDispatch, useSelector } from "react-redux";
 import { useLoader } from "../hooks/useLoader";
@@ -43,10 +42,9 @@ const Home = () => {
 
   return (
     <div className="home">
-      <HomeSlider />
-      <div className="site-section site-section-sm pb-0">
+      <div className="site-section site-section-sm pb-0 mt-5">
+          <SearchBar />
         <div className="container" id="prodisplay">
-          <SearchForm />
           <PropertyFilter />
         </div>
       </div>
