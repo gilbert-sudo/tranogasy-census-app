@@ -1,25 +1,102 @@
-import { useSelector } from "react-redux";
-import BookingDetails from "../components/BookingDetails";
-
+// import { useSelector } from "react-redux";
+// import BookingDetails from "../components/BookingDetails";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faUser, faEnvelope } from "@fortawesome/free-solid-svg-icons";
 
 const BookingPage = () => {
-  const bookings = useSelector((state) => state.booking);
-
   return (
     <>
-      <style
-        dangerouslySetInnerHTML={{
-          __html:
-            "\n\n        body {\n\n    background-color: #eeeff3;\n            height: 100%;\n        }\n\n        .card {\n            width: 100%;\n            border-radius: 10px;\n            box-shadow: 0px 4px 8px 0px #7cbd1e;\n            margin-top: 10px;\n            margin-bottom: 10px;\n        }\n\n        .set-p {\n            padding-left: 15px;\n            padding-right: 15px;\n        }\n\n        .image {\n            object-fit: cover;\n            width: 100%;\n            height: 100%;\n            border-top-left-radius: 10px;\n            border-bottom-left-radius: 10px;\n        }\n\n        .rating {\n            background-color: #3D5AFE;\n            color: #fff;\n            border-top-left-radius: 5px;\n            border-top-right-radius: 5px;\n            border-bottom-right-radius: 5px;\n        }\n\n        .grade {\n            font-size: 18px;\n        }\n\n        .line {\n            height: 1px;\n            background-color: #E0E0E0;\n        }\n        \n        @media screen and (max-width: 575px) {\n            .image {\n                height: 100%;\n                border-top-left-radius: 10px;\n                border-bottom-left-radius: 0px;\n                border-top-right-radius: 10px;\n            }\n        }\n    "
-        }}
-      />
-      <div className="container px-5 mx-auto" style={{paddingTop: "60px"}}>
-        {bookings &&
-          bookings.map((booking) => (
-            <div className="row d-flex justify-content-center">
-              <BookingDetails booking={booking} />
+      <div className="widget border rounded" style={{backgroundColor: "#f1f1f1"}}>
+        <h3 className="h4 text-black widget-title mt-5 mb-3">
+          Ajouter votre immobilier
+        </h3>
+        <form action="" className="form-contact-agent">
+          <div className="form-group">
+            <label htmlFor="name">Votre nom complet</label>
+            <div className="input-group">
+              <div className="input-group-prepend">
+                <span className="input-group-text">
+                  <FontAwesomeIcon icon={faUser} />
+                </span>
+              </div>
+              <input
+                type="text"
+                id="name"
+                className="form-control"
+                // value={name}
+                // onChange={(e) => setName(e.target.value)}
+                // disabled={isBooked || !client}
+                // required="ON"
+              />
             </div>
-          ))}
+          </div>
+          <div className="form-group">
+            <label htmlFor="phone">Téléphone</label>
+            <div className="input-group">
+              <div className="input-group-prepend">
+                <span className="input-group-text">+261</span>
+              </div>
+              <input
+                type="number"
+                id="phone"
+                className="form-control"
+                // value={phone}
+                // onChange={(e) => setPhone(e.target.value)}
+                // disabled={isBooked || !client}
+                // required="ON"
+              />
+            </div>
+          </div>
+          <div className="form-group">
+            <label htmlFor="email">
+              Email <nb style={{ color: "red" }}>(pas obligatoire)</nb>
+            </label>
+            <div className="input-group">
+              <div className="input-group-prepend">
+                <span className="input-group-text">
+                  <FontAwesomeIcon icon={faEnvelope} />
+                </span>
+              </div>
+              <input
+                type="email"
+                id="email"
+                className="form-control"
+                // value={email}
+                // onChange={(e) => setEmail(e.target.value)}
+                // disabled={isBooked || !client}
+              />
+            </div>
+          </div>
+          <div className="form-group">
+            <label htmlFor="message">
+              Message <nb style={{ color: "red" }}>(pas obligatoire)</nb>
+            </label>
+            <textarea
+              style={{ minHeight: "100px" }}
+              // value={message}
+              // onChange={(e) => setMessage(e.target.value)}
+              id="message"
+              className="form-control"
+              // disabled={isBooked || !client}
+            ></textarea>
+          </div>
+
+          <div className="form-group">
+            <input
+              type="submit"
+              id="phone"
+              className="btn btn-primary"
+              defaultValue="Envoyer le message"
+              // disabled={isLoading || !client}
+            />
+          </div>
+        </form>
+
+        {/* {msgError && (
+          <div className={bootstrapClassname}>
+            {errorMessage && errorMessage ? errorMessage : msgError}
+          </div>
+        )} */}
       </div>
     </>
   );

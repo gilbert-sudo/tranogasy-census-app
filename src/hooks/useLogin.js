@@ -28,7 +28,7 @@ export const useLogin = () => {
       if (phoneNumber.length === 10 || phoneNumber.length === 9) {
         try {
           const response = await fetch(
-            `${process.env.REACT_APP_PROXY}/api/clients/login`,
+            `${process.env.REACT_APP_PROXY}/api/census-taker/login`,
             {
               method: "POST",
               headers: {
@@ -95,7 +95,7 @@ export const useLogin = () => {
 
     try {
       const response = await fetch(
-        `${process.env.REACT_APP_PROXY}/api/clients/connect/${facebookID}`,
+        `${process.env.REACT_APP_PROXY}/api/census-taker/connect/${facebookID}`,
         {
           method: "POST",
           headers: {

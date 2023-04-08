@@ -6,7 +6,7 @@ import {
   BiHome,
   BiUser,
   BiHeart,
-  BiCalendar,
+  BiPlusCircle,
   BiMessageSquareDetail,
 } from "react-icons/bi";
 
@@ -76,8 +76,8 @@ const Navbar = () => {
                     dispatch(updateActiveLink("/booking"));
                   }}
                 >
-                  <BiCalendar className="nav__icon" />
-                  <span className="nav__name">Réservation</span>
+                  <BiPlusCircle className="nav__icon" />
+                  <span className="nav__name">Ajouter</span>
                 </NavLink>
               </li>
               <li className="nav__item mt-3">
