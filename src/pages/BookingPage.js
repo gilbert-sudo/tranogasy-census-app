@@ -1,16 +1,53 @@
 // import { useSelector } from "react-redux";
 // import BookingDetails from "../components/BookingDetails";
+import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser, faEnvelope } from "@fortawesome/free-solid-svg-icons";
 
 const BookingPage = () => {
   return (
     <>
-      <div className="widget border rounded" style={{backgroundColor: "#f1f1f1"}}>
+      <div
+        className="widget border rounded"
+        style={{ backgroundColor: "#f1f1f1" }}
+      >
         <h3 className="h4 text-black widget-title mt-5 mb-3">
           Ajouter votre immobilier
         </h3>
         <form action="" className="form-contact-agent">
+          <div className="form-group">
+            <label htmlFor="name">
+              Propriétaire{" "}
+              <Link to="/">
+                <nb style={{ color: "blue" }}>
+                  {" "}
+                  &nbsp; &nbsp; &nbsp; Inscrire un nouveau
+                </nb>
+              </Link>
+            </label>
+            <div className="input-group">
+              <div className="input-group-prepend">
+                <span className="input-group-text">
+                  <FontAwesomeIcon icon={faUser} />
+                </span>
+              </div>
+              {/* <input
+                type="text"
+                id="name"
+                className="form-control"
+                // value={name}
+                // onChange={(e) => setName(e.target.value)}
+                // disabled={isBooked |npm| !client}
+                // required="ON"
+              /> */}
+              <select className="form-control form-select" aria-label="Default select example">
+                <option selected>Open this select menu</option>
+                <option value="1">One</option>
+                <option value="2">Two</option>
+                <option value="3">Three</option>
+              </select>
+            </div>
+          </div>
           <div className="form-group">
             <label htmlFor="name">Votre nom complet</label>
             <div className="input-group">
@@ -25,7 +62,7 @@ const BookingPage = () => {
                 className="form-control"
                 // value={name}
                 // onChange={(e) => setName(e.target.value)}
-                // disabled={isBooked || !client}
+                // disabled={isBooked |npm| !client}
                 // required="ON"
               />
             </div>
