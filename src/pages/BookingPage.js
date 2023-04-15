@@ -1,5 +1,6 @@
 // import { useSelector } from "react-redux";
 // import BookingDetails from "../components/BookingDetails";
+import AutocompleteInput from "../components/AutocompleteInput";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser, faEnvelope } from "@fortawesome/free-solid-svg-icons";
@@ -21,32 +22,45 @@ const BookingPage = () => {
               <Link to="/">
                 <nb style={{ color: "blue" }}>
                   {" "}
-                  &nbsp; &nbsp; &nbsp; Inscrire un nouveau
+                  &nbsp; &nbsp; &nbsp; &nbsp; <small>Inscrire un nouveau</small>
                 </nb>
               </Link>
             </label>
-            <div className="input-group">
-              <div className="input-group-prepend">
-                <span className="input-group-text">
-                  <FontAwesomeIcon icon={faUser} />
-                </span>
-              </div>
-              {/* <input
-                type="text"
-                id="name"
-                className="form-control"
-                // value={name}
-                // onChange={(e) => setName(e.target.value)}
-                // disabled={isBooked |npm| !client}
-                // required="ON"
-              /> */}
-              <select className="form-control form-select" aria-label="Default select example">
-                <option selected>Open this select menu</option>
-                <option value="1">One</option>
-                <option value="2">Two</option>
-                <option value="3">Three</option>
-              </select>
-            </div>
+            <AutocompleteInput
+              className="form-control auto-input"
+              suggestions={[
+                { name: "JavaScript" },
+                { name: "Python" },
+                { name: "Python" },
+                { name: "Python" },
+                { name: "Python" },
+                { name: "Python" },
+                { name: "Python" },
+                { name: "Python" },
+                { name: "Python" },
+                { name: "Python" },
+                { name: "Python" },
+                { name: "Python" },
+                { name: "Python" },
+                { name: "Python" },
+                { name: "Python" },
+                { name: "Ruby" },
+                { name: "Java" },
+                { name: "PHP" },
+                { name: "C#" },
+                { name: "C++" },
+                { name: "Swift" },
+                { name: "JavaScript" },
+                { name: "Python" },
+                { name: "Ruby" },
+                { name: "Java" },
+                { name: "PHP" },
+                { name: "C#" },
+                { name: "C++" },
+                { name: "Swift" },
+              ]}
+              style={{ width: "100%"}} // add style prop
+            />
           </div>
           <div className="form-group">
             <label htmlFor="name">Votre nom complet</label>
