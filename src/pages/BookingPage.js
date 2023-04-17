@@ -19,7 +19,7 @@ const BookingPage = () => {
           <div className="form-group">
             <label htmlFor="name">
               Propriétaire{" "}
-              <Link to="/">
+              <Link to="/create-owner">
                 <nb style={{ color: "blue" }}>
                   {" "}
                   &nbsp; &nbsp; &nbsp; &nbsp; <small>Inscrire un nouveau</small>

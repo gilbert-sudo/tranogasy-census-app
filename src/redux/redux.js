@@ -12,7 +12,6 @@ const userSlice = createSlice({
 });
 
 export const { setUser } = userSlice.actions;
-
 //connected user
 const googleLoginSlice = createSlice({
   name: "googleLogin",
@@ -25,6 +24,22 @@ const googleLoginSlice = createSlice({
 });
 
 export const { setGoogleLogin } = googleLoginSlice.actions;
+
+//owner slice
+const ownerSlice = createSlice({
+  name: "owner",
+  initialState: [],
+  reducers: {
+    setOwner: (state, action) => {
+      return [...action.payload];
+    },
+    addOwner: (state, action) => {
+      state.push(action.payload);
+    },
+  },
+});
+
+export const { setOwner, addOwner } = ownerSlice.actions;
 
 //paginnations
 const paginationSlice = createSlice({
@@ -122,6 +137,7 @@ export const { setBooking, addBooking, deleteBooking } = bookingSlice.actions;
 
 export const store = configureStore({
   reducer: {
+    owner: ownerSlice.reducer,
     user: userSlice.reducer,
     pagination: paginationSlice.reducer,
     topProperties: topPropertiesSlice.reducer,
