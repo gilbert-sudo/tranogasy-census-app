@@ -1,44 +1,46 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { addBooking } from "../redux/redux";
+import { addOwner } from "../redux/redux";
 
-export const useMessage = () => {
+export const useOwnerCreation = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [msgError, setMsgError] = useState(null);
   const [bootstrapClassname, setBootstrap] = useState(null);
-  const [resetAgentInput, setResetAgentInput] = useState(false); // new state
+  const [resetOwnerInput, setResetOwnerInput] = useState(false); // new state
 
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   //redux
 
-  const postMessage = async (
-    name,
-    phone,
-    email,
-    message,
-    propertyId,
-    userId,
-    imageId,
-    cityId
-  ) => {
+  const createOwner = async (fullname, phoneOne, phoneTwo) => {
     setIsLoading(true);
     setMsgError(null);
-
-    if (!name.length || !phone.length) {
+    const phone1 = phoneOne.replace(/\s/g, "");
+    const phone2 = phoneTwo.replace(/\s/g, "");
+    if (!fullname.length || !phone1.length) {
       setBootstrap("alert alert-warning");
-      setMsgError("Le nom et numéro de téléphone sont obligatoires.");
+      setMsgError(
+        "Le nom et le prémier numéro de téléphone sont obligatoires."
+      );
       setIsLoading(false);
       return;
     }
 
     const phoneNumberRegex = /^(03[2,3,4,8])(\d{7})$|^(3[2,3,4,8])(\d{7})$/;
-    const phoneNumber = phone;
-
-    if (phoneNumberRegex.test(phoneNumber)) {
-      if (phoneNumber.length === 10 || phoneNumber.length === 9) {
+    const phoneNumber1 = phone1;
+    const phoneNumber2 = phone2;
+    if (
+      phoneNumberRegex.test(phoneNumber1) ||
+      phoneNumberRegex.test(phoneNumber2)
+    ) {
+      if (
+        phoneNumber1.length === 10 ||
+        phoneNumber1.length === 9 ||
+        phoneNumber2.length === 10 ||
+        phoneNumber2.length === 9
+      ) {
         try {
           const response = await fetch(
-            `${process.env.REACT_APP_PROXY}/api/messages`,
+            `${process.env.REACT_APP_PROXY}/api/owners`,
             {
               method: "POST",
               headers: {
@@ -46,40 +48,36 @@ export const useMessage = () => {
                 "Access-Control-Allow-Origin": "*",
               },
               body: JSON.stringify({
-                name,
-                phone,
-                email,
-                message,
-                propertyId,
-                userId,
-                imageId,
-                cityId,
+                fullname,
+                phone1,
+                phone2,
               }),
             }
           );
 
-          const json = await response.json();
-
-          if (response.ok) {
-            let msg = "Votre message a été envoyé avec succès";
+          const result = await response.json();
+          console.log(result);
+          if (result.success === true) {
+            let msg = result.msg;
             let bootstrapClass = "alert alert-success";
             setBootstrap(bootstrapClass);
             setMsgError(msg);
             setIsLoading(false);
-            setResetAgentInput(true);
-            dispatch(addBooking(json));
-          } else if (response.errors) {
+            setResetOwnerInput(true);
+            dispatch(addOwner(result));
+            return;
+          } else if (result.errors) {
+            console.log("the error is ", result.errors);
             let msg =
-              response.errors.phone ||
-              response.errors.message ||
-              response.errors.email ||
-              response.errors.name;
+              result.errors.fullname ||
+              result.errors.phone1 ||
+              result.errors.phone2;
             let bootstrapClass = "alert alert-danger";
             setBootstrap(bootstrapClass);
             setMsgError(msg);
             setIsLoading(false);
           } else {
-            let msg = response.error;
+            let msg = result.error;
             let bootstrapClass = "alert alert-danger";
             setBootstrap(bootstrapClass);
             setMsgError(msg);
@@ -110,12 +108,11 @@ export const useMessage = () => {
       setIsLoading(false);
     }
   };
-
   return {
-    postMessage,
+    createOwner,
     isLoading,
     msgError,
     bootstrapClassname,
-    resetAgentInput,
+    resetOwnerInput,
   };
 };
