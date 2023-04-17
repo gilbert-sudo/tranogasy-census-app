@@ -37,7 +37,7 @@ const BookingPage = () => {
                 { name: "Python" },
                 { name: "Python" },
                 { name: "Python" },
-                { name: "Python" },
+                { name: "mikajy" },
                 { name: "Python" },
                 { name: "Python" },
                 { name: "Python" },

@@ -1,4 +1,5 @@
 import React from "react";
+import { useState } from "react";
 import Autosuggest from "react-autosuggest";
 
 // Use your imagination to render suggestions.
@@ -40,6 +41,7 @@ class AutocompleteInput extends React.Component {
     };
   }
 
+
   onChange = (event, { newValue }) => {
     this.setState({
       value: newValue,
@@ -54,7 +56,7 @@ class AutocompleteInput extends React.Component {
 
   onSuggestionsClearRequested = () => {
     this.setState({
-      suggestions: [],
+      suggestions: ["finished"],
     });
   };
 
@@ -72,8 +74,8 @@ class AutocompleteInput extends React.Component {
   renderSuggestionsContainer = ({ containerProps, children, query }) => {
     const { suggestions } = this.state;
     const inputValue = query.trim().toLowerCase();
-    const showNoSuggestions = suggestions.length === 0 && inputValue.length > 0 && inputValue.length <= 1;
-  
+    const showNoSuggestions = suggestions.length === 0 && inputValue.length > 0;
+
     return (
       <div
         {...containerProps}
@@ -105,7 +107,6 @@ class AutocompleteInput extends React.Component {
       </div>
     );
   };
-  
 
   render() {
     const { value, suggestions } = this.state;
