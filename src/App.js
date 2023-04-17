@@ -9,6 +9,7 @@ import MessagePage from "./pages/MessagePage";
 import BookingPage from "./pages/BookingPage";
 import FavoritePage from "./pages/FavoritePage";
 import Navbar from "./components/Navbar";
+import OwnerCreation from "./components/OwnerCreation";
 import { useSelector, useDispatch } from "react-redux";
 import { setUser } from "./redux/redux";
 import { useEffect } from "react";
@@ -77,6 +78,10 @@ function App() {
             <Route
               path="/favorite"
               element={user ? <FavoritePage /> : <Navigate to="/login" />}
+            />
+             <Route
+              path="/create-owner"
+              element={user ? <OwnerCreation /> : <Navigate to="/login" />}
             />
           </Routes>
         </div>
