@@ -6,6 +6,14 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser, faEnvelope } from "@fortawesome/free-solid-svg-icons";
 
 const BookingPage = () => {
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const inputValue = document.getElementById("owner-input").value;
+    console.log("Input value:", inputValue);
+  };
+
+
   return (
     <>
       <div
@@ -15,7 +23,7 @@ const BookingPage = () => {
         <h3 className="h4 text-black widget-title mt-5 mb-3">
           Ajouter votre immobilier
         </h3>
-        <form action="" className="form-contact-agent">
+        <form action="" className="form-contact-agent" onSubmit={handleSubmit}>
           <div className="form-group">
             <label htmlFor="name">
               Propriétaire{" "}
@@ -28,6 +36,7 @@ const BookingPage = () => {
             </label>
             <AutocompleteInput
               className="form-control auto-input"
+              inputId="owner-input"
               suggestions={[
                 { name: "JavaScript" },
                 { name: "Python" },

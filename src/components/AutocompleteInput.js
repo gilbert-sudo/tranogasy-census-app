@@ -99,7 +99,7 @@ class AutocompleteInput extends React.Component {
               cursor: "pointer",
             }}
           >
-            No suggestions found
+            Aucune suggestion trouvée
           </div>
         ) : (
           children
@@ -117,6 +117,7 @@ class AutocompleteInput extends React.Component {
       value,
       onChange: this.onChange,
       className: this.props.className,
+      id: this.props.inputId // Add ID prop
     };
 
     // Finally, render it!
