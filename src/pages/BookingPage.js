@@ -1,5 +1,7 @@
 // import { useSelector } from "react-redux";
+import { useEffect, useState } from "react";
 // import BookingDetails from "../components/BookingDetails";
+import { useLoader } from "../hooks/useLoader";
 import AutocompleteInput from "../components/AutocompleteInput";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -9,8 +11,12 @@ import {GiPayMoney} from "react-icons/gi"
 import {MdTitle} from "react-icons/md"
 import { useState } from "react";
 const BookingPage = () => {
+
   const [disabledPriceInput, setDisabledPriceInput] = useState(false);
   const [disabledRentInput, setDisabledRentInput] = useState(false);
+  const { loadOwnersName } = useLoader();
+  const [ownersName, setOwnersName] = useState(null);
+  
   function disableRentInput() {
    setDisabledPriceInput(false);
    setDisabledRentInput(true);
@@ -20,6 +26,20 @@ const BookingPage = () => {
       setDisabledPriceInput(true);
       setDisabledRentInput(false);
     }
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const inputValue = document.getElementById("owner-input").value;
+    console.log("Input value:", inputValue);
+  };
+
+  useEffect(() => {
+    const pageLoader =async () => {
+      setOwnersName(await loadOwnersName());
+    };
+    pageLoader();
+  }, [loadOwnersName]);
+
   return (
     <>
       <div
@@ -29,7 +49,7 @@ const BookingPage = () => {
         <h3 className="h4 text-black widget-title mt-5 mb-3">
           Ajouter votre immobilier
         </h3>
-        <form action="" className="form-contact-agent">
+        <form action="" className="form-contact-agent" onSubmit={handleSubmit}>
           <div className="form-group">
             <label htmlFor="name">
               Propriétaire{" "}
@@ -42,37 +62,8 @@ const BookingPage = () => {
             </label>
             <AutocompleteInput
               className="form-control auto-input"
-              suggestions={[
-                { name: "JavaScript" },
-                { name: "Python" },
-                { name: "Python" },
-                { name: "Python" },
-                { name: "Python" },
-                { name: "Python" },
-                { name: "Python" },
-                { name: "Python" },
-                { name: "mikajy" },
-                { name: "Python" },
-                { name: "Python" },
-                { name: "Python" },
-                { name: "Python" },
-                { name: "Python" },
-                { name: "Python" },
-                { name: "Ruby" },
-                { name: "Java" },
-                { name: "PHP" },
-                { name: "C#" },
-                { name: "C++" },
-                { name: "Swift" },
-                { name: "JavaScript" },
-                { name: "Python" },
-                { name: "Ruby" },
-                { name: "Java" },
-                { name: "PHP" },
-                { name: "C#" },
-                { name: "C++" },
-                { name: "Swift" },
-              ]}
+              inputId="owner-input"
+              suggestions={ownersName}
               style={{ width: "100%" }} // add style prop
             />
           </div>
