@@ -38,7 +38,23 @@ export const useLoader = () => {
         dispatch(setBooking(json));
       }
     };
+    // Load liked properties
+    const loadOwnersName = async () => {
+      const response = await fetch(
+        `${process.env.REACT_APP_PROXY}/api/owners/all-owners-name`,
+        {
+          headers: {
+            "Access-Control-Allow-Origin": "*",
+            "Content-Type": "aplication/json",
+          },
+        }
+      );
+      const json = await response.json();
+      if (response.ok) {
+        return json;
+      }
+    };
 
-  return { loadLikes, loadBooking };
+  return { loadLikes, loadBooking, loadOwnersName };
 };
 

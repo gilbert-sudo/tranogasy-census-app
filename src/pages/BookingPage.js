@@ -1,17 +1,30 @@
 // import { useSelector } from "react-redux";
+import { useEffect, useState } from "react";
 // import BookingDetails from "../components/BookingDetails";
+import { useLoader } from "../hooks/useLoader";
 import AutocompleteInput from "../components/AutocompleteInput";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser, faEnvelope } from "@fortawesome/free-solid-svg-icons";
 
 const BookingPage = () => {
+  const { loadOwnersName } = useLoader();
+  const [ownersName, setOwnersName] = useState(null);
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const inputValue = document.getElementById("owner-input").value;
     console.log("Input value:", inputValue);
   };
+
+  useEffect(() => {
+    const pageLoader =async () => {
+      setOwnersName(await loadOwnersName());
+    };
+    pageLoader();
+  }, [loadOwnersName]);
+
 
 
   return (
@@ -37,37 +50,7 @@ const BookingPage = () => {
             <AutocompleteInput
               className="form-control auto-input"
               inputId="owner-input"
-              suggestions={[
-                { name: "JavaScript" },
-                { name: "Python" },
-                { name: "Python" },
-                { name: "Python" },
-                { name: "Python" },
-                { name: "Python" },
-                { name: "Python" },
-                { name: "Python" },
-                { name: "mikajy" },
-                { name: "Python" },
-                { name: "Python" },
-                { name: "Python" },
-                { name: "Python" },
-                { name: "Python" },
-                { name: "Python" },
-                { name: "Ruby" },
-                { name: "Java" },
-                { name: "PHP" },
-                { name: "C#" },
-                { name: "C++" },
-                { name: "Swift" },
-                { name: "JavaScript" },
-                { name: "Python" },
-                { name: "Ruby" },
-                { name: "Java" },
-                { name: "PHP" },
-                { name: "C#" },
-                { name: "C++" },
-                { name: "Swift" },
-              ]}
+              suggestions={ownersName}
               style={{ width: "100%" }} // add style prop
             />
           </div>
