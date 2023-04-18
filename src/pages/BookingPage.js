@@ -3,9 +3,23 @@
 import AutocompleteInput from "../components/AutocompleteInput";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUser, faEnvelope } from "@fortawesome/free-solid-svg-icons";
-
+import { faUser, faLocationDot, faPersonShelter, faShower} from "@fortawesome/free-solid-svg-icons";
+import {FaGripHorizontal, FaMoneyBill} from "react-icons/fa"
+import {GiPayMoney} from "react-icons/gi"
+import {MdTitle} from "react-icons/md"
+import { useState } from "react";
 const BookingPage = () => {
+  const [disabledPriceInput, setDisabledPriceInput] = useState(false);
+  const [disabledRentInput, setDisabledRentInput] = useState(false);
+  function disableRentInput() {
+   setDisabledPriceInput(false);
+   setDisabledRentInput(true);
+    }
+    
+    function disablePriceInput() {
+      setDisabledPriceInput(true);
+      setDisabledRentInput(false);
+    }
   return (
     <>
       <div
@@ -63,16 +77,16 @@ const BookingPage = () => {
             />
           </div>
           <div className="form-group">
-            <label htmlFor="name">Votre nom complet</label>
+            <label htmlFor="name">titre</label>
             <div className="input-group">
               <div className="input-group-prepend">
                 <span className="input-group-text">
-                  <FontAwesomeIcon icon={faUser} />
+                  <MdTitle/>
                 </span>
               </div>
               <input
                 type="text"
-                id="name"
+                id="title"
                 className="form-control"
                 // value={name}
                 // onChange={(e) => setName(e.target.value)}
@@ -82,30 +96,26 @@ const BookingPage = () => {
             </div>
           </div>
           <div className="form-group">
-            <label htmlFor="phone">Téléphone</label>
-            <div className="input-group">
-              <div className="input-group-prepend">
-                <span className="input-group-text">+261</span>
-              </div>
-              <input
-                type="number"
-                id="phone"
-                className="form-control"
-                // value={phone}
-                // onChange={(e) => setPhone(e.target.value)}
-                // disabled={isBooked || !client}
-                // required="ON"
-              />
-            </div>
+            <label htmlFor="message">
+            description
+            </label>
+            <textarea
+              style={{ minHeight: "100px" }}
+              // value={message}
+              // onChange={(e) => setMessage(e.target.value)}
+              id="description"
+              className="form-control"
+              // disabled={isBooked || !client}
+            ></textarea>
           </div>
           <div className="form-group">
             <label htmlFor="email">
-              Email <nb style={{ color: "red" }}>(pas obligatoire)</nb>
+              addresse
             </label>
             <div className="input-group">
               <div className="input-group-prepend">
                 <span className="input-group-text">
-                  <FontAwesomeIcon icon={faEnvelope} />
+                <FontAwesomeIcon icon={faLocationDot} />
                 </span>
               </div>
               <input
@@ -119,12 +129,55 @@ const BookingPage = () => {
             </div>
           </div>
           <div className="form-group">
+          <label htmlFor="phone">chambre(s)</label>
+          <div className="input-group">
+            <div className="input-group-prepend">
+              <span className="input-group-text"><FontAwesomeIcon icon={faPersonShelter} /></span>
+            </div>
+            <input
+              type="number"
+              id="bedrooms"
+              className="form-control"
+              // required="ON"
+            />
+          </div>
+        </div>
+        <div className="form-group">
+          <label htmlFor="bathrooms">salles de bain</label>
+          <div className="input-group">
+            <div className="input-group-prepend">
+              <span className="input-group-text"><FontAwesomeIcon icon={faShower} /></span>
+            </div>
+            <input
+              type="number"
+              id="bathrooms"
+              className="form-control"
+              // required="ON"
+            />
+          </div>
+        </div>
+        <div className="form-group">
+          <label htmlFor="area">surface</label>
+          <div className="input-group">
+            <div className="input-group-prepend">
+              <span className="input-group-text"><FaGripHorizontal/></span>
+            </div>
+            <input
+              type="number"
+              id="area"
+              className="form-control"
+              // required="ON"
+            />
+          </div>
+        </div>
+          <div className="form-group">
             <div className="form-check">
               <input
                 className="form-check-input"
                 type="radio"
                 name="flexRadioDefault"
                 id="flexRadioDefault1"
+                onClick = {disablePriceInput}
               />
 
               <label className="form-check-label" htmlFor="flexRadioDefault1">
@@ -138,6 +191,7 @@ const BookingPage = () => {
                 type="radio"
                 name="flexRadioDefault"
                 id="flexRadioDefault2"
+                onClick = {disableRentInput}
                 defaultChecked=""
               />
               <label className="form-check-label" htmlFor="flexRadioDefault2">
@@ -146,25 +200,41 @@ const BookingPage = () => {
             </div>
           </div>
           <div className="form-group">
-            <label htmlFor="message">
-              Message <nb style={{ color: "red" }}>(pas obligatoire)</nb>
-            </label>
-            <textarea
-              style={{ minHeight: "100px" }}
-              // value={message}
-              // onChange={(e) => setMessage(e.target.value)}
-              id="message"
+          <label htmlFor="price">prix de vente</label>
+          <div className="input-group">
+            <div className="input-group-prepend">
+              <span className="input-group-text"><FaMoneyBill/></span>
+            </div>
+            <input
+              type="number"
+              id="price"
               className="form-control"
-              // disabled={isBooked || !client}
-            ></textarea>
+              disabled = {disabledPriceInput}
+              // required="ON"
+            />
           </div>
-
+        </div>
+        <div className="form-group">
+          <label htmlFor="rent">prix de location</label>
+          <div className="input-group">
+            <div className="input-group-prepend">
+              <span className="input-group-text"><GiPayMoney/></span>
+            </div>
+            <input
+              type="number"
+              id="rent"
+              className="form-control"
+              disabled = {disabledRentInput}
+              // required="ON"
+            />
+          </div>
+        </div>
           <div className="form-group">
             <input
               type="submit"
-              id="phone"
+              id="insert"
               className="btn btn-primary"
-              defaultValue="Envoyer le message"
+              defaultValue="Ajouter le proprièté"
               // disabled={isLoading || !client}
             />
           </div>
