@@ -3,7 +3,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser} from "@fortawesome/free-solid-svg-icons";
 import { useState, useEffect } from "react";
-import { useOwnerCreation } from "../hooks/useOwnerCreation";
+import { useOwner } from "../hooks/useOwner";
 // import { useSelector } from "react-redux";
 
 const OwnerCreation = () => {
@@ -24,7 +24,7 @@ const OwnerCreation = () => {
     msgError,
     bootstrapClassname,
     resetOwnerInput,
-  } = useOwnerCreation();
+  } = useOwner();
   const handleSubmit = async (e) => {
     e.preventDefault();
     createOwner(fullname, phone1, phone2);

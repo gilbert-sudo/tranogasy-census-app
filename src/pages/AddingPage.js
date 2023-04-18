@@ -5,12 +5,11 @@ import { useLoader } from "../hooks/useLoader";
 import AutocompleteInput from "../components/AutocompleteInput";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUser, faLocationDot, faPersonShelter, faShower} from "@fortawesome/free-solid-svg-icons";
+import { faLocationDot, faPersonShelter, faShower} from "@fortawesome/free-solid-svg-icons";
 import {FaGripHorizontal, FaMoneyBill} from "react-icons/fa"
 import {GiPayMoney} from "react-icons/gi"
 import {MdTitle} from "react-icons/md"
-import { useState } from "react";
-const BookingPage = () => {
+const AddingPage = () => {
 
   const [disabledPriceInput, setDisabledPriceInput] = useState(false);
   const [disabledRentInput, setDisabledRentInput] = useState(false);
@@ -241,4 +240,4 @@ const BookingPage = () => {
   );
 };
 
-export default BookingPage;
+export default AddingPage;

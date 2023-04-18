@@ -6,7 +6,7 @@ import LoginPage from "./pages/LoginPage";
 import UserPage from "./pages/UserPage";
 import SignUpPage from "./pages/SignUpPage";
 import MessagePage from "./pages/MessagePage";
-import BookingPage from "./pages/BookingPage";
+import AddingPage from "./pages/AddingPage";
 import FavoritePage from "./pages/FavoritePage";
 import Navbar from "./components/Navbar";
 import OwnerCreation from "./pages/OwnerCreation";
@@ -73,7 +73,7 @@ function App() {
             />
             <Route
               path="/booking"
-              element={user ? <BookingPage /> : <Navigate to="/login" />}
+              element={user ? <AddingPage /> : <Navigate to="/login" />}
             />
             <Route
               path="/favorite"
