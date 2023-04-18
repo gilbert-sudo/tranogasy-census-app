@@ -4,13 +4,13 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser} from "@fortawesome/free-solid-svg-icons";
 import { useState, useEffect } from "react";
 import { useOwnerCreation } from "../hooks/useOwnerCreation";
-import { useSelector } from "react-redux";
+// import { useSelector } from "react-redux";
 
 const OwnerCreation = () => {
   const [fullname, setFullName] = useState("");
   const [phone1, setPhone1] = useState("");
   const [phone2, setPhone2] = useState("");
-  const owner = useSelector((state) => state.owner);
+  // const owner = useSelector((state) => state.owner);
 
   const resetAllInputs = () => {
     setFullName("");
@@ -36,7 +36,7 @@ const OwnerCreation = () => {
   }, [resetOwnerInput]);
 
   return (
-    <div className="bg-white widget border rounded">
+    <div className="bg-white widget border mt-5 rounded">
       <h3 className="h4 text-black widget-title mb-3">
         Inserer un nouveau propriètaire
       </h3>

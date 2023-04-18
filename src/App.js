@@ -9,7 +9,7 @@ import MessagePage from "./pages/MessagePage";
 import BookingPage from "./pages/BookingPage";
 import FavoritePage from "./pages/FavoritePage";
 import Navbar from "./components/Navbar";
-import OwnerCreation from "./components/OwnerCreation";
+import OwnerCreation from "./pages/OwnerCreation";
 import { useSelector, useDispatch } from "react-redux";
 import { setUser } from "./redux/redux";
 import { useEffect } from "react";

@@ -59,7 +59,7 @@ const BookingPage = () => {
                 { name: "C++" },
                 { name: "Swift" },
               ]}
-              style={{ width: "100%"}} // add style prop
+              style={{ width: "100%" }} // add style prop
             />
           </div>
           <div className="form-group">
@@ -116,6 +116,33 @@ const BookingPage = () => {
                 // onChange={(e) => setEmail(e.target.value)}
                 // disabled={isBooked || !client}
               />
+            </div>
+          </div>
+          <div className="form-group">
+            <div className="form-check">
+              <input
+                className="form-check-input"
+                type="radio"
+                name="flexRadioDefault"
+                id="flexRadioDefault1"
+              />
+
+              <label className="form-check-label" htmlFor="flexRadioDefault1">
+                Location
+              </label>
+            </div>
+
+            <div className="form-check">
+              <input
+                className="form-check-input"
+                type="radio"
+                name="flexRadioDefault"
+                id="flexRadioDefault2"
+                defaultChecked=""
+              />
+              <label className="form-check-label" htmlFor="flexRadioDefault2">
+                Vente
+              </label>
             </div>
           </div>
           <div className="form-group">
