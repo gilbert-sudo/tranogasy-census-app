@@ -55,6 +55,22 @@ export const useLoader = () => {
       }
     };
 
-  return { loadLikes, loadBooking, loadOwnersName };
+    const loadQuartersName = async () => {
+      const response = await fetch(
+        `${process.env.REACT_APP_PROXY}/api/cities/all-quarter-name`,
+        {
+          headers: {
+            "Access-Control-Allow-Origin": "*",
+            "Content-Type": "aplication/json",
+          },
+        }
+      );
+      const json = await response.json();
+      if (response.ok) {
+        return json;
+      }
+    };
+
+  return { loadLikes, loadBooking, loadOwnersName, loadQuartersName };
 };
 

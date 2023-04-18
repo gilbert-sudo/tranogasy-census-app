@@ -16,8 +16,9 @@ import { MdTitle } from "react-icons/md";
 const AddingPage = () => {
   const [disabledPriceInput, setDisabledPriceInput] = useState(false);
 
-  const { loadOwnersName } = useLoader();
+  const { loadOwnersName, loadQuartersName } = useLoader();
   const [ownersName, setOwnersName] = useState(null);
+  const [quartersName, setQuartersName] = useState(null);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -28,6 +29,7 @@ const AddingPage = () => {
   useEffect(() => {
     const pageLoader = async () => {
       setOwnersName(await loadOwnersName());
+      setQuartersName(await loadQuartersName());
     };
     pageLoader();
   }, [loadOwnersName]);
@@ -113,7 +115,7 @@ const AddingPage = () => {
               <AutocompleteInput
               className="form-control auto-input"
               inputId="quarter-input"
-              suggestions={ownersName}
+              suggestions={quartersName}
               style={{ width: "100%" }} // add style prop
             />
             </div>
