@@ -4,12 +4,14 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser} from "@fortawesome/free-solid-svg-icons";
 import { useState, useEffect } from "react";
 import { useOwner } from "../hooks/useOwner";
+import { useParams } from 'react-router-dom';
 // import { useSelector } from "react-redux";
 
-const OwnerCreation = () => {
-  const [fullname, setFullName] = useState("");
-  const [phone1, setPhone1] = useState("");
-  const [phone2, setPhone2] = useState("");
+const OwnerEditingPage = () => {
+  const {ownerId, fullName, phoneOne, phoneTwo } = useParams();
+  const [fullname, setFullName] = useState(fullName);
+  const [phone1, setPhone1] = useState(phoneOne);
+  const [phone2, setPhone2] = useState(phoneTwo);
   // const owner = useSelector((state) => state.owner);
 
   const resetAllInputs = () => {
@@ -19,7 +21,7 @@ const OwnerCreation = () => {
   };
 
   const {
-    createOwner,
+    updateOwner,
     isLoading,
     msgError,
     bootstrapClassname,
@@ -27,7 +29,7 @@ const OwnerCreation = () => {
   } = useOwner();
   const handleSubmit = async (e) => {
     e.preventDefault();
-    createOwner(fullname, phone1, phone2);
+    updateOwner(ownerId, fullname, phone1, phone2);
   };
   useEffect(() => {
     if (resetOwnerInput) {
@@ -38,11 +40,11 @@ const OwnerCreation = () => {
   return (
     <div className="bg-white widget border mt-5 rounded">
       <h3 className="h4 text-black widget-title mb-3">
-        Inserer un nouveau propriètaire
+        Modifier ce propriètaire
       </h3>
       <form action="" className="form-contact-agent" onSubmit={handleSubmit}>
         <div className="form-group">
-          <label htmlFor="name">Votre nom complet</label>
+          <label htmlFor="name">Le nom complet</label>
           <div className="input-group">
             <div className="input-group-prepend">
               <span className="input-group-text">
@@ -97,8 +99,8 @@ const OwnerCreation = () => {
             id="phone"
             className="btn btn-primary"
             defaultValue="Insérer"
-            disabled={isLoading}
-         >Ajouter</button>
+            disabled={fullname === fullName && phone1 === phoneOne && phone2 === phoneTwo?true:false || isLoading}
+          >Modifier</button>
         </div>
       </form>
       {msgError && (
@@ -118,4 +120,4 @@ const OwnerCreation = () => {
   );
 };
 
-export default OwnerCreation;
+export default OwnerEditingPage;

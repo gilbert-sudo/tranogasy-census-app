@@ -10,6 +10,8 @@ import AddingPage from "./pages/AddingPage";
 import FavoritePage from "./pages/FavoritePage";
 import Navbar from "./components/Navbar";
 import OwnerCreation from "./pages/OwnerCreation";
+import OwnerListPage from "./pages/OwnerListPage";
+import OwnerEditingPage from "./pages/OwnerEditingPage";
 import { useSelector, useDispatch } from "react-redux";
 import { setUser } from "./redux/redux";
 import { useEffect } from "react";
@@ -76,8 +78,16 @@ function App() {
               element={user ? <AddingPage /> : <Navigate to="/login" />}
             />
             <Route
-              path="/favorite"
-              element={user ? <FavoritePage /> : <Navigate to="/login" />}
+              path="/owner-list"
+              element={user ? <OwnerListPage /> : <Navigate to="/login" />}
+            />
+            <Route
+              path="/edit-owner/:ownerId/:fullName/:phoneOne/:phoneTwo"
+              element={user ? <OwnerEditingPage /> : <Navigate to="/login" />}
+            />
+            <Route
+              path="/edit-owner/:ownerId/:fullName/:phoneOne"
+              element={user ? <OwnerEditingPage /> : <Navigate to="/login" />}
             />
              <Route
               path="/create-owner"

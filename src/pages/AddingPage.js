@@ -5,26 +5,32 @@ import { useLoader } from "../hooks/useLoader";
 import AutocompleteInput from "../components/AutocompleteInput";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faLocationDot, faPersonShelter, faShower} from "@fortawesome/free-solid-svg-icons";
-import {FaGripHorizontal, FaMoneyBill} from "react-icons/fa"
-import {GiPayMoney} from "react-icons/gi"
-import {MdTitle} from "react-icons/md"
+import {
+  faLocationDot,
+  faPersonShelter,
+  faShower,
+} from "@fortawesome/free-solid-svg-icons";
+import { FaGripHorizontal, FaMoneyBill } from "react-icons/fa";
+import { GiPayMoney } from "react-icons/gi";
+import { MdTitle } from "react-icons/md";
+import { useSelector } from "react-redux";
 const AddingPage = () => {
-
+  const owners = useSelector((state) => state.owner);
+  const cities = useSelector((state) => state.city);
   const [disabledPriceInput, setDisabledPriceInput] = useState(false);
   const [disabledRentInput, setDisabledRentInput] = useState(false);
-  const { loadOwnersName } = useLoader();
+  const { loadOwnersName, loadCities } = useLoader();
   const [ownersName, setOwnersName] = useState(null);
-  
+  const [quarters, setQuarters] = useState([]);
   function disableRentInput() {
-   setDisabledPriceInput(false);
-   setDisabledRentInput(true);
-    }
-    
-    function disablePriceInput() {
-      setDisabledPriceInput(true);
-      setDisabledRentInput(false);
-    }
+    setDisabledPriceInput(false);
+    setDisabledRentInput(true);
+  }
+
+  function disablePriceInput() {
+    setDisabledPriceInput(true);
+    setDisabledRentInput(false);
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -33,11 +39,23 @@ const AddingPage = () => {
   };
 
   useEffect(() => {
-    const pageLoader =async () => {
+    const pageLoader = async (cities) => {
       setOwnersName(await loadOwnersName());
+      loadCities();
     };
-    pageLoader();
-  }, [loadOwnersName]);
+    
+    if (!owners.length && !cities.length) {
+      pageLoader();
+    }
+    if (!quarters.length) {
+      let theQuarters = [];
+      cities.map((city) => {
+        theQuarters.push({ name: city.quarter });
+      });
+      setQuarters(theQuarters);
+      console.log(quarters)
+    }
+  }, [loadOwnersName, loadCities, cities, owners]);
 
   return (
     <>
@@ -71,7 +89,7 @@ const AddingPage = () => {
             <div className="input-group">
               <div className="input-group-prepend">
                 <span className="input-group-text">
-                  <MdTitle/>
+                  <MdTitle />
                 </span>
               </div>
               <input
@@ -86,9 +104,7 @@ const AddingPage = () => {
             </div>
           </div>
           <div className="form-group">
-            <label htmlFor="message">
-            description
-            </label>
+            <label htmlFor="message">description</label>
             <textarea
               style={{ minHeight: "100px" }}
               // value={message}
@@ -99,13 +115,11 @@ const AddingPage = () => {
             ></textarea>
           </div>
           <div className="form-group">
-            <label htmlFor="email">
-              addresse
-            </label>
+            <label htmlFor="email">addresse</label>
             <div className="input-group">
               <div className="input-group-prepend">
                 <span className="input-group-text">
-                <FontAwesomeIcon icon={faLocationDot} />
+                  <FontAwesomeIcon icon={faLocationDot} />
                 </span>
               </div>
               <input
@@ -119,47 +133,62 @@ const AddingPage = () => {
             </div>
           </div>
           <div className="form-group">
-          <label htmlFor="phone">chambre(s)</label>
-          <div className="input-group">
-            <div className="input-group-prepend">
-              <span className="input-group-text"><FontAwesomeIcon icon={faPersonShelter} /></span>
-            </div>
-            <input
-              type="number"
-              id="bedrooms"
-              className="form-control"
-              // required="ON"
+            <label htmlFor="name">Quartier</label>
+            <AutocompleteInput
+              className="form-control auto-input"
+              inputId="owner-input"
+              suggestions={quarters}
+              style={{ width: "100%" }} // add style prop
             />
           </div>
-        </div>
-        <div className="form-group">
-          <label htmlFor="bathrooms">salles de bain</label>
-          <div className="input-group">
-            <div className="input-group-prepend">
-              <span className="input-group-text"><FontAwesomeIcon icon={faShower} /></span>
+          <div className="form-group">
+            <label htmlFor="phone">chambre(s)</label>
+            <div className="input-group">
+              <div className="input-group-prepend">
+                <span className="input-group-text">
+                  <FontAwesomeIcon icon={faPersonShelter} />
+                </span>
+              </div>
+              <input
+                type="number"
+                id="bedrooms"
+                className="form-control"
+                // required="ON"
+              />
             </div>
-            <input
-              type="number"
-              id="bathrooms"
-              className="form-control"
-              // required="ON"
-            />
           </div>
-        </div>
-        <div className="form-group">
-          <label htmlFor="area">surface</label>
-          <div className="input-group">
-            <div className="input-group-prepend">
-              <span className="input-group-text"><FaGripHorizontal/></span>
+          <div className="form-group">
+            <label htmlFor="bathrooms">salles de bain</label>
+            <div className="input-group">
+              <div className="input-group-prepend">
+                <span className="input-group-text">
+                  <FontAwesomeIcon icon={faShower} />
+                </span>
+              </div>
+              <input
+                type="number"
+                id="bathrooms"
+                className="form-control"
+                // required="ON"
+              />
             </div>
-            <input
-              type="number"
-              id="area"
-              className="form-control"
-              // required="ON"
-            />
           </div>
-        </div>
+          <div className="form-group">
+            <label htmlFor="area">surface</label>
+            <div className="input-group">
+              <div className="input-group-prepend">
+                <span className="input-group-text">
+                  <FaGripHorizontal />
+                </span>
+              </div>
+              <input
+                type="number"
+                id="area"
+                className="form-control"
+                // required="ON"
+              />
+            </div>
+          </div>
           <div className="form-group">
             <div className="form-check">
               <input
@@ -167,7 +196,7 @@ const AddingPage = () => {
                 type="radio"
                 name="flexRadioDefault"
                 id="flexRadioDefault1"
-                onClick = {disablePriceInput}
+                onClick={disablePriceInput}
               />
 
               <label className="form-check-label" htmlFor="flexRadioDefault1">
@@ -181,7 +210,7 @@ const AddingPage = () => {
                 type="radio"
                 name="flexRadioDefault"
                 id="flexRadioDefault2"
-                onClick = {disableRentInput}
+                onClick={disableRentInput}
                 defaultChecked=""
               />
               <label className="form-check-label" htmlFor="flexRadioDefault2">
@@ -190,43 +219,49 @@ const AddingPage = () => {
             </div>
           </div>
           <div className="form-group">
-          <label htmlFor="price">prix de vente</label>
-          <div className="input-group">
-            <div className="input-group-prepend">
-              <span className="input-group-text"><FaMoneyBill/></span>
+            <label htmlFor="price">prix de vente</label>
+            <div className="input-group">
+              <div className="input-group-prepend">
+                <span className="input-group-text">
+                  <FaMoneyBill />
+                </span>
+              </div>
+              <input
+                type="number"
+                id="price"
+                className="form-control"
+                disabled={disabledPriceInput}
+                // required="ON"
+              />
             </div>
-            <input
-              type="number"
-              id="price"
-              className="form-control"
-              disabled = {disabledPriceInput}
-              // required="ON"
-            />
           </div>
-        </div>
-        <div className="form-group">
-          <label htmlFor="rent">prix de location</label>
-          <div className="input-group">
-            <div className="input-group-prepend">
-              <span className="input-group-text"><GiPayMoney/></span>
-            </div>
-            <input
-              type="number"
-              id="rent"
-              className="form-control"
-              disabled = {disabledRentInput}
-              // required="ON"
-            />
-          </div>
-        </div>
           <div className="form-group">
-            <input
+            <label htmlFor="rent">prix de location</label>
+            <div className="input-group">
+              <div className="input-group-prepend">
+                <span className="input-group-text">
+                  <GiPayMoney />
+                </span>
+              </div>
+              <input
+                type="number"
+                id="rent"
+                className="form-control"
+                disabled={disabledRentInput}
+                // required="ON"
+              />
+            </div>
+          </div>
+          <div className="form-group">
+            <button
               type="submit"
               id="insert"
               className="btn btn-primary"
               defaultValue="Ajouter le proprièté"
               // disabled={isLoading || !client}
-            />
+            >
+              Ajouter l'immobilier
+            </button>
           </div>
         </form>
 

@@ -1,5 +1,5 @@
 import { useDispatch } from "react-redux";
-import { setLikedPropreties, setBooking } from "../redux/redux";
+import { setLikedPropreties, setBooking, setOwner, setCity } from "../redux/redux";
 
 export const useLoader = () => {
   //redux
@@ -54,7 +54,39 @@ export const useLoader = () => {
         return json;
       }
     };
+    
+    const loadOwners = async () => {
+      const response = await fetch(
+        `${process.env.REACT_APP_PROXY}/api/owners/all-owners`,
+        {
+          headers: {
+            "Access-Control-Allow-Origin": "*",
+            "Content-Type": "aplication/json",
+          },
+        }
+      );
+      const json = await response.json();
+      if (response.ok) {
+        dispatch(setOwner(json));
+      }
+    };
+    const loadCities = async () => {
+      const response = await fetch(
+        `${process.env.REACT_APP_PROXY}/api/cities/`,
+        {
+          headers: {
+            "Access-Control-Allow-Origin": "*",
+            "Content-Type": "aplication/json",
+          },
+        }
+      );
+      const json = await response.json();
+      if (response.ok) {
+        dispatch(setCity(json));
+        return json;
+      }
+    };
 
-  return { loadLikes, loadBooking, loadOwnersName };
+  return { loadLikes, loadBooking, loadOwnersName, loadOwners, loadCities};
 };
 
