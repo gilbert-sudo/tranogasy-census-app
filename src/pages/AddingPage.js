@@ -16,12 +16,10 @@ import { MdTitle } from "react-icons/md";
 import { useSelector } from "react-redux";
 const AddingPage = () => {
   const owners = useSelector((state) => state.owner);
-  const cities = useSelector((state) => state.city);
   const [disabledPriceInput, setDisabledPriceInput] = useState(false);
   const [disabledRentInput, setDisabledRentInput] = useState(false);
   const { loadOwnersName, loadCities } = useLoader();
   const [ownersName, setOwnersName] = useState(null);
-  const [quarters, setQuarters] = useState([]);
   function disableRentInput() {
     setDisabledPriceInput(false);
     setDisabledRentInput(true);
@@ -39,23 +37,15 @@ const AddingPage = () => {
   };
 
   useEffect(() => {
-    const pageLoader = async (cities) => {
+    const pageLoader = async () => {
       setOwnersName(await loadOwnersName());
-      loadCities();
     };
     
-    if (!owners.length && !cities.length) {
+    if (!ownersName) {
       pageLoader();
     }
-    if (!quarters.length) {
-      let theQuarters = [];
-      cities.map((city) => {
-        theQuarters.push({ name: city.quarter });
-      });
-      setQuarters(theQuarters);
-      console.log(quarters)
-    }
-  }, [loadOwnersName, loadCities, cities, owners]);
+
+  }, [loadOwnersName]);
 
   return (
     <>

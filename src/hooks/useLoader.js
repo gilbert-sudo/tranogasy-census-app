@@ -70,23 +70,6 @@ export const useLoader = () => {
         dispatch(setOwner(json));
       }
     };
-    const loadCities = async () => {
-      const response = await fetch(
-        `${process.env.REACT_APP_PROXY}/api/cities/`,
-        {
-          headers: {
-            "Access-Control-Allow-Origin": "*",
-            "Content-Type": "aplication/json",
-          },
-        }
-      );
-      const json = await response.json();
-      if (response.ok) {
-        dispatch(setCity(json));
-        return json;
-      }
-    };
-
-  return { loadLikes, loadBooking, loadOwnersName, loadOwners, loadCities};
+  return { loadLikes, loadBooking, loadOwnersName, loadOwners};
 };
 

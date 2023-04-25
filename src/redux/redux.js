@@ -39,22 +39,6 @@ const ownerSlice = createSlice({
   },
 });
 export const { setOwner, addOwner } = ownerSlice.actions;
-//city slice
-const citySlice = createSlice({
-  name: "city",
-  initialState: [],
-  reducers: {
-    setCity: (state, action) => {
-      return [...action.payload];
-    },
-    addCity: (state, action) => {
-      state.push(action.payload);
-    },
-  },
-});
-
-export const { setCity, addCity } = citySlice.actions;
-
 //paginnations
 const paginationSlice = createSlice({
   name: "pagination",
