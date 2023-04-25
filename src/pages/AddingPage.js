@@ -13,6 +13,7 @@ import {
 import { FaGripHorizontal, FaMoneyBill } from "react-icons/fa";
 import { GiPayMoney } from "react-icons/gi";
 import { MdTitle } from "react-icons/md";
+
 const AddingPage = () => {
   const [disabledPriceInput, setDisabledPriceInput] = useState(false);
 
@@ -31,7 +32,11 @@ const AddingPage = () => {
       setOwnersName(await loadOwnersName());
       setQuartersName(await loadQuartersName());
     };
-    pageLoader();
+    
+    if (!ownersName) {
+      pageLoader();
+    }
+
   }, [loadOwnersName]);
 
   return (
@@ -211,7 +216,6 @@ const AddingPage = () => {
               </label>
             </div>
           </div>
-
           {!disabledPriceInput ? (
             <div className="form-group">
               <label htmlFor="price">Prix de vente
