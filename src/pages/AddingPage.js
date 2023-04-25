@@ -92,7 +92,14 @@ const AddingPage = () => {
             ></textarea>
           </div>
           <div className="form-group">
-            <label htmlFor="email">L'adresse exacte</label>
+            <label htmlFor="email">L'adresse (Lot){" "}
+              <Link to="/create-owner">
+                <nb style={{ color: "blue" }}>
+                  {" "}
+                  &nbsp;<small>Ajouter un nouveau</small>
+                </nb>
+              </Link>
+            </label>
             <div className="input-group">
               <div className="input-group-prepend">
                 <span className="input-group-text">
@@ -100,8 +107,7 @@ const AddingPage = () => {
                 </span>
               </div>
               <input
-                type="email"
-                id="email"
+                type="text"
                 className="form-control"
                 // value={email}
                 // onChange={(e) => setEmail(e.target.value)}
@@ -110,7 +116,7 @@ const AddingPage = () => {
             </div>
           </div>
           <div className="form-group">
-            <label htmlFor="email">Quartier</label>
+            <label>Quartier</label>
             <div className="input-group">
               <AutocompleteInput
               className="form-control auto-input"
