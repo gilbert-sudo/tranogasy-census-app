@@ -13,22 +13,13 @@ import {
 import { FaGripHorizontal, FaMoneyBill } from "react-icons/fa";
 import { GiPayMoney } from "react-icons/gi";
 import { MdTitle } from "react-icons/md";
-import { useSelector } from "react-redux";
-const AddingPage = () => {
-  const owners = useSelector((state) => state.owner);
-  const [disabledPriceInput, setDisabledPriceInput] = useState(false);
-  const [disabledRentInput, setDisabledRentInput] = useState(false);
-  const { loadOwnersName, loadCities } = useLoader();
-  const [ownersName, setOwnersName] = useState(null);
-  function disableRentInput() {
-    setDisabledPriceInput(false);
-    setDisabledRentInput(true);
-  }
 
-  function disablePriceInput() {
-    setDisabledPriceInput(true);
-    setDisabledRentInput(false);
-  }
+const AddingPage = () => {
+  const [disabledPriceInput, setDisabledPriceInput] = useState(false);
+
+  const { loadOwnersName, loadQuartersName } = useLoader();
+  const [ownersName, setOwnersName] = useState(null);
+  const [quartersName, setQuartersName] = useState(null);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -39,6 +30,7 @@ const AddingPage = () => {
   useEffect(() => {
     const pageLoader = async () => {
       setOwnersName(await loadOwnersName());
+      setQuartersName(await loadQuartersName());
     };
     
     if (!ownersName) {
@@ -75,7 +67,7 @@ const AddingPage = () => {
             />
           </div>
           <div className="form-group">
-            <label htmlFor="name">titre</label>
+            <label htmlFor="name">Un titre</label>
             <div className="input-group">
               <div className="input-group-prepend">
                 <span className="input-group-text">
@@ -94,7 +86,7 @@ const AddingPage = () => {
             </div>
           </div>
           <div className="form-group">
-            <label htmlFor="message">description</label>
+            <label htmlFor="message">Description de l'immobilier</label>
             <textarea
               style={{ minHeight: "100px" }}
               // value={message}
@@ -105,7 +97,7 @@ const AddingPage = () => {
             ></textarea>
           </div>
           <div className="form-group">
-            <label htmlFor="email">addresse</label>
+            <label htmlFor="email">L'adresse exacte</label>
             <div className="input-group">
               <div className="input-group-prepend">
                 <span className="input-group-text">
@@ -123,7 +115,18 @@ const AddingPage = () => {
             </div>
           </div>
           <div className="form-group">
-            <label htmlFor="phone">chambre(s)</label>
+            <label htmlFor="email">Quartier</label>
+            <div className="input-group">
+              <AutocompleteInput
+              className="form-control auto-input"
+              inputId="quarter-input"
+              suggestions={quartersName}
+              style={{ width: "100%" }} // add style prop
+            />
+            </div>
+          </div>
+          <div className="form-group">
+            <label htmlFor="phone">Nombre de chambre</label>
             <div className="input-group">
               <div className="input-group-prepend">
                 <span className="input-group-text">
@@ -139,7 +142,7 @@ const AddingPage = () => {
             </div>
           </div>
           <div className="form-group">
-            <label htmlFor="bathrooms">salles de bain</label>
+            <label htmlFor="bathrooms">Salle de bain</label>
             <div className="input-group">
               <div className="input-group-prepend">
                 <span className="input-group-text">
@@ -155,7 +158,12 @@ const AddingPage = () => {
             </div>
           </div>
           <div className="form-group">
-            <label htmlFor="area">surface</label>
+            <label htmlFor="area">
+              Surface habitable
+              <nb style={{ color: "blue" }}>
+              &nbsp; &nbsp; <small>(en m²)</small>
+              </nb>
+            </label>
             <div className="input-group">
               <div className="input-group-prepend">
                 <span className="input-group-text">
@@ -177,21 +185,24 @@ const AddingPage = () => {
                 type="radio"
                 name="flexRadioDefault"
                 id="flexRadioDefault1"
-                onClick={disablePriceInput}
+                onClick={(e) => {
+                  setDisabledPriceInput(true);
+                }}
               />
 
               <label className="form-check-label" htmlFor="flexRadioDefault1">
                 Location
               </label>
             </div>
-
             <div className="form-check">
               <input
                 className="form-check-input"
                 type="radio"
                 name="flexRadioDefault"
                 id="flexRadioDefault2"
-                onClick={disableRentInput}
+                onClick={(e) => {
+                  setDisabledPriceInput(false);
+                }}
                 defaultChecked=""
               />
               <label className="form-check-label" htmlFor="flexRadioDefault2">
@@ -199,49 +210,53 @@ const AddingPage = () => {
               </label>
             </div>
           </div>
-          <div className="form-group">
-            <label htmlFor="price">prix de vente</label>
-            <div className="input-group">
-              <div className="input-group-prepend">
-                <span className="input-group-text">
-                  <FaMoneyBill />
-                </span>
+          {!disabledPriceInput ? (
+            <div className="form-group">
+              <label htmlFor="price">Prix de vente
+              <nb style={{ color: "blue" }}>
+              &nbsp; &nbsp; <small>(en Ariary)</small>
+              </nb>
+              </label>
+              <div className="input-group">
+                <div className="input-group-prepend">
+                  <span className="input-group-text">
+                    <FaMoneyBill />
+                  </span>
+                </div>
+                <input
+                  type="number"
+                  id="price"
+                  className="form-control"
+                  // required="ON"
+                />
               </div>
-              <input
-                type="number"
-                id="price"
-                className="form-control"
-                disabled={disabledPriceInput}
-                // required="ON"
-              />
             </div>
-          </div>
-          <div className="form-group">
-            <label htmlFor="rent">prix de location</label>
-            <div className="input-group">
-              <div className="input-group-prepend">
-                <span className="input-group-text">
-                  <GiPayMoney />
-                </span>
+          ) : (
+            <div className="form-group">
+              <label htmlFor="rent">Prix de location
+              <nb style={{ color: "blue" }}>
+              &nbsp; &nbsp; <small>(en Ariary)</small>
+              </nb>
+              </label>
+              <div className="input-group">
+                <div className="input-group-prepend">
+                  <span className="input-group-text">
+                    <GiPayMoney />
+                  </span>
+                </div>
+                <input
+                  type="number"
+                  id="rent"
+                  className="form-control"
+                  // required="ON"
+                />
               </div>
-              <input
-                type="number"
-                id="rent"
-                className="form-control"
-                disabled={disabledRentInput}
-                // required="ON"
-              />
             </div>
-          </div>
+          )}
+
           <div className="form-group">
-            <button
-              type="submit"
-              id="insert"
-              className="btn btn-primary"
-              defaultValue="Ajouter le proprièté"
-              // disabled={isLoading || !client}
-            >
-              Ajouter l'immobilier
+            <button type="submit" className="btn btn-primary">
+              Ajouter la propriété
             </button>
           </div>
         </form>
