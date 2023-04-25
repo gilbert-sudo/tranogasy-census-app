@@ -123,15 +123,6 @@ const AddingPage = () => {
             </div>
           </div>
           <div className="form-group">
-            <label htmlFor="name">Quartier</label>
-            <AutocompleteInput
-              className="form-control auto-input"
-              inputId="owner-input"
-              suggestions={quarters}
-              style={{ width: "100%" }} // add style prop
-            />
-          </div>
-          <div className="form-group">
             <label htmlFor="phone">chambre(s)</label>
             <div className="input-group">
               <div className="input-group-prepend">

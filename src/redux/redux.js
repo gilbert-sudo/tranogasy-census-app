@@ -137,7 +137,6 @@ export const store = configureStore({
   reducer: {
     owner: ownerSlice.reducer,
     user: userSlice.reducer,
-    city: citySlice.reducer,
     pagination: paginationSlice.reducer,
     topProperties: topPropertiesSlice.reducer,
     properties: propertiesSlice.reducer,
