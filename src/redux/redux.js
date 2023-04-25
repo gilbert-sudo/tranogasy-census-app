@@ -38,9 +38,7 @@ const ownerSlice = createSlice({
     },
   },
 });
-
 export const { setOwner, addOwner } = ownerSlice.actions;
-
 //paginnations
 const paginationSlice = createSlice({
   name: "pagination",

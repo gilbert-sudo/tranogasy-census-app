@@ -1,15 +1,13 @@
 import { Link, NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { updateActiveLink } from "../redux/redux";
-
 import {
   BiHome,
   BiUser,
-  BiHeart,
   BiPlusCircle,
   BiMessageSquareDetail,
 } from "react-icons/bi";
-
+import {HiOutlineUserGroup} from "react-icons/hi";
 const Navbar = () => {
   const dispatch = useDispatch();
   const state = useSelector((state) => state.pagination);
@@ -47,19 +45,19 @@ const Navbar = () => {
               <li className="nav__item mt-3">
                 {" "}
                 <NavLink
-                  to="/favorite"
+                  to="/owner-list"
                   style={
-                    activePage === "/favorite"
+                    activePage === "/owner-list"
                       ? { color: "#7cbd1e" }
                       : { color: "#222B2A" }
                   }
                   className="nav__link"
                   onClick={() => {
-                    dispatch(updateActiveLink("/favorite"));
+                    dispatch(updateActiveLink("/owner-list"));
                   }}
                 >
-                  <BiHeart className="nav__icon" />
-                  <span className="nav__name">Favoris</span>
+                  <HiOutlineUserGroup className="nav__icon" />
+                  <span className="nav__name">Propriétaire</span>
                 </NavLink>
               </li>
               <li className="nav__item mt-3">
