@@ -8,6 +8,7 @@ import {
   BiMessageSquareDetail,
 } from "react-icons/bi";
 import {HiOutlineUserGroup} from "react-icons/hi";
+import {MdNotListedLocation} from "react-icons/md";
 const Navbar = () => {
   const dispatch = useDispatch();
   const state = useSelector((state) => state.pagination);
@@ -80,19 +81,19 @@ const Navbar = () => {
               </li>
               <li className="nav__item mt-3">
                 <NavLink
-                  to="/message"
+                  to="/location-list"
                   style={
-                    activePage === "/message"
+                    activePage === "/location-list"
                       ? { color: "#7cbd1e" }
                       : { color: "#222B2A" }
                   }
                   className="nav__link"
                   onClick={() => {
-                    dispatch(updateActiveLink("/message"));
+                    dispatch(updateActiveLink("/location-list"));
                   }}
                 >
-                  <BiMessageSquareDetail className="nav__icon" />
-                  <span className="nav__name">Message</span>
+                  <MdNotListedLocation className="nav__icon" />
+                  <span className="nav__name">Location</span>
                 </NavLink>
               </li>
               <li className="nav__item mt-3">
