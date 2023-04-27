@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
 import { useLoader } from "../hooks/useLoader";
-import LocationAdded from "../components/LocationAdded";
+import LocationDetails from "../components/LocationDetails";
 import { useEffect, useState } from "react";
 const LocationListPage = () => {
   const { loadLocations } = useLoader();
@@ -49,7 +49,7 @@ const LocationListPage = () => {
 
           <div className="list-group list-group-flush border-bottom scrollarea">
             {locations ? (
-              locations.map((location) => <LocationAdded location={location} />)
+              locations.map((location) => <LocationDetails location={location} />)
             ) : (
               <div className="loading-page">
                 <h1>chargement...</h1>

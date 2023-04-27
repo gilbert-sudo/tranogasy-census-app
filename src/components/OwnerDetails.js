@@ -2,7 +2,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserPen } from "@fortawesome/free-solid-svg-icons";
 import {Link} from "react-router-dom";
 import { useState } from "react";
-const OwnerAdded = ({ owner }) => {
+const OwnerDetails = ({ owner }) => {
   return (
     <Link
     to={`/edit-owner/${owner._id}/${owner.fullName}/${owner.phone1}/${+owner.phone2?owner.phone2:""}`}
@@ -18,4 +18,4 @@ const OwnerAdded = ({ owner }) => {
     </Link>
   );
 };
-export default OwnerAdded;
+export default OwnerDetails;
