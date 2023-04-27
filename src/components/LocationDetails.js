@@ -2,7 +2,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 // import { faLocationPen } from "@fortawesome/free-solid-svg-icons";
 import {MdEditLocationAlt} from "react-icons/md";
 import {Link} from "react-router-dom";
-const LocationAdded = ({ location }) => {
+const LocationDetails= ({ location }) => {
   return (
     <Link
     to={`/edit-location/${location._id}`}
@@ -18,4 +18,4 @@ const LocationAdded = ({ location }) => {
     </Link>
   );
 };
-export default LocationAdded;
+export default LocationDetails;
