@@ -31,21 +31,21 @@ const OwnerListPage = () => {
           style={{ width: 390 }}
         >
           <div
-  href="/"
-  className="d-flex align-items-center flex-shrink-0 p-3 justify-content-center  link-dark text-decoration-none border-bottom"
-  style={{ backgroundColor: "rgb(124, 189, 30)" }}
->
-  <svg className="bi me-2" width={30} height={24}>
-    <use xlinkHref="#bootstrap" />
-  </svg>
-  {owners.length ? (
-    <span className="fs-5 fw-semibold">Toutes les Propriétaires</span>
-  ) : (
-    <span className="fs-5 fw-semibold">
-      accunes Propriétaires enrégistré
-    </span>
-  )}
-</div>
+            href="/"
+            className="d-flex align-items-center flex-shrink-0 p-3 justify-content-center  link-dark text-decoration-none border-bottom"
+            style={{ backgroundColor: "rgb(124, 189, 30)" }}
+          >
+            <svg className="bi me-2" width={30} height={24}>
+              <use xlinkHref="#bootstrap" />
+            </svg>
+            {owners.length ? (
+              <span className="fs-5 fw-semibold">Toutes les Propriétaires</span>
+            ) : (
+              <span className="fs-5 fw-semibold">
+                accunes Propriétaires enrégistré
+              </span>
+            )}
+          </div>
 
           <div className="list-group list-group-flush border-bottom scrollarea">
             {owners ? (

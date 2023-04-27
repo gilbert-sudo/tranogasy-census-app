@@ -21,11 +21,25 @@ const AddingPage = () => {
   const [ownersName, setOwnersName] = useState(null);
   const [quartersName, setQuartersName] = useState(null);
 
+   //get the autocomplete id value
+   const getDocId = (inputClassName, data) => {
+    const inputValue = document.getElementById(inputClassName).value;
+    const documentId = data.filter((document) => document.name === inputValue)
+    return documentId[0].id;
+  };
+
+  //handle the property form submiting
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const inputValue = document.getElementById("owner-input").value;
-    console.log("Input value:", inputValue);
+    // fetch the owner's id 
+    const ownerId = getDocId("owner-input", ownersName)
+    console.log("the owner's id", ownerId);
+    // fetch the quarter's id 
+    const quarterId = getDocId("quarter-input", quartersName)
+    console.log("the quarter's id", quarterId);
   };
+
+ 
 
   useEffect(() => {
     const pageLoader = async () => {

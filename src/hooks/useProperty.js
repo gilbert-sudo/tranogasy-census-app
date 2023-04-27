@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { setUser } from "../redux/redux";
 
-export const useSignup = () => {
+export const useProperty = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [bootstrapClassname, setBootstrap] = useState(null);

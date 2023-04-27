@@ -1,5 +1,4 @@
 import React from "react";
-import { useState } from "react";
 import Autosuggest from "react-autosuggest";
 
 // Use your imagination to render suggestions.
