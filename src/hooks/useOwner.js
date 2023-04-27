@@ -163,7 +163,7 @@ export const useOwner = () => {
             dispatch(updateOneOwnerById(result.modifiedOwner));
             return;
           } else if (result.errors) {
-            let msg = result.errors.fullname ;
+            let msg = result.errors.fullname || result.errors.existingOwner ;
             let bootstrapClass = "alert alert-danger";
             setBootstrap(bootstrapClass);
             setMsgError(msg);

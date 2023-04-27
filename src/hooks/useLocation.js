@@ -108,7 +108,6 @@ export const useLocation = () => {
             return;
           } 
           if (result.message) {
-            console.log("the error is ", result.message);
             let bootstrapClass = "alert alert-danger";
             setBootstrap(bootstrapClass);
             setMsgError(result.message);
