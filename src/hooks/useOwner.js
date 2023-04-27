@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { addOwner } from "../redux/redux";
+import { addOwner , updateOneOwnerById} from "../redux/redux";
 
 export const useOwner = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -64,7 +64,7 @@ export const useOwner = () => {
             setMsgError(msg);
             setIsLoading(false);
             setResetOwnerInput(true);
-            dispatch(addOwner(result));
+            dispatch(addOwner(result.newOwner));
             return;
           } else if (result.errors) {
             console.log("the error is ", result.errors);
@@ -163,7 +163,7 @@ export const useOwner = () => {
             setMsgError(msg);
             setIsLoading(false);
             setResetOwnerInput(true);
-            dispatch(addOwner(result));
+            dispatch(updateOneOwnerById(result.modifiedOwner));
             return;
           } else if (result.errors) {
             console.log("the error is ", result.errors);
