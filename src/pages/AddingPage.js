@@ -2,11 +2,11 @@
 import { useEffect, useState } from "react";
 // import BookingDetails from "../components/BookingDetails";
 import { useLoader } from "../hooks/useLoader";
+import { useProperty } from "../hooks/useProperty";
 import AutocompleteInput from "../components/AutocompleteInput";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faLocationDot,
   faPersonShelter,
   faShower,
 } from "@fortawesome/free-solid-svg-icons";
@@ -17,9 +17,18 @@ import { MdTitle } from "react-icons/md";
 const AddingPage = () => {
   const [disabledPriceInput, setDisabledPriceInput] = useState(false);
 
-  const { loadOwnersName, loadQuartersName } = useLoader();
+  const { loadOwnersName, loadQuartersName, loadLocationsName } = useLoader();
+  const { addProperty } = useProperty();
   const [ownersName, setOwnersName] = useState(null);
   const [quartersName, setQuartersName] = useState(null);
+  const [locationsName, setLocationsName] = useState(null);
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [bedrooms, setBedrooms] = useState("");
+  const [bathrooms, setBathrooms] = useState("");
+  const [area, setArea] = useState("");
+  const [price, setPrice] = useState("0");
+  const [rent, setRent] = useState("0");
 
    //get the autocomplete id value
    const getDocId = (inputClassName, data) => {
@@ -32,11 +41,19 @@ const AddingPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     // fetch the owner's id 
-    const ownerId = getDocId("owner-input", ownersName)
-    console.log("the owner's id", ownerId);
+    const owner = getDocId("owner-input", ownersName)
     // fetch the quarter's id 
-    const quarterId = getDocId("quarter-input", quartersName)
-    console.log("the quarter's id", quarterId);
+    const city = getDocId("quarter-input", quartersName)
+    // fetch the address
+    const address = document.getElementById("address-input").value;
+
+    var type = "sale";
+    //get the property type
+    if (disabledPriceInput) {
+      type = "rent";
+    } 
+
+    addProperty( title, description, address, city, price, rent, bedrooms, bathrooms, area, type, owner);
   };
 
  
@@ -45,6 +62,7 @@ const AddingPage = () => {
     const pageLoader = async () => {
       setOwnersName(await loadOwnersName());
       setQuartersName(await loadQuartersName());
+      setLocationsName(await loadLocationsName());
     };
     
     if (!ownersName) {
@@ -75,6 +93,7 @@ const AddingPage = () => {
             </label>
             <AutocompleteInput
               className="form-control auto-input"
+              placeholder="Nom complet"
               inputId="owner-input"
               suggestions={ownersName}
               style={{ width: "100%" }} // add style prop
@@ -92,10 +111,9 @@ const AddingPage = () => {
                 type="text"
                 id="title"
                 className="form-control"
-                // value={name}
-                // onChange={(e) => setName(e.target.value)}
-                // disabled={isBooked |npm| !client}
-                // required="ON"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                required="ON"
               />
             </div>
           </div>
@@ -103,11 +121,11 @@ const AddingPage = () => {
             <label htmlFor="message">Description de l'immobilier</label>
             <textarea
               style={{ minHeight: "100px" }}
-              // value={message}
-              // onChange={(e) => setMessage(e.target.value)}
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
               id="description"
               className="form-control"
-              // disabled={isBooked || !client}
+              required="ON"
             ></textarea>
           </div>
           <div className="form-group">
@@ -119,26 +137,20 @@ const AddingPage = () => {
                 </nb>
               </Link>
             </label>
-            <div className="input-group">
-              <div className="input-group-prepend">
-                <span className="input-group-text">
-                  <FontAwesomeIcon icon={faLocationDot} />
-                </span>
-              </div>
-              <input
-                type="text"
-                className="form-control"
-                // value={email}
-                // onChange={(e) => setEmail(e.target.value)}
-                // disabled={isBooked || !client}
-              />
-            </div>
+            <AutocompleteInput
+              className="form-control auto-input"
+              placeholder="Une adresse exacte"
+              inputId="address-input"
+              suggestions={locationsName}
+              style={{ width: "100%" }} // add style prop
+            />
           </div>
           <div className="form-group">
             <label>Quartier</label>
             <div className="input-group">
               <AutocompleteInput
               className="form-control auto-input"
+              placeholder="Nom du quartier"
               inputId="quarter-input"
               suggestions={quartersName}
               style={{ width: "100%" }} // add style prop
@@ -157,7 +169,9 @@ const AddingPage = () => {
                 type="number"
                 id="bedrooms"
                 className="form-control"
-                // required="ON"
+                value={bedrooms}
+                onChange={(e) => setBedrooms(e.target.value)}
+                required="ON"
               />
             </div>
           </div>
@@ -173,7 +187,9 @@ const AddingPage = () => {
                 type="number"
                 id="bathrooms"
                 className="form-control"
-                // required="ON"
+                value={bathrooms}
+                onChange={(e) => setBathrooms(e.target.value)}
+                required="ON"
               />
             </div>
           </div>
@@ -194,7 +210,9 @@ const AddingPage = () => {
                 type="number"
                 id="area"
                 className="form-control"
-                // required="ON"
+                value={area}
+                onChange={(e) => setArea(e.target.value)}
+                required="ON"
               />
             </div>
           </div>
@@ -247,7 +265,9 @@ const AddingPage = () => {
                   type="number"
                   id="price"
                   className="form-control"
-                  // required="ON"
+                  value={price}
+                  onChange={(e) => setPrice(e.target.value)}
+                  required="ON"
                 />
               </div>
             </div>
@@ -268,7 +288,9 @@ const AddingPage = () => {
                   type="number"
                   id="rent"
                   className="form-control"
-                  // required="ON"
+                  value={rent}
+                  onChange={(e) => setRent(e.target.value)}
+                  required="ON"
                 />
               </div>
             </div>

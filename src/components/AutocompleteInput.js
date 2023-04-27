@@ -112,7 +112,7 @@ class AutocompleteInput extends React.Component {
 
     // Autosuggest will pass through all these props to the input element.
     const inputProps = {
-      placeholder: "Nom complet",
+      placeholder: this.props.placeholder,
       value,
       onChange: this.onChange,
       className: this.props.className,
