@@ -36,10 +36,10 @@ const ownerSlice = createSlice({
     addOwner: (state, action) => {
       state.push(action.payload);
     },
-    updateOneOwnerById:(state, action) =>{
-      state.map(function(owner) {
+    updateOneOwnerById: (state, action) => {
+      return state.map(owner => {
         if (owner._id === action.payload._id) {
-          return {...owner, fullName:action.payload.fullName, phone1:action.payload.phone1, phone2:action.payload.phone2};
+          return { ...owner, fullName: action.payload.fullName, phone1: action.payload.phone1, phone2: action.payload.phone2 };
         } else {
           return owner;
         }
@@ -153,10 +153,10 @@ const locationSlice = createSlice({
     addLocation: (state, action) => {
       state.push(action.payload);
     },
-    updateOneLocationById:(state, action) =>{
-      state.map(function(location) {
+    updateOneLocationById: (state, action) => {
+      return state.map(location => {
         if (location._id === action.payload._id) {
-          return {...location, address:action.payload.address, locationLink:action.payload.locationLink};
+          return { ...location, address: action.payload.address, locationLink: action.payload.locationLink };
         } else {
           return location;
         }

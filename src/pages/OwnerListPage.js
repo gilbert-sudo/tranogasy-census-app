@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
 import { useLoader } from "../hooks/useLoader";
-import OwnerAdded from "../components/OwnerAdded";
+import OwnerDetails from "../components/OwnerDetails";
 import { useEffect, useState } from "react";
 const OwnerListPage = () => {
   const { loadOwners } = useLoader();
@@ -49,7 +49,7 @@ const OwnerListPage = () => {
 
           <div className="list-group list-group-flush border-bottom scrollarea">
             {owners ? (
-              owners.map((owner) => <OwnerAdded owner={owner} />)
+              owners.map((owner) => <OwnerDetails owner={owner} />)
             ) : (
               <div className="loading-page">
                 <h1>chargement...</h1>

@@ -1,19 +1,20 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { addOwner , updateOneOwnerById} from "../redux/redux";
-
+import { useLoader } from "./useLoader";
 export const useOwner = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [msgError, setMsgError] = useState(null);
   const [bootstrapClassname, setBootstrap] = useState(null);
   const [resetOwnerInput, setResetOwnerInput] = useState(false); // new state
-
+  const {loadOwners} = useLoader();
   const dispatch = useDispatch();
   //redux
 
-  const createOwner = async (fullname, phoneOne, phoneTwo) => {
+  const createOwner = async (fullName, phoneOne, phoneTwo) => {
     setIsLoading(true);
     setMsgError(null);
+    const fullname = fullName.trim().replace(/\s{2,}/g, ' ');
     const phone1 = phoneOne.replace(/\s/g, "");
     const phone2 = phoneTwo.replace(/\s/g, "");
     if (!fullname.length || !phone1.length) {
@@ -66,12 +67,9 @@ export const useOwner = () => {
             setResetOwnerInput(true);
             dispatch(addOwner(result.newOwner));
             return;
-          } else if (result.errors) {
+          } else if (result.errors.fullname) {
             console.log("the error is ", result.errors);
-            let msg =
-              result.errors.fullname ||
-              result.errors.phone1 ||
-              result.errors.phone2;
+            let msg = result.errors.fullname 
             let bootstrapClass = "alert alert-danger";
             setBootstrap(bootstrapClass);
             setMsgError(msg);
@@ -110,9 +108,10 @@ export const useOwner = () => {
   };
 
   
-  const updateOwner = async (ownerId, fullname, phoneNumberOne, phoneNumberTwo) => {
+  const updateOwner = async (ownerId, fullName, phoneNumberOne, phoneNumberTwo) => {
     setIsLoading(true);
     setMsgError(null);
+    const fullname = fullName.trim().replace(/\s{2,}/g, ' ');
     const phone1 = phoneNumberOne.replace(/\s/g, "");
     const phone2 = phoneNumberTwo.replace(/\s/g, "");
     if (!fullname.length || !phone1.length) {
@@ -166,11 +165,7 @@ export const useOwner = () => {
             dispatch(updateOneOwnerById(result.modifiedOwner));
             return;
           } else if (result.errors) {
-            console.log("the error is ", result.errors);
-            let msg =
-              result.errors.fullname ||
-              result.errors.phone1 ||
-              result.errors.phone2;
+            let msg = result.errors.fullname ;
             let bootstrapClass = "alert alert-danger";
             setBootstrap(bootstrapClass);
             setMsgError(msg);
