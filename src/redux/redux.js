@@ -36,9 +36,18 @@ const ownerSlice = createSlice({
     addOwner: (state, action) => {
       state.push(action.payload);
     },
+    updateOneOwnerById:(state, action) =>{
+      state.map(function(owner) {
+        if (owner._id === action.payload._id) {
+          return {...owner, fullName:action.payload.fullName, phone1:action.payload.phone1, phone2:action.payload.phone2};
+        } else {
+          return owner;
+        }
+      });
+    }
   },
 });
-export const { setOwner, addOwner } = ownerSlice.actions;
+export const { setOwner, addOwner, updateOneOwnerById } = ownerSlice.actions;
 //paginnations
 const paginationSlice = createSlice({
   name: "pagination",
@@ -133,6 +142,29 @@ const bookingSlice = createSlice({
 
 export const { setBooking, addBooking, deleteBooking } = bookingSlice.actions;
 
+//owner slice
+const locationSlice = createSlice({
+  name: "location",
+  initialState: [],
+  reducers: {
+    setLocation: (state, action) => {
+      return [...action.payload];
+    },
+    addLocation: (state, action) => {
+      state.push(action.payload);
+    },
+    updateOneLocationById:(state, action) =>{
+      state.map(function(location) {
+        if (location._id === action.payload._id) {
+          return {...location, address:action.payload.address, locationLink:action.payload.locationLink};
+        } else {
+          return location;
+        }
+      });
+    }
+  },
+});
+export const { setLocation, addLocation, updateOneLocationById } = locationSlice.actions;
 export const store = configureStore({
   reducer: {
     owner: ownerSlice.reducer,
@@ -141,6 +173,7 @@ export const store = configureStore({
     topProperties: topPropertiesSlice.reducer,
     properties: propertiesSlice.reducer,
     booking: bookingSlice.reducer,
+    location: locationSlice.reducer,
     likedProperties: likedPropertiesSlice.reducer,
     googleLogin: googleLoginSlice.reducer,
   },

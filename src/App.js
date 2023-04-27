@@ -12,6 +12,9 @@ import Navbar from "./components/Navbar";
 import OwnerCreation from "./pages/OwnerCreation";
 import OwnerListPage from "./pages/OwnerListPage";
 import OwnerEditingPage from "./pages/OwnerEditingPage";
+import LocationCreationPage from "./pages/LocationCreationPage";
+import LocationEditingPage from "./pages/LocationEditingPage";
+import LocationListPage from "./pages/LocationListPage";
 import { useSelector, useDispatch } from "react-redux";
 import { setUser } from "./redux/redux";
 import { useEffect } from "react";
@@ -89,9 +92,25 @@ function App() {
               path="/edit-owner/:ownerId/:fullName/:phoneOne"
               element={user ? <OwnerEditingPage /> : <Navigate to="/login" />}
             />
-             <Route
+            <Route
               path="/create-owner"
               element={user ? <OwnerCreation /> : <Navigate to="/login" />}
+            />
+            <Route
+              path="/location-list"
+              element={user ? <LocationListPage /> : <Navigate to="/login" />}
+            />
+            <Route
+              path="/create-location"
+              element={
+                user ? <LocationCreationPage /> : <Navigate to="/login" />
+              }
+            />
+            <Route
+              path="/edit-location/:locationId"
+              element={
+                user ? <LocationEditingPage /> : <Navigate to="/login" />
+              }
             />
           </Routes>
         </div>

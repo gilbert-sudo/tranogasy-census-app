@@ -98,7 +98,7 @@ const AddingPage = () => {
           </div>
           <div className="form-group">
             <label htmlFor="email">L'adresse (Lot){" "}
-              <Link to="/create-owner">
+              <Link to="/create-location">
                 <nb style={{ color: "blue" }}>
                   {" "}
                   &nbsp;<small>Ajouter un nouveau</small>

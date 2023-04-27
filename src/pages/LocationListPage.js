@@ -1,18 +1,18 @@
 import { useSelector } from "react-redux";
 import { useLoader } from "../hooks/useLoader";
-import OwnerAdded from "../components/OwnerAdded";
+import LocationAdded from "../components/LocationAdded";
 import { useEffect, useState } from "react";
-const OwnerListPage = () => {
-  const { loadOwners } = useLoader();
-  const owners = useSelector((state) => state.owner);
+const LocationListPage = () => {
+  const { loadLocations } = useLoader();
+  const locations = useSelector((state) => state.location);
   const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
-    if (!owners.length) {
-      loadOwners();
+    if (!locations.length) {
+      loadLocations();
       setIsLoading(false);
     }
-  }, [loadOwners, owners, setIsLoading]);
-  console.log("all owners is ", owners);
+  }, [loadLocations, locations, setIsLoading]);
+  console.log("all location is ", locations);
   return (
     <>
       {/* <meta charSet="utf-8" /> */}
@@ -38,18 +38,18 @@ const OwnerListPage = () => {
             <svg className="bi me-2" width={30} height={24}>
               <use xlinkHref="#bootstrap" />
             </svg>
-            {owners.length ? (
-              <span className="fs-5 fw-semibold">Toutes les Propriétaires</span>
+            {locations.length ? (
+              <span className="fs-5 fw-semibold">Toutes les locations</span>
             ) : (
               <span className="fs-5 fw-semibold">
-                accunes Propriétaires enrégistré
+                accunes locations enrégistrés
               </span>
             )}
           </div>
 
           <div className="list-group list-group-flush border-bottom scrollarea">
-            {owners ? (
-              owners.map((owner) => <OwnerAdded owner={owner} />)
+            {locations ? (
+              locations.map((location) => <LocationAdded location={location} />)
             ) : (
               <div className="loading-page">
                 <h1>chargement...</h1>
@@ -63,4 +63,4 @@ const OwnerListPage = () => {
   );
 };
 
-export default OwnerListPage;
+export default LocationListPage;
