@@ -1,21 +1,35 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUserPen } from "@fortawesome/free-solid-svg-icons";
-import {Link} from "react-router-dom";
-import { useState } from "react";
+import { Link } from "react-router-dom";
+import { FaUserEdit } from "react-icons/fa";
+
 const OwnerDetails = ({ owner }) => {
   return (
-    <Link
-    to={`/edit-owner/${owner._id}/${owner.fullName}/${owner.phone1}/${+owner.phone2?owner.phone2:""}`}
-      className="list-group-item list-group-item-action py-3 lh-tight"
-    >
-      <div className="d-flex w-100 align-items-center justify-content-between">
-        <strong className="mb-1">{owner.fullName}</strong>{" "}
-        <FontAwesomeIcon icon={faUserPen} />
+    <div className="d-flex justify-content-between align-items-center border border-secondary py-2 border-right-0  border-left-0">
+      <div className="d-flex flex-row align-items-center">
+        <div className="image">
+          <img src="https://i.imgur.com/vxEWOFl.png" width={70} />
+        </div>
+        <div className="d-flex flex-column line-height ml-2">
+          <span className="font-weight-bold">{ owner.fullName }</span>
+          <span className="ml-3">Tél : { owner.phone1 }</span>
+          <span className="ml-3">
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; { owner.phone2 }
+          </span>
+          <span className="d-flex flex-row align-items-center l-now">
+            <small className="live" />
+            Ajouté le: 03-05-2023
+          </span>
+        </div>
       </div>
-      <div className="col-10 mb-1 small text-uppercase">
-        {owner.phone1} | {owner.phone2?owner.phone2 : "..."}
+      <div className="dots">
+        <Link
+          to={`/edit-owner/${owner._id}/${owner.fullName}/${owner.phone1}/${
+            +owner.phone2 ? owner.phone2 : ""
+          }`}
+        >
+          <FaUserEdit />
+        </Link>
       </div>
-    </Link>
+    </div>
   );
 };
 export default OwnerDetails;
