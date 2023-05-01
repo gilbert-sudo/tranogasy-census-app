@@ -1,18 +1,47 @@
 import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+import { FaSearch, FaUserPlus } from "react-icons/fa";
 import { useLoader } from "../hooks/useLoader";
 import OwnerDetails from "../components/OwnerDetails";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 const OwnerListPage = () => {
   const { loadOwners } = useLoader();
   const owners = useSelector((state) => state.owner);
+  const [searchResult, setSearchResult] = useState(owners);
+
+  //search states and filter it
+  const searchStates = async (searchText) => {
+    //get matches to current text input
+    let matches = owners.filter((state) => {
+      const regex = new RegExp(`^${searchText}`, "gi");
+      return (
+        state.fullName.match(regex) ||
+        state.phone1.match(regex) ||
+        state.phone2.match(regex)
+      );
+    });
+    if (searchText.length !== 0) {
+      setSearchResult(matches);
+    }
+    if (searchText.length === 0) {
+      setSearchResult(owners);
+    }
+    if (matches.length === 0) {
+      setSearchResult(null);
+    }
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+  };
+
   useEffect(() => {
     if (!owners.length) {
       loadOwners();
     }
   }, [loadOwners, owners]);
 
-  console.log("all owners is ", owners);
   return (
     <>
       <style
@@ -22,16 +51,68 @@ const OwnerListPage = () => {
         }}
       />
       <div className="container pt-4 mb-5">
-     
         <div className="card mt-3">
-        <h6 className="text-black widget-title mt-5 mb-3 d-flex justify-content-center">
-          LISTE DES PROPRIETAIRES
-        </h6>
           <div className="bottom">
-            {owners &&
-              owners.map((owner) => (
-                <OwnerDetails key={owner._id} owner={owner} />
-              ))}
+            <form action="" onSubmit={handleSubmit}>
+              <div class="d-flex mb-2">
+                <input
+                  className="form-control auto-input"
+                  placeholder="Nom complet"
+                  id="owner-input"
+                  style={{ width: "100%" }} // add style prop
+                  onInput={(e) => searchStates(e.target.value)}
+                />
+                <button className="btn btn-default ml-1 border border-secondary">
+                  <FaSearch />
+                </button>
+                <Link to="/create-owner" className="btn btn-primary ml-1">
+                  <FaUserPlus />
+                </Link>
+              </div>
+            </form>
+            {!searchResult ? (
+              <div className="mt-4 ml-3">
+                <h6>Aucun résultat trouvé</h6>
+              </div>
+            ) : (
+              <div>
+                {searchResult &&
+                  searchResult.map((owner) => (
+                    <OwnerDetails key={owner._id} owner={owner} />
+                  ))}
+                <nav aria-label="Page navigation example">
+                  <ul class="pagination  justify-content-center">
+                    <li class="page-item">
+                      <a class="page-link" href="#" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                        <span class="sr-only">Previous</span>
+                      </a>
+                    </li>
+                    <li class="page-item">
+                      <a class="page-link" href="#">
+                        1
+                      </a>
+                    </li>
+                    <li class="page-item">
+                      <a class="page-link" href="#">
+                        2
+                      </a>
+                    </li>
+                    <li class="page-item">
+                      <a class="page-link" href="#">
+                        3
+                      </a>
+                    </li>
+                    <li class="page-item">
+                      <a class="page-link" href="#" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                        <span class="sr-only">Next</span>
+                      </a>
+                    </li>
+                  </ul>
+                </nav>
+              </div>
+            )}
           </div>
         </div>
       </div>

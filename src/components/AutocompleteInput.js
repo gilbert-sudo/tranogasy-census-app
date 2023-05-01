@@ -98,7 +98,7 @@ class AutocompleteInput extends React.Component {
               cursor: "pointer",
             }}
           >
-            Aucune suggestion trouvée
+            Aucun suggestion trouvé
           </div>
         ) : (
           children

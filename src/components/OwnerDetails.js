@@ -6,7 +6,7 @@ const OwnerDetails = ({ owner }) => {
     <div className="d-flex justify-content-between align-items-center border border-secondary py-2 border-right-0 border-bottom-0  border-left-0">
       <div className="d-flex flex-row align-items-center">
         <div className="image">
-          <img src="https://i.imgur.com/vxEWOFl.png" width={70} />
+          <img src="https://i.imgur.com/vxEWOFl.png" width={40} />
         </div>
         <div className="d-flex flex-column line-height ml-2">
           <span className="font-weight-bold">{ owner.fullName }</span>
