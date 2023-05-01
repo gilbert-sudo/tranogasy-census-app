@@ -22,8 +22,8 @@ const OwnerDetails = ({ owner }) => {
       </div>
       <div className="dots">
         <Link
-          to={`/edit-owner/${owner._id}/${owner.fullName}/${owner.phone1}/${
-            +owner.phone2 ? owner.phone2 : ""
+          to={`/edit-owner/${owner._id}/${owner.fullName}${owner.location?"/"+owner.location.address:""}/${owner.phone1}/${
+          + owner.phone2 ? owner.phone2 : ""
           }`}
         >
           <FaUserEdit />

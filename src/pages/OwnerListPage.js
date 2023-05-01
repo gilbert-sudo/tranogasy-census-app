@@ -12,7 +12,6 @@ const OwnerListPage = () => {
     }
   }, [loadOwners, owners]);
 
-  console.log("all owners is ", owners);
   return (
     <>
       <style

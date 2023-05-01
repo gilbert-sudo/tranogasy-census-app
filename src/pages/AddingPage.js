@@ -70,7 +70,6 @@ const AddingPage = () => {
     }
 
   }, [loadOwnersName]);
-
   return (
     <>
       <div

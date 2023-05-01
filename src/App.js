@@ -85,11 +85,11 @@ function App() {
               element={user ? <OwnerListPage /> : <Navigate to="/login" />}
             />
             <Route
-              path="/edit-owner/:ownerId/:fullName/:phoneOne/:phoneTwo"
+              path="/edit-owner/:ownerId/:fullName/:address/:phoneOne/:phoneTwo"
               element={user ? <OwnerEditingPage /> : <Navigate to="/login" />}
             />
             <Route
-              path="/edit-owner/:ownerId/:fullName/:phoneOne"
+              path="/edit-owner/:ownerId/:fullName/:address/:phoneOne"
               element={user ? <OwnerEditingPage /> : <Navigate to="/login" />}
             />
             <Route
