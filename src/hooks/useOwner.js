@@ -9,19 +9,21 @@ export const useOwner = () => {
   const dispatch = useDispatch();
   //redux
 
-  const createOwner = async (fullName, phoneOne, phoneTwo) => {
+  const createOwner = async (fullName, locationId, phoneOne, phoneTwo) => {
     setIsLoading(true);
     setMsgError(null);
     const fullname = fullName.trim().replace(/\s{2,}/g, ' ');
     const phone1 = phoneOne.replace(/\s/g, "");
-    const phone2 = phoneTwo.replace(/\s/g, "");
     if (!fullname.length || !phone1.length) {
       setBootstrap("alert alert-warning");
       setMsgError(
-        "Le nom et le prémier numéro de téléphone sont obligatoires."
+        "Le nom complet et le prémier numéro de téléphone sont obligatoires."
       );
       setIsLoading(false);
       return;
+    }
+    if(phoneTwo){
+    var phone2 = phoneTwo.replace(/\s/g, "");
     }
 
     const phoneNumberRegex = /^(03[2,3,4,8])(\d{7})$|^(3[2,3,4,8])(\d{7})$/;
@@ -48,6 +50,7 @@ export const useOwner = () => {
               },
               body: JSON.stringify({
                 fullname,
+                locationId,
                 phone1,
                 phone2,
               }),
@@ -63,6 +66,7 @@ export const useOwner = () => {
             setMsgError(msg);
             setIsLoading(false);
             setResetOwnerInput(true);
+            console.log("the new owner is" + result.newOwner)
             dispatch(addOwner(result.newOwner));
             return;
           } else if (result.errors.fullname) {
@@ -106,21 +110,22 @@ export const useOwner = () => {
   };
 
   
-  const updateOwner = async (ownerId, fullName, phoneNumberOne, phoneNumberTwo) => {
+  const updateOwner = async (ownerId, fullName, locationId, phoneNumberOne, phoneNumberTwo) => {
     setIsLoading(true);
     setMsgError(null);
     const fullname = fullName.trim().replace(/\s{2,}/g, ' ');
     const phone1 = phoneNumberOne.replace(/\s/g, "");
-    const phone2 = phoneNumberTwo.replace(/\s/g, "");
     if (!fullname.length || !phone1.length) {
       setBootstrap("alert alert-warning");
       setMsgError(
-        "Le nom et le prémier numéro de téléphone sont obligatoires."
+        "Le nom complet et le prémier numéro de téléphone sont obligatoires."
       );
       setIsLoading(false);
       return;
     }
-
+    if(phoneNumberTwo){
+    var phone2 = phoneNumberTwo.replace(/\s/g, "");
+    }
     const phoneNumberRegex = /^(03[2,3,4,8])(\d{7})$|^(3[2,3,4,8])(\d{7})$/;
     const phoneNumber1 = phone1;
     const phoneNumber2 = phone2;
@@ -145,6 +150,7 @@ export const useOwner = () => {
               },
               body: JSON.stringify({
                 fullname,
+                locationId,
                 phone1,
                 phone2,
               }),
@@ -160,6 +166,7 @@ export const useOwner = () => {
             setMsgError(msg);
             setIsLoading(false);
             setResetOwnerInput(true);
+            console.log("the new owner is" + result.modifiedOwner)
             dispatch(updateOneOwnerById(result.modifiedOwner));
             return;
           } else if (result.errors) {
