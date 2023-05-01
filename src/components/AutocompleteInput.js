@@ -40,11 +40,14 @@ class AutocompleteInput extends React.Component {
     };
   }
 
-
   onChange = (event, { newValue }) => {
     this.setState({
       value: newValue,
     });
+    // Call the onValueChange prop with the new value
+    if (this.props.onValueChange) {
+      this.props.onValueChange(newValue);
+    }
   };
 
   onSuggestionsFetchRequested = ({ value }) => {
@@ -68,6 +71,11 @@ class AutocompleteInput extends React.Component {
 
     // Do whatever you want with the selected suggestion
     console.log("Selected suggestion:", suggestion);
+  };
+
+  getSelectedSuggestionId = () => {
+    // Do whatever you want to get the selected suggestion id
+    return "andrana id";
   };
 
   renderSuggestionsContainer = ({ containerProps, children, query }) => {
@@ -116,7 +124,7 @@ class AutocompleteInput extends React.Component {
       value,
       onChange: this.onChange,
       className: this.props.className,
-      id: this.props.inputId // Add ID prop
+      id: this.props.inputId, // Add ID prop
     };
 
     // Finally, render it!

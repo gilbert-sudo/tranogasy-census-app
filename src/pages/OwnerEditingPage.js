@@ -21,7 +21,7 @@ const OwnerEditingPage = () => {
   } = useOwner();
   const { ownerId, fullName, address, phoneOne, phoneTwo } = useParams();
   const [fullname, setFullName] = useState(fullName);
-  const [addressValue, setAddressValue]=useState(address);
+  const [newAdresse, setNewAdresse] = useState("");
   const [locationsName, setLocationsName] = useState(null);
   const [phone1, setPhone1] = useState(phoneOne);
   const [phone2, setPhone2] = useState(phoneTwo);
@@ -33,10 +33,11 @@ const OwnerEditingPage = () => {
     setPhone1("");
     setPhone2("");
   };
+
   //get the autocomplete id value
   const getDocId = (inputClassName, data) => {
     const inputValue = document.getElementById(inputClassName).value;
-    if (inputValue != undefined && inputValue.length) {
+    if (inputValue !== undefined && inputValue.length) {
       const documentId = data.filter(
         (document) => document.name === inputValue
       );
@@ -65,6 +66,10 @@ const OwnerEditingPage = () => {
       pageLoader();
     }
   }, [resetOwnerInput, loadLocationsName]);
+
+  const handleAddressChange = (value) => {
+    setNewAdresse(value);
+  };
 
   return (
     <div className="bg-white widget border mt-5 rounded">
@@ -104,8 +109,8 @@ const OwnerEditingPage = () => {
             className="form-control auto-input"
             placeholder="Une adresse exacte"
             inputId="address-input"
-            onChangeText ={(e) =>setAddressValue(e.target.value)}
             suggestions={locationsName}
+            onValueChange={handleAddressChange} // pass the callback function
             style={{ width: "100%" }} // add style prop
           />
         </div>
@@ -149,11 +154,11 @@ const OwnerEditingPage = () => {
             defaultValue="Insérer"
             disabled={
               fullname === fullName &&
-              addressValue === address &&
               phone1 === phoneOne &&
+              newAdresse === address &&
               phone2 === phoneTwo
                 ? true
-                : false || isLoading
+                : false || isLoading || newAdresse === ""
             }
           >
             Modifier
