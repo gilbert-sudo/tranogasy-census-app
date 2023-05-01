@@ -11,7 +11,7 @@ const OwnerListPage = () => {
       loadOwners();
     }
   }, [loadOwners, owners]);
-  
+
   console.log("all owners is ", owners);
   return (
     <>
@@ -22,11 +22,16 @@ const OwnerListPage = () => {
         }}
       />
       <div className="container pt-4 mb-5">
+     
         <div className="card mt-3">
+        <h6 className="text-black widget-title mt-5 mb-3 d-flex justify-content-center">
+          LISTE DES PROPRIETAIRES
+        </h6>
           <div className="bottom">
-            {owners && owners.map((owner) => (
-              <OwnerDetails key={owner._id} owner={owner}/>
-            ))}
+            {owners &&
+              owners.map((owner) => (
+                <OwnerDetails key={owner._id} owner={owner} />
+              ))}
           </div>
         </div>
       </div>

@@ -3,7 +3,7 @@ import { FaUserEdit } from "react-icons/fa";
 
 const OwnerDetails = ({ owner }) => {
   return (
-    <div className="d-flex justify-content-between align-items-center border border-secondary py-2 border-right-0  border-left-0">
+    <div className="d-flex justify-content-between align-items-center border border-secondary py-2 border-right-0 border-bottom-0  border-left-0">
       <div className="d-flex flex-row align-items-center">
         <div className="image">
           <img src="https://i.imgur.com/vxEWOFl.png" width={70} />

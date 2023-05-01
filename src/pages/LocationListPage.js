@@ -22,34 +22,23 @@ const LocationListPage = () => {
       <style
         dangerouslySetInnerHTML={{
           __html:
-            "::-webkit-scrollbar {\n                                  width: 8px;\n                                }\n                                /* Track */\n                                ::-webkit-scrollbar-track {\n                                  background: #f1f1f1; \n                                }\n                                 \n                                /* Handle */\n                                ::-webkit-scrollbar-thumb {\n                                  background: #888; \n                                }\n                                \n                                /* Handle on hover */\n                                ::-webkit-scrollbar-thumb:hover {\n                                  background: #555; \n                                } body{\n    display:flex;\n    justify-content:center;\n    align-items:center;\n    background-color:#fff;\n}\n\n.wrapper{\n    margin-top:50px;\n    margin-bottom:50px;\n}",
+            "::-webkit-scrollbar {\n                                  width: 8px;\n                                }\n                                /* Track */\n                                ::-webkit-scrollbar-track {\n                                  background: #f1f1f1; \n                                }\n                                 \n                                /* Handle */\n                                ::-webkit-scrollbar-thumb {\n                                  background: #888; \n                                }\n                                \n                                /* Handle on hover */\n                                ::-webkit-scrollbar-thumb:hover {\n                                  background: #555; \n                                } body{\n    display:flex;\n    justify-content:center;\n    align-items:center;\n    background-color:#fff;\n}\n\n.wrapper{\n  margin-top:20px;\n margin-bottom:50px;\n}",
         }}
       />
       <div className="wrapper">
         <div
           className="d-flex flex-column align-items-stretch flex-shrink-0 bg-white"
-          style={{ width: 390 }}
+          style={{ width: "100%" }}
         >
-          <div
-            href="/"
-            className="d-flex align-items-center flex-shrink-0 p-3 justify-content-center  link-dark text-decoration-none border-bottom"
-            style={{ backgroundColor: "rgb(124, 189, 30)" }}
-          >
-            <svg className="bi me-2" width={30} height={24}>
-              <use xlinkHref="#bootstrap" />
-            </svg>
-            {locations.length ? (
-              <span className="fs-5 fw-semibold">Toutes les locations</span>
-            ) : (
-              <span className="fs-5 fw-semibold">
-                accunes locations enrégistrés
-              </span>
-            )}
-          </div>
+          <h6 className="text-black widget-title mt-5 mb-3 d-flex justify-content-center">
+            ADRESSE ET LOCALISATION
+          </h6>
 
           <div className="list-group list-group-flush border-bottom scrollarea">
             {locations ? (
-              locations.map((location) => <LocationDetails location={location} />)
+              locations.map((location) => (
+                <LocationDetails location={location} />
+              ))
             ) : (
               <div className="loading-page">
                 <h1>chargement...</h1>
