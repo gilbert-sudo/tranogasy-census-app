@@ -153,15 +153,16 @@ const OwnerEditingPage = () => {
             className="btn btn-primary"
             defaultValue="Insérer"
             disabled={
+              newAdresse === "" || 
               fullname === fullName &&
               phone1 === phoneOne &&
               newAdresse === address &&
               phone2 === phoneTwo
                 ? true
-                : false || isLoading || newAdresse === ""
+                : false || isLoading
             }
           >
-            Modifier
+            Sauvegarder
           </button>
         </div>
       </form>
