@@ -65,7 +65,6 @@ const OwnerEditingPage = () => {
       pageLoader();
     }
   }, [resetOwnerInput, loadLocationsName]);
-
   return (
     <div className="bg-white widget border mt-5 rounded">
       <h3 className="h4 text-black widget-title mb-3">
@@ -104,7 +103,6 @@ const OwnerEditingPage = () => {
             className="form-control auto-input"
             placeholder="Une adresse exacte"
             inputId="address-input"
-            onChangeText ={(e) =>setAddressValue(e.target.value)}
             suggestions={locationsName}
             style={{ width: "100%" }} // add style prop
           />

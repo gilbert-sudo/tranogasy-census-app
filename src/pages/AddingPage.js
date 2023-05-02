@@ -13,12 +13,13 @@ import {
 import { FaGripHorizontal, FaMoneyBill } from "react-icons/fa";
 import { GiPayMoney } from "react-icons/gi";
 import { MdTitle } from "react-icons/md";
+import { useSelector } from "react-redux";
 
 const AddingPage = () => {
   const [disabledPriceInput, setDisabledPriceInput] = useState(false);
-
-  const { loadOwnersName, loadQuartersName, loadLocationsName } = useLoader();
-  const { addProperty } = useProperty();
+  const { loadOwnersName, loadQuartersName, loadLocationsName} = useLoader();
+  const { addProperty, resetPropertyInput, msgError, bootstrapClassname, isLoading } = useProperty();
+  const censusTaker = useSelector((state) =>(state.user._id));
   const [ownersName, setOwnersName] = useState(null);
   const [quartersName, setQuartersName] = useState(null);
   const [locationsName, setLocationsName] = useState(null);
@@ -29,12 +30,26 @@ const AddingPage = () => {
   const [area, setArea] = useState("");
   const [price, setPrice] = useState("0");
   const [rent, setRent] = useState("0");
-
+  const [isValidReset, setIsValidReset] = useState(false);
+  const resetAllInputs = () => {
+    setTitle("");
+    setDescription("");
+    setBedrooms("");
+    setArea("");
+    setBathrooms("");
+    setArea("");
+    setPrice("0");
+    setRent("0");
+  };
    //get the autocomplete id value
    const getDocId = (inputClassName, data) => {
     const inputValue = document.getElementById(inputClassName).value;
-    const documentId = data.filter((document) => document.name === inputValue)
-    return documentId[0].id;
+    if(inputValue){
+      const documentId = data.filter((document) => document.name === inputValue);
+      return documentId[0].id;
+    }else{
+      return;
+    }
   };
 
   //handle the property form submiting
@@ -53,7 +68,8 @@ const AddingPage = () => {
       type = "rent";
     } 
 
-    addProperty( title, description, address, city, price, rent, bedrooms, bathrooms, area, type, owner);
+    addProperty( title, description, address, city, price, rent, bedrooms, bathrooms, area, type, owner, censusTaker);
+    setIsValidReset(true);
   };
 
  
@@ -64,7 +80,10 @@ const AddingPage = () => {
       setQuartersName(await loadQuartersName());
       setLocationsName(await loadLocationsName());
     };
-    
+    if (resetPropertyInput && isValidReset) {
+      resetAllInputs();
+     setIsValidReset(false)
+    }
     if (!ownersName) {
       pageLoader();
     }
@@ -296,18 +315,14 @@ const AddingPage = () => {
           )}
 
           <div className="form-group">
-            <button type="submit" className="btn btn-primary">
+            <button type="submit" className="btn btn-primary"  disabled={isLoading}>
               Ajouter la propriété
             </button>
           </div>
         </form>
 
-        {/* {msgError && (
-          <div className={bootstrapClassname}>
-            {errorMessage && errorMessage ? errorMessage : msgError}
-          </div>
-        )} */}
-      </div>
+        {msgError && <div className={bootstrapClassname}>{msgError}</div>}
+    </div>
     </>
   );
 };
