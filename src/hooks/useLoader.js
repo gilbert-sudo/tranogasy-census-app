@@ -69,6 +69,7 @@ export const useLoader = () => {
       const json = await response.json();
       if (response.ok) {
         dispatch(setOwner(json));
+        return json;
       }
     };
     

@@ -12,7 +12,6 @@ const LocationListPage = () => {
       setIsLoading(false);
     }
   }, [loadLocations, locations, setIsLoading]);
-  console.log("all location is ", locations);
   return (
     <>
       {/* <meta charSet="utf-8" /> */}
@@ -35,16 +34,10 @@ const LocationListPage = () => {
           </h6>
 
           <div className="list-group list-group-flush border-bottom scrollarea">
-            {locations ? (
+            {locations &&
               locations.map((location) => (
                 <LocationDetails location={location} />
-              ))
-            ) : (
-              <div className="loading-page">
-                <h1>chargement...</h1>
-                <div className="loading-spinner"></div>
-              </div>
-            )}
+              ))}
           </div>
         </div>
       </div>

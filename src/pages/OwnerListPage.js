@@ -9,6 +9,7 @@ const OwnerListPage = () => {
   const { loadOwners } = useLoader();
   const owners = useSelector((state) => state.owner);
   const [searchResult, setSearchResult] = useState(owners);
+  const [isLoading, setIsLoading] = useState(null);
 
   //search states and filter it
   const searchStates = async (searchText) => {
@@ -32,13 +33,17 @@ const OwnerListPage = () => {
     }
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-  };
-
   useEffect(() => {
+    const pageLoader = async () => {
+      const ownersPreoad = await loadOwners();
+      if (ownersPreoad) {
+        setIsLoading(null);
+      }
+      setSearchResult(ownersPreoad);
+    };
     if (!owners.length) {
-      loadOwners();
+      setIsLoading(true);
+      pageLoader();
     }
   }, [loadOwners, owners]);
 
@@ -53,23 +58,23 @@ const OwnerListPage = () => {
       <div className="container pt-4 mb-5">
         <div className="card mt-3">
           <div className="bottom">
-            <form action="" onSubmit={handleSubmit}>
-              <div class="d-flex mb-2">
-                <input
-                  className="form-control auto-input"
-                  placeholder="Nom complet"
-                  id="owner-input"
-                  style={{ width: "100%" }} // add style prop
-                  onInput={(e) => searchStates(e.target.value)}
-                />
-                <button className="btn btn-default ml-1 border border-secondary">
-                  <FaSearch />
-                </button>
-                <Link to="/create-owner" className="btn btn-primary ml-1">
-                  <FaUserPlus />
-                </Link>
+            <div class="d-flex mb-2">
+              <input
+                className="form-control auto-input"
+                placeholder="🔍 Nom complet"
+                id="owner-input"
+                style={{ width: "100%" }} // add style prop
+                onInput={(e) => searchStates(e.target.value)}
+              />
+              <Link to="/create-owner" className="btn btn-primary ml-1">
+                <FaUserPlus />
+              </Link>
+            </div>
+            {isLoading && (
+              <div className="mt-4 ml-3 d-flex justify-content-center">
+                <img src="https://ik.imagekit.io/ryxb55mhk/Tranogasy/loading/Double_Ring-1s-200px__1_.gif?updatedAt=1683022393415" />
               </div>
-            </form>
+            )}
             {!searchResult ? (
               <div className="mt-4 ml-3">
                 <h6>Aucun résultat trouvé</h6>
