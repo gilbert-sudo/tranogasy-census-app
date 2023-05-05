@@ -37,16 +37,15 @@ export const useProperty = () => {
       censusTaker
     );
     if (
-      title ||
-      description ||
-      address ||
-      city ||
-      price ||
-      rent ||
-      bedrooms ||
-      bathrooms ||
-      area ||
-      area ||
+      title === undefined ||
+      description=== undefined ||
+      address === undefined ||
+      city=== undefined ||
+      price === undefined||
+      rent=== undefined ||
+      bedrooms === undefined  ||
+      bathrooms === undefined ||
+      area === undefined ||
       type === undefined
     ) {
       setBootstrap("alert alert-danger");

@@ -1,16 +1,30 @@
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { FaSearch, FaUserPlus } from "react-icons/fa";
 import { useLoader } from "../hooks/useLoader";
 import OwnerDetails from "../components/OwnerDetails";
 import { useEffect, useState } from "react";
+import { setTotalPage } from "../redux/redux";
+import OwnerPaging from "../components/OwnerPaging";
 
 const OwnerListPage = () => {
   const { loadOwners } = useLoader();
   const owners = useSelector((state) => state.owner);
+  const dispatch = useDispatch();
+  const paginationIndex = useSelector((state) => state.pagination);
   const [searchResult, setSearchResult] = useState(owners);
   const [isLoading, setIsLoading] = useState(null);
-
+  //set the total of the page
+  if (owners) {
+    dispatch(setTotalPage(owners.length));
+  }
+  if (paginationIndex[0].currentPage !== 1) {
+    // scroll to top of the page
+    const element = document.getElementById("prodisplay");
+    if (element) {
+      element.scrollIntoView();
+    }
+  }
   //search states and filter it
   const searchStates = async (searchText) => {
     //get matches to current text input
@@ -82,40 +96,16 @@ const OwnerListPage = () => {
             ) : (
               <div>
                 {searchResult &&
-                  searchResult.map((owner) => (
-                    <OwnerDetails key={owner._id} owner={owner} />
-                  ))}
-                <nav aria-label="Page navigation example">
-                  <ul class="pagination  justify-content-center">
-                    <li class="page-item">
-                      <a class="page-link" href="#" aria-label="Previous">
-                        <span aria-hidden="true">&laquo;</span>
-                        <span class="sr-only">Previous</span>
-                      </a>
-                    </li>
-                    <li class="page-item">
-                      <a class="page-link" href="#">
-                        1
-                      </a>
-                    </li>
-                    <li class="page-item">
-                      <a class="page-link" href="#">
-                        2
-                      </a>
-                    </li>
-                    <li class="page-item">
-                      <a class="page-link" href="#">
-                        3
-                      </a>
-                    </li>
-                    <li class="page-item">
-                      <a class="page-link" href="#" aria-label="Next">
-                        <span aria-hidden="true">&raquo;</span>
-                        <span class="sr-only">Next</span>
-                      </a>
-                    </li>
-                  </ul>
-                </nav>
+                  searchResult
+                    .slice(
+                      paginationIndex[1].startIndex,
+                      paginationIndex[1].endIndex
+                    )
+                    .map((owner) => (
+                      <OwnerDetails key={owner._id} owner={owner} />
+                    ))}
+                <hr></hr>
+                {owners && <OwnerPaging />}
               </div>
             )}
           </div>

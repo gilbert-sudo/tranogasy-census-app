@@ -1,11 +1,25 @@
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useLoader } from "../hooks/useLoader";
 import LocationDetails from "../components/LocationDetails";
 import { useEffect, useState } from "react";
+import LocationPaging from "../components/LocationPaging";
+import { setTotalPage } from "../redux/redux";
 const LocationListPage = () => {
   const { loadLocations } = useLoader();
   const locations = useSelector((state) => state.location);
+  const dispatch = useDispatch();
+  const paginationIndex = useSelector((state) => state.pagination);
   const [isLoading, setIsLoading] = useState(true);
+  if (locations) {
+    dispatch(setTotalPage(locations.length));
+  }
+  if (paginationIndex[0].currentPage !== 1) {
+    // scroll to top of the page
+    const element = document.getElementById("prodisplay");
+    if (element) {
+      element.scrollIntoView();
+    }
+  }
   useEffect(() => {
     if (!locations.length) {
       loadLocations();
@@ -35,10 +49,15 @@ const LocationListPage = () => {
 
           <div className="list-group list-group-flush border-bottom scrollarea">
             {locations &&
-              locations.map((location) => (
-                <LocationDetails location={location} />
-              ))}
+              locations
+                .slice(
+                  paginationIndex[1].startIndex,
+                  paginationIndex[1].endIndex
+                )
+                .map((location) => <LocationDetails location={location} />)}
           </div>
+          <hr></hr>
+          {locations && <LocationPaging />}
         </div>
       </div>
     </>
