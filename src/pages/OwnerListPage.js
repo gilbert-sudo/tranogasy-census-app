@@ -4,7 +4,7 @@ import { FaSearch, FaUserPlus } from "react-icons/fa";
 import { useLoader } from "../hooks/useLoader";
 import OwnerDetails from "../components/OwnerDetails";
 import { useEffect, useState } from "react";
-import { setTotalPage } from "../redux/redux";
+import { setTotalPage, updateCurrentPage } from "../redux/redux";
 import OwnerPaging from "../components/OwnerPaging";
 
 const OwnerListPage = () => {
@@ -15,8 +15,8 @@ const OwnerListPage = () => {
   const [searchResult, setSearchResult] = useState(owners);
   const [isLoading, setIsLoading] = useState(null);
   //set the total of the page
-  if (owners) {
-    dispatch(setTotalPage(owners.length));
+  if (searchResult) {
+    dispatch(setTotalPage(searchResult.length));
   }
   if (paginationIndex[0].currentPage !== 1) {
     // scroll to top of the page
@@ -44,6 +44,18 @@ const OwnerListPage = () => {
     }
     if (matches.length === 0) {
       setSearchResult(null);
+    }
+    if (searchResult) {
+      console.log(searchResult);
+      dispatch(setTotalPage(searchResult.length));
+      dispatch(updateCurrentPage(1));
+    }
+    if (paginationIndex[0].currentPage !== 1) {
+      // scroll to top of the page
+      const element = document.getElementById("prodisplay");
+      if (element) {
+        element.scrollIntoView();
+      }
     }
   };
 
@@ -105,7 +117,7 @@ const OwnerListPage = () => {
                       <OwnerDetails key={owner._id} owner={owner} />
                     ))}
                 <hr></hr>
-                {owners && <OwnerPaging />}
+                {searchResult && <OwnerPaging />}
               </div>
             )}
           </div>

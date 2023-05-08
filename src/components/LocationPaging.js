@@ -15,24 +15,8 @@ const LocationPaging = () => {
   const generatePageLinks = () => {
     const links = [];
 
-    if (totalPage <= 3) {
-      for (let i = 1; i <= totalPage; i++) {
-        links.push(
-          <li key={i} className={`page-item ${i === currentPage ? "active" : ""}`}>
-            <Link
-            className={`page-link ${i === currentPage ? "active" : ""}`}
-              key={i}
-              to="/location-list/#prodisplay"
-              onClick={() => {
-                dispatch(updateCurrentPage(i));
-                window.scrollTo({ top: 0, behavior: "smooth" });
-              }}
-            >
-              {i}
-            </Link>
-          </li>
-        );
-      }
+    if (totalPage == 1) {
+    return links;
     } else {
       const start = Math.max(1, currentPage - 1);
       const end = Math.min(totalPage, currentPage + 1);
@@ -108,7 +92,7 @@ const LocationPaging = () => {
             </Link>
           </li>
         )}
-        {generatePageLinks()}
+        {totalPage > 1 && generatePageLinks()}
         {currentPage < totalPage && (
           <li className="page-item">
             <Link

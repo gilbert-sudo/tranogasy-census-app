@@ -12,28 +12,13 @@ const OwnerPaging = () => {
   const state = useSelector((state) => state.pagination);
   const totalPage = state[0].totalPage;
   const currentPage = state[0].currentPage;
+  const itemsPerPage = state[1].itemsPerPage;
   const generatePageLinks = () => {
     const links = [];
-
-    if (totalPage <= 3) {
-      for (let i = 1; i <= totalPage; i++) {
-        links.push(
-          <li key={i} className={`page-item ${i === currentPage ? "active" : ""}`}>
-            <Link
-            className={`page-link ${i === currentPage ? "active" : ""}`}
-              key={i}
-              to="/owner-list/#prodisplay"
-              onClick={() => {
-                dispatch(updateCurrentPage(i));
-                window.scrollTo({ top: 0, behavior: "smooth" });
-              }}
-            >
-              {i}
-            </Link>
-          </li>
-        );
-      }
+    if (totalPage === 1) {
+      return links;
     } else {
+      console.log("ok that's it ")
       const start = Math.max(1, currentPage - 1);
       const end = Math.min(totalPage, currentPage + 1);
 
@@ -108,24 +93,7 @@ const OwnerPaging = () => {
             </Link>
           </li>
         )}
-        {generatePageLinks()}
-        {/* {generatePageLinks().map((page) => (
-          <li
-            key={page}
-            className={`page-item ${currentPage === page ? "active" : ""}`}
-          >
-            <Link
-              className="page-link"
-              to={`/owner-list/#prodisplay`}
-              onClick={() => {
-                dispatch(updateCurrentPage(currentPage + 1));
-                window.scrollTo({ top: 0, behavior: "smooth" });
-              }}
-            >
-              {page}
-            </Link>
-          </li>
-        ))} */}
+        {totalPage > 1 && generatePageLinks()}
         {currentPage < totalPage && (
           <li className="page-item">
             <Link
@@ -143,38 +111,6 @@ const OwnerPaging = () => {
         )}
       </ul>
     </nav>
-
-    //     <div className="row mb-2">
-    //       <div className="col-md-12 text-center">
-    //         <div className="site-pagination">
-    //           {currentPage > 1 && (
-    //             <Link
-    //               to="/owner-list/#prodisplay"
-    //               className="prev"
-    //               onClick={() => {
-    //                 dispatch(updateCurrentPage(currentPage - 1));
-    //                 window.scrollTo({ top: 0, behavior: 'smooth' });
-    //               }}
-    //             >
-    //               <FontAwesomeIcon icon={faChevronLeft} />
-    //             </Link>
-    //           )}
-    //           {generatePageLinks()}
-    //           {currentPage < totalPage && (
-    //             <Link
-    //               to="/owner-list/#prodisplay"
-    //               className="next"
-    //               onClick={() => {
-    //                 dispatch(updateCurrentPage(currentPage +1));
-    //                 window.scrollTo({ top: 0, behavior: 'smooth' });
-    //               }}
-    //             >
-    //               <FontAwesomeIcon icon={faChevronRight} />
-    //             </Link>
-    //           )}
-    //         </div>
-    //       </div>
-    //     </div>
   );
 };
 

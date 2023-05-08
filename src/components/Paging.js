@@ -11,23 +11,8 @@ const Paging = () => {
   const currentPage = state[0].currentPage;
   const generatePageLinks = () => {
     const links = [];
-  
-    if (totalPage <= 3) {
-      for (let i = 1; i <= totalPage; i++) {
-        links.push(
-          <Link
-            key={i}
-            to="/#prodisplay"
-            className={i === currentPage ? 'active' : ''}
-            onClick={() => {
-              dispatch(updateCurrentPage(i));
-              window.scrollTo({ top: 0, behavior: 'smooth' });
-            }}
-          >
-            {i}
-          </Link>
-        );
-      }
+    if (totalPage === 1) {
+      return links;
     } else {
       const start = Math.max(1, currentPage - 1);
       const end = Math.min(totalPage, currentPage + 1);
@@ -99,7 +84,7 @@ const Paging = () => {
               <FontAwesomeIcon icon={faChevronLeft} />
             </Link>
           )}
-          {generatePageLinks()}
+          {totalPage > 1 && generatePageLinks()}
           {currentPage < totalPage && (
             <Link
               to="/#prodisplay"
