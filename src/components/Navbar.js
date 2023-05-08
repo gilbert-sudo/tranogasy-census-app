@@ -7,12 +7,13 @@ import {
   BiPlusCircle,
   BiMessageSquareDetail,
 } from "react-icons/bi";
-import {HiOutlineUserGroup} from "react-icons/hi";
-import {MdNotListedLocation} from "react-icons/md";
+import { HiOutlineUserGroup } from "react-icons/hi";
+import { MdNotListedLocation } from "react-icons/md";
 const Navbar = () => {
   const dispatch = useDispatch();
   const state = useSelector((state) => state.pagination);
   const activePage = state[2].activeLink;
+  const user = useSelector((state) => state.user);
 
   return (
     <>
@@ -64,15 +65,15 @@ const Navbar = () => {
               <li className="nav__item mt-3">
                 {" "}
                 <NavLink
-                  to="/booking"
+                  to="/adding"
                   style={
-                    activePage === "/booking"
+                    activePage === "/adding"
                       ? { color: "#7cbd1e" }
                       : { color: "#222B2A" }
                   }
                   className="nav__link"
                   onClick={() => {
-                    dispatch(updateActiveLink("/booking"));
+                    dispatch(updateActiveLink("/adding"));
                   }}
                 >
                   <BiPlusCircle className="nav__icon" />
@@ -96,24 +97,45 @@ const Navbar = () => {
                   <span className="nav__name">Location</span>
                 </NavLink>
               </li>
-              <li className="nav__item mt-3">
-                {" "}
-                <NavLink
-                  to="/login"
-                  style={
-                    activePage === "/login"
-                      ? { color: "#7cbd1e" }
-                      : { color: "#222B2A" }
-                  }
-                  className="nav__link"
-                  onClick={() => {
-                    dispatch(updateActiveLink("/login"));
-                  }}
-                >
-                  <BiUser className="nav__icon" />
-                  <span className="nav__name">Connexion</span>
-                </NavLink>
-              </li>
+              {user ? (
+                <li className="nav__item mt-3">
+                  {" "}
+                  <NavLink
+                    to="/user"
+                    style={
+                      activePage === "/user"
+                        ? { color: "#7cbd1e" }
+                        : { color: "#222B2A" }
+                    }
+                    className="nav__link"
+                    onClick={() => {
+                      dispatch(updateActiveLink("/user"));
+                    }}
+                  >
+                    <BiUser className="nav__icon" />
+                    <span className="nav__name">Profil</span>
+                  </NavLink>
+                </li>
+              ) : (
+                <li className="nav__item mt-3">
+                  {" "}
+                  <NavLink
+                    to="/login"
+                    style={
+                      activePage === "/login"
+                        ? { color: "#7cbd1e" }
+                        : { color: "#222B2A" }
+                    }
+                    className="nav__link"
+                    onClick={() => {
+                      dispatch(updateActiveLink("/login"));
+                    }}
+                  >
+                    <BiUser className="nav__icon" />
+                    <span className="nav__name">connexion</span>
+                  </NavLink>
+                </li>
+              )}
             </ul>
           </div>
           <img src="images/logo.png" alt="" className="nav__img" />

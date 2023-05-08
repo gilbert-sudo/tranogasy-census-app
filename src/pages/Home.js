@@ -6,7 +6,7 @@ import { setTotalPage } from "../redux/redux";
 import { useDispatch, useSelector } from "react-redux";
 import { useLoader } from "../hooks/useLoader";
 import { useEffect } from "react";
-
+import { updateActiveLink } from "../redux/redux";
 const Home = () => {
   //redux
   const dispatch = useDispatch();
@@ -15,7 +15,6 @@ const Home = () => {
   const topProperties = useSelector((state) => state.topProperties);
   const likedPropertiesState = useSelector((state) => state.likedProperties);
   const user = useSelector((state) => state.user);
-
   if (topProperties) {
     dispatch(setTotalPage({index: 0, subjectLength: topProperties.length}));
   }
@@ -38,8 +37,10 @@ const Home = () => {
       }
     };
     pageLoader();
-  }, [user, likedPropertiesState]);
-
+    if(paginationIndex[2].activeLink != "/"){
+      dispatch(updateActiveLink("/"))
+    }
+  }, [user, likedPropertiesState, paginationIndex[2]]);
   return (
     <div className="home">
       <div className="site-section site-section-sm pb-0 mt-5">

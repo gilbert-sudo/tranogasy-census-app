@@ -6,6 +6,7 @@ import OwnerDetails from "../components/OwnerDetails";
 import { useEffect, useState } from "react";
 import { setTotalPage, updateCurrentPage } from "../redux/redux";
 import OwnerPaging from "../components/OwnerPaging";
+import { updateActiveLink } from "../redux/redux";
 
 const OwnerListPage = () => {
   const { loadOwners } = useLoader();
@@ -71,7 +72,10 @@ const OwnerListPage = () => {
       setIsLoading(true);
       pageLoader();
     }
-  }, [loadOwners, owners]);
+    if(paginationIndex[2].activeLink != "/owner-list"){
+      dispatch(updateActiveLink("/owner-list"))
+    }
+  }, [loadOwners, owners, paginationIndex[2]]);
 
   return (
     <>

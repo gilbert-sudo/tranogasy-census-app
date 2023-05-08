@@ -77,7 +77,7 @@ function App() {
               element={user ? <MessagePage /> : <Navigate to="/login" />}
             />
             <Route
-              path="/booking"
+              path="/adding"
               element={user ? <AddingPage /> : <Navigate to="/login" />}
             />
             <Route

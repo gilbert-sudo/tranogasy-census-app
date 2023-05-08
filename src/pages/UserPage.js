@@ -4,16 +4,17 @@ import { useSelector } from "react-redux";
 import { useLogout } from "../hooks/useLogout"
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
-
-
+import { updateActiveLink } from "../redux/redux";
+import { useDispatch } from "react-redux";
 const UserPage = () => {
   const { logout } = useLogout();
   const navigate = useNavigate();
-
+  
   //redux
   const user = useSelector((state) => state.user);
-
+  const dispatch = useDispatch();
   const topProperties = useSelector((state) => state.topProperties);
+  const links = useSelector((state) => state.pagination);
   // Render the main content
   useEffect(() => {
     const verifyState = () => {
@@ -22,7 +23,10 @@ const UserPage = () => {
       }
     };
     verifyState();
-  }, [topProperties, navigate]);
+    if(links[2].activeLink != "/user"){
+      dispatch(updateActiveLink("/user"))
+    }
+  }, [topProperties, navigate, links]);
 
 
   return (

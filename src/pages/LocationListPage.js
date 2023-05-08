@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { updateCurrentPage } from "../redux/redux";
 import LocationPaging from "../components/LocationPaging";
 import { setTotalPage } from "../redux/redux";
+import { updateActiveLink } from "../redux/redux";
 import { Link } from "react-router-dom";
 import { FaSearch, FaUserPlus } from "react-icons/fa";
 import {MdAddLocationAlt} from "react-icons/md";
@@ -71,7 +72,10 @@ const LocationListPage = () => {
       setIsLoading(true);
       pageLoader();
     }
-  }, [loadLocations, locations, setIsLoading]);
+    if(paginationIndex[2].activeLink != "/location-list"){
+      dispatch(updateActiveLink("/location-list"))
+    }
+  }, [loadLocations, locations, setIsLoading, paginationIndex[2]]);
   return (
     <>
       {/* <meta charSet="utf-8" /> */}
