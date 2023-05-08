@@ -17,9 +17,9 @@ const Home = () => {
   const user = useSelector((state) => state.user);
 
   if (topProperties) {
-    dispatch(setTotalPage(topProperties.length));
+    dispatch(setTotalPage({index: 0, subjectLength: topProperties.length}));
   }
-  if (paginationIndex[0].currentPage !== 1) {
+  if (paginationIndex[0].currentPage[0] !== 1) {
     // scroll to top of the page
     const element = document.getElementById("prodisplay");
     if (element) {
@@ -54,8 +54,8 @@ const Home = () => {
             {topProperties &&
               topProperties
                 .slice(
-                  paginationIndex[1].startIndex,
-                  paginationIndex[1].endIndex
+                  paginationIndex[1].startIndex[0],
+                  paginationIndex[1].endIndex[0]
                 )
                 .map((topProperty) => (
                   <TopPropertyDetails

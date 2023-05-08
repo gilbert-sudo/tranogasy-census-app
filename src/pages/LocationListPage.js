@@ -17,9 +17,9 @@ const LocationListPage = () => {
   const [searchResult, setSearchResult] = useState(locations);
     //set the total of the page
     if (searchResult) {
-      dispatch(setTotalPage(searchResult.length));
+      dispatch(setTotalPage({index: 2, subjectLength: searchResult.length}));
     }
-    if (paginationIndex[0].currentPage !== 1) {
+    if (paginationIndex[0].currentPage[2] !== 1) {
       // scroll to top of the page
       const element = document.getElementById("prodisplay");
       if (element) {
@@ -46,11 +46,11 @@ const LocationListPage = () => {
       setSearchResult(null);
     }
     if (searchResult) {
-      dispatch(setTotalPage(searchResult.length));
-      dispatch(updateCurrentPage(1));
+      dispatch(setTotalPage({index: 2, subjectLength:searchResult.length}));
+      dispatch(updateCurrentPage({index: 2, newCurrentPage: 1}));
   
     }
-    if (paginationIndex[0].currentPage !== 1) {
+    if (paginationIndex[0].currentPage[2] !== 1) {
       // scroll to top of the page
       const element = document.getElementById("prodisplay");
       if (element) {
@@ -119,8 +119,8 @@ const LocationListPage = () => {
                 {searchResult &&
                   searchResult
                     .slice(
-                      paginationIndex[1].startIndex,
-                      paginationIndex[1].endIndex
+                      paginationIndex[1].startIndex[2],
+                      paginationIndex[1].endIndex[2]
                     )
                     .map((location) => (
                       <LocationDetails key={location._id} location={location} />

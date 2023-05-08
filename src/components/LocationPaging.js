@@ -10,8 +10,8 @@ import { updateCurrentPage } from "../redux/redux";
 const LocationPaging = () => {
   const dispatch = useDispatch();
   const state = useSelector((state) => state.pagination);
-  const totalPage = state[0].totalPage;
-  const currentPage = state[0].currentPage;
+  const totalPage = state[0].totalPage[2];
+  const currentPage = state[0].currentPage[2];
   const generatePageLinks = () => {
     const links = [];
 
@@ -28,7 +28,7 @@ const LocationPaging = () => {
               key="leftEllipsis"
               to="/location-list/#prodisplay"
               onClick={() => {
-                dispatch(updateCurrentPage(currentPage - 2));
+                dispatch(updateCurrentPage({index: 2, newCurrentPage: currentPage - 2}));
                 window.scrollTo({ top: 0, behavior: "smooth" });
               }}
             >
@@ -45,7 +45,7 @@ const LocationPaging = () => {
               key={i}
               to="/location-list/#prodisplay"
               onClick={() => {
-                dispatch(updateCurrentPage(i));
+                dispatch(updateCurrentPage({index: 2, newCurrentPage: i}));
                 window.scrollTo({ top: 0, behavior: "smooth" });
               }}
             >
@@ -61,7 +61,7 @@ const LocationPaging = () => {
               key="rightEllipsis"
               to="/location-list/#prodisplay"
               onClick={() => {
-                dispatch(updateCurrentPage(currentPage + 2));
+                dispatch(updateCurrentPage({index: 2, newCurrentPage: currentPage + 2}));
                 window.scrollTo({ top: 0, behavior: "smooth" });
               }}
             >
@@ -83,7 +83,7 @@ const LocationPaging = () => {
               className="page-link"
               to="/location-list/#prodisplay"
               onClick={() => {
-                dispatch(updateCurrentPage(currentPage - 1));
+                dispatch(updateCurrentPage({index:2, newCurrentPage: currentPage - 1}));
                 window.scrollTo({ top: 0, behavior: "smooth" });
               }}
             >
@@ -99,7 +99,7 @@ const LocationPaging = () => {
               className="page-link"
               to={`/location-list/#prodisplay?page=${currentPage + 1}`}
               onClick={() => {
-                dispatch(updateCurrentPage(currentPage + 1));
+                dispatch(updateCurrentPage({index: 2, newCurrentPage: currentPage + 1}));
                 window.scrollTo({ top: 0, behavior: "smooth" });
               }}
             >

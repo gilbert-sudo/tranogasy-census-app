@@ -10,8 +10,8 @@ import { updateCurrentPage } from "../redux/redux";
 const OwnerPaging = () => {
   const dispatch = useDispatch();
   const state = useSelector((state) => state.pagination);
-  const totalPage = state[0].totalPage;
-  const currentPage = state[0].currentPage;
+  const totalPage = state[0].totalPage[1];
+  const currentPage = state[0].currentPage[1];
   const itemsPerPage = state[1].itemsPerPage;
   const generatePageLinks = () => {
     const links = [];
@@ -29,7 +29,7 @@ const OwnerPaging = () => {
               key="leftEllipsis"
               to="/owner-list/#prodisplay"
               onClick={() => {
-                dispatch(updateCurrentPage(currentPage - 2));
+                dispatch(updateCurrentPage({index:1, newCurrentPage: currentPage - 2}));
                 window.scrollTo({ top: 0, behavior: "smooth" });
               }}
             >
@@ -46,7 +46,7 @@ const OwnerPaging = () => {
               key={i}
               to="/owner-list/#prodisplay"
               onClick={() => {
-                dispatch(updateCurrentPage(i));
+                dispatch(updateCurrentPage({index: 1, newCurrentPage:i}));
                 window.scrollTo({ top: 0, behavior: "smooth" });
               }}
             >
@@ -62,7 +62,7 @@ const OwnerPaging = () => {
               key="rightEllipsis"
               to="/owner-list/#prodisplay"
               onClick={() => {
-                dispatch(updateCurrentPage(currentPage + 2));
+                dispatch(updateCurrentPage({index: 1, newCurrentPage:currentPage + 2}));
                 window.scrollTo({ top: 0, behavior: "smooth" });
               }}
             >
@@ -84,7 +84,7 @@ const OwnerPaging = () => {
               className="page-link"
               to="/owner-list/#prodisplay"
               onClick={() => {
-                dispatch(updateCurrentPage(currentPage - 1));
+                dispatch(updateCurrentPage({index:1, newCurrentPage:currentPage - 1}));
                 window.scrollTo({ top: 0, behavior: "smooth" });
               }}
             >
@@ -100,7 +100,7 @@ const OwnerPaging = () => {
               className="page-link"
               to={`/owner-list/#prodisplay?page=${currentPage + 1}`}
               onClick={() => {
-                dispatch(updateCurrentPage(currentPage + 1));
+                dispatch(updateCurrentPage({index: 1, newCurrentPage:currentPage + 1}));
                 window.scrollTo({ top: 0, behavior: "smooth" });
               }}
             >

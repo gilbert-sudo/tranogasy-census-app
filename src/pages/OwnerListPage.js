@@ -16,9 +16,9 @@ const OwnerListPage = () => {
   const [isLoading, setIsLoading] = useState(null);
   //set the total of the page
   if (searchResult) {
-    dispatch(setTotalPage(searchResult.length));
+    dispatch(setTotalPage({index: 1, subjectLength: searchResult.length}));
   }
-  if (paginationIndex[0].currentPage !== 1) {
+  if (paginationIndex[0].currentPage[1] !== 1) {
     // scroll to top of the page
     const element = document.getElementById("prodisplay");
     if (element) {
@@ -47,10 +47,10 @@ const OwnerListPage = () => {
     }
     if (searchResult) {
       console.log(searchResult);
-      dispatch(setTotalPage(searchResult.length));
-      dispatch(updateCurrentPage(1));
+      dispatch(setTotalPage({index: 1, subjectLength: searchResult.length}));
+      dispatch(updateCurrentPage({index: 1, newCurrentPage: 1}));
     }
-    if (paginationIndex[0].currentPage !== 1) {
+    if (paginationIndex[0].currentPage[1] !== 1) {
       // scroll to top of the page
       const element = document.getElementById("prodisplay");
       if (element) {
@@ -110,8 +110,8 @@ const OwnerListPage = () => {
                 {searchResult &&
                   searchResult
                     .slice(
-                      paginationIndex[1].startIndex,
-                      paginationIndex[1].endIndex
+                      paginationIndex[1].startIndex[1],
+                      paginationIndex[1].endIndex[1]
                     )
                     .map((owner) => (
                       <OwnerDetails key={owner._id} owner={owner} />

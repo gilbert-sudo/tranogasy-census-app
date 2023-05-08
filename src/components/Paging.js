@@ -7,8 +7,8 @@ import { updateCurrentPage } from '../redux/redux';
 const Paging = () => {
   const dispatch = useDispatch();
   const state = useSelector((state)=>state.pagination);
-  const totalPage = state[0].totalPage;
-  const currentPage = state[0].currentPage;
+  const totalPage = state[0].totalPage[0];
+  const currentPage = state[0].currentPage[0];
   const generatePageLinks = () => {
     const links = [];
     if (totalPage === 1) {
@@ -23,7 +23,7 @@ const Paging = () => {
             key="leftEllipsis"
             to="/#prodisplay"
             onClick={() => {
-              dispatch(updateCurrentPage(currentPage - 2));
+              dispatch(updateCurrentPage({index:0, newCurrentPage:currentPage - 2}));
               window.scrollTo({ top: 0, behavior: 'smooth' });
             }}
           >
@@ -39,7 +39,7 @@ const Paging = () => {
             to="/#prodisplay"
             className={i === currentPage ? 'active' : ''}
             onClick={() => {
-              dispatch(updateCurrentPage(i));
+              dispatch(updateCurrentPage({index:0, newCurrentPage: i}));
               window.scrollTo({ top: 0, behavior: 'smooth' });
             }}
           >
@@ -54,7 +54,7 @@ const Paging = () => {
             key="rightEllipsis"
             to="/#prodisplay"
             onClick={() => {
-              dispatch(updateCurrentPage(currentPage + 2));
+              dispatch(updateCurrentPage({index:0, newCurrentPage: currentPage + 2}));
               window.scrollTo({ top: 0, behavior: 'smooth' });
             }}
           >
@@ -77,7 +77,7 @@ const Paging = () => {
               to="/#prodisplay"
               className="prev"
               onClick={() => {
-                dispatch(updateCurrentPage(currentPage - 1));
+                dispatch(updateCurrentPage({index:0, newCurrentPage:currentPage - 1}));
                 window.scrollTo({ top: 0, behavior: 'smooth' });
               }}
             >
@@ -90,7 +90,7 @@ const Paging = () => {
               to="/#prodisplay"
               className="next"
               onClick={() => {
-                dispatch(updateCurrentPage(currentPage +1));
+                dispatch(updateCurrentPage({index:0, newCurrentPage:currentPage + 1}));
                 window.scrollTo({ top: 0, behavior: 'smooth' });
               }}
             >
