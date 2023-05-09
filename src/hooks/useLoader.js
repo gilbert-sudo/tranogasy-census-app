@@ -118,6 +118,7 @@ export const useLoader = () => {
       if (response.ok) {
         console.log("the result is ", json);
         dispatch(setLocation(json));
+        return json;
       }
     };
     

@@ -14,8 +14,10 @@ import { FaGripHorizontal, FaMoneyBill } from "react-icons/fa";
 import { GiPayMoney } from "react-icons/gi";
 import { MdTitle } from "react-icons/md";
 import { useSelector } from "react-redux";
-
+import { updateActiveLink } from "../redux/redux";
+import { useDispatch } from "react-redux";
 const AddingPage = () => {
+  const dispatch = useDispatch();
   const [disabledPriceInput, setDisabledPriceInput] = useState(false);
   const { loadOwnersName, loadQuartersName, loadLocationsName} = useLoader();
   const { addProperty, resetPropertyInput, msgError, bootstrapClassname, isLoading } = useProperty();
@@ -31,6 +33,7 @@ const AddingPage = () => {
   const [price, setPrice] = useState("0");
   const [rent, setRent] = useState("0");
   const [isValidReset, setIsValidReset] = useState(false);
+  const links = useSelector((state)=> state.pagination);
   const resetAllInputs = () => {
     setTitle("");
     setDescription("");
@@ -87,8 +90,11 @@ const AddingPage = () => {
     if (!ownersName) {
       pageLoader();
     }
+    if(links[2].activeLink != "/adding"){
+      dispatch(updateActiveLink("/adding"))
+    }
 
-  }, [loadOwnersName]);
+  }, [loadOwnersName, links]);
   return (
     <>
       <div

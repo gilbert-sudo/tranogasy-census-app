@@ -60,7 +60,7 @@ const OwnerCreation = () => {
     if (!locationsName) {
       pageLoader();
     }
-  }, [resetOwnerInput, loadLocationsName]);
+  }, [resetOwnerInput, loadLocationsName, locationsName, isValidReset]);
   return (
     <div className="bg-white widget border mt-5 rounded">
       <h3 className="h4 text-black widget-title mb-3">

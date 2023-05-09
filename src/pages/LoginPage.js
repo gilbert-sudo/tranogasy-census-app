@@ -2,17 +2,18 @@ import { useState, useEffect } from "react";
 import { FaLock, FaEyeSlash, FaEye, FaPhoneAlt } from "react-icons/fa";
 import { useLogin } from "../hooks/useLogin";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { updateActiveLink } from "../redux/redux";
 import "./SocialButton.css"; // styles for the button
 
 const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [phoneNumber, setPhoneNumber] = useState("");
   const [password, setPassword] = useState("");
-
+  const links = useSelector((state) => state.pagination);
   const { login, isLoading, error, bootstrapClassname } = useLogin();
   const navigate = useNavigate();
-
+  const dispatch = useDispatch();
   const topProperties = useSelector((state) => state.topProperties);
 
   const handleSubmit = (e) => {
@@ -29,7 +30,10 @@ const LoginPage = () => {
       }
     };
     verifyState();
-  }, [topProperties, navigate]);
+    if(links[2].activeLink != "/login"){
+      dispatch(updateActiveLink("/login"))
+    }
+  }, [topProperties, navigate, links]);
 
   return (
     <>

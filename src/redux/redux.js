@@ -52,26 +52,30 @@ export const { setOwner, addOwner, updateOneOwnerById } = ownerSlice.actions;
 const paginationSlice = createSlice({
   name: "pagination",
   initialState: [
-    { currentPage: 1, totalPage: 0 },
-    { itemsPerPage: 2, startIndex: 0, endIndex: 0 },
+    { currentPage: [1, 1, 1], totalPage: [0, 0, 0]},
+    { itemsPerPage: [1, 3, 3], startIndex: [0,0,0], endIndex: [0, 0, 0] },
     { activeLink: "/" },
   ],
   reducers: {
     updateCurrentPage: (state, action) => {
-      state[0].currentPage = action.payload;
+      state[0].currentPage[action.payload.index] = action.payload.newCurrentPage;
     },
     updateActiveLink: (state, action) => {
       state[2].activeLink = action.payload;
     },
+    updateCurrentPageHistory(state, action){
+      state[0].search[action.payload.index] = true
+    },
     setTotalPage: (state, action) => {
-      state[0].totalPage = Math.ceil(action.payload / state[1].itemsPerPage);
-      state[1].startIndex = (state[0].currentPage - 1) * state[1].itemsPerPage;
-      state[1].endIndex = state[1].startIndex + state[1].itemsPerPage;
+      state[0].totalPage[action.payload.index] = Math.ceil(action.payload.subjectLength / state[1].itemsPerPage[action.payload.index]);
+      state[1].startIndex[action.payload.index]= (state[0].currentPage[action.payload.index]- 1) * state[1].itemsPerPage[action.payload.index];
+      state[1].endIndex[action.payload.index]= state[1].startIndex[action.payload.index] + state[1].itemsPerPage[action.payload.index];
     },
   },
 });
 export const {
   updateCurrentPage,
+  updateCurrentPageHistory,
   setTotalPage,
   setResetAgentInput,
   updateActiveLink,
