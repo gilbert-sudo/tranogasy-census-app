@@ -12,6 +12,7 @@ export const useOwner = () => {
   const createOwner = async (fullName, locationId, phoneOne, phoneTwo) => {
     setIsLoading(true);
     setMsgError(null);
+    setResetOwnerInput(false);
     const fullname = fullName.trim().replace(/\s{2,}/g, ' ');
     const phone1 = phoneOne.replace(/\s/g, "");
     if (!fullname.length || !phone1.length) {
@@ -113,6 +114,7 @@ export const useOwner = () => {
   const updateOwner = async (ownerId, fullName, locationId, phoneNumberOne, phoneNumberTwo) => {
     setIsLoading(true);
     setMsgError(null);
+    setResetOwnerInput(false);
     const fullname = fullName.trim().replace(/\s{2,}/g, ' ');
     const phone1 = phoneNumberOne.replace(/\s/g, "");
     if (!fullname.length || !phone1.length) {

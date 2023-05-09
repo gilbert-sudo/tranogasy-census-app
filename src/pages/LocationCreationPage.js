@@ -12,6 +12,7 @@ import {
 const LocationCreationPage = () => {
   const [address, setAddress] = useState("");
   const [locationLink, setLocationLink] = useState("");
+  const [isValidReset, setIsValidReset] = useState(false);
   // const Location = useSelector((state) => state.Location);
 
   const resetAllInputs = () => {
@@ -28,14 +29,15 @@ const LocationCreationPage = () => {
   } = useLocation();
   const handleSubmit = async (e) => {
     e.preventDefault();
-    createLocation(address, locationLink);
+  createLocation(address, locationLink);
+    setIsValidReset(true);
   };
   useEffect(() => {
-    if (resetLocationInput) {
+    if (resetLocationInput && isValidReset) {
       resetAllInputs();
+      setIsValidReset(false)
     }
-  }, [resetLocationInput]);
-
+  }, [resetLocationInput, isValidReset]);
   return (
     <div className="bg-white widget border mt-5 rounded">
       <h3 className="h4 text-black widget-title mb-3">

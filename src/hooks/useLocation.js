@@ -14,6 +14,7 @@ export const useLocation = () => {
   const createLocation = async (inputedAddress, locationLink) => {
     setIsLoading(true);
     setMsgError(null);
+    setResetLocationInput(false);
     const link = locationLink.replace(/\s/g, "");
     const address = inputedAddress.trim().replace(/\s{2,}/g, ' ');
     if (!address.length || !link.length) {
@@ -70,6 +71,7 @@ export const useLocation = () => {
   const updateLocation = async (locationId, inputedAddress, locationLink) => {
     setIsLoading(true);
     setMsgError(null);
+    setResetLocationInput(false);
     const link = locationLink.replace(/\s/g, "");
     const address = inputedAddress.trim().replace(/\s{2,}/g, ' ');
     if (!address.length || !link.length) {

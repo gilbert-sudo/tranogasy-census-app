@@ -1,10 +1,10 @@
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { FaSearch, FaUserPlus } from "react-icons/fa";
+import {FaUserPlus } from "react-icons/fa";
 import { useLoader } from "../hooks/useLoader";
 import OwnerDetails from "../components/OwnerDetails";
 import { useEffect, useState } from "react";
-import { setTotalPage, updateCurrentPage } from "../redux/redux";
+import { setTotalPage, updateCurrentPage} from "../redux/redux";
 import OwnerPaging from "../components/OwnerPaging";
 import { updateActiveLink } from "../redux/redux";
 
@@ -42,12 +42,13 @@ const OwnerListPage = () => {
     }
     if (searchText.length === 0) {
       setSearchResult(owners);
+      dispatch(setTotalPage({index: 1, subjectLength: owners.length}));
+      
     }
     if (matches.length === 0) {
       setSearchResult(null);
     }
     if (searchResult) {
-      console.log(searchResult);
       dispatch(setTotalPage({index: 1, subjectLength: searchResult.length}));
       dispatch(updateCurrentPage({index: 1, newCurrentPage: 1}));
     }
@@ -72,10 +73,10 @@ const OwnerListPage = () => {
       setIsLoading(true);
       pageLoader();
     }
-    if(paginationIndex[2].activeLink != "/owner-list"){
+    if(paginationIndex[2].activeLink !=="/owner-list"){
       dispatch(updateActiveLink("/owner-list"))
     }
-  }, [loadOwners, owners, paginationIndex[2]]);
+  }, [loadOwners, owners, paginationIndex, dispatch,]);
 
   return (
     <>
@@ -102,7 +103,7 @@ const OwnerListPage = () => {
             </div>
             {isLoading && (
               <div className="mt-4 ml-3 d-flex justify-content-center">
-                <img src="https://ik.imagekit.io/ryxb55mhk/Tranogasy/loading/Double_Ring-1s-200px__1_.gif?updatedAt=1683022393415" />
+                <img src="https://ik.imagekit.io/ryxb55mhk/Tranogasy/loading/Double_Ring-1s-200px__1_.gif?updatedAt=1683022393415" alt="" />
               </div>
             )}
             {!searchResult ? (

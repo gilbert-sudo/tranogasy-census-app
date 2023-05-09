@@ -17,7 +17,6 @@ const locations = useSelector(state => state.location);
   let location = locations.filter(function(location) {
     return location._id === locationId;
   });
-  console.log("the location to edit is", location);
   const address = location[0].address;
   const locationLink = location[0].locationLink;
   const [Address, setAddress] = useState(address);
