@@ -12,17 +12,17 @@ export const useLogin = () => {
   //redux
   const dispatch = useDispatch();
 
-  const login = async (phoneNumber, password) => {
+  const login = async (phone, passwordToTest) => {
     setIsLoading(true);
     setError(null);
-
-    if (!phoneNumber.length || !password.length) {
+    if (!phone.length || !passwordToTest.length) {
       setBootstrap("alert alert-warning");
       setError("Veuillez remplir les champs obligatoires.");
       setIsLoading(false);
       return;
     }
-
+    const phoneNumber = phone.trim().replace(/\s/g, "");
+    const password = passwordToTest.trim().replace(/\s/g, "");
     const phoneNumberRegex = /^(03[2,3,4,8])(\d{7})$|^(3[2,3,4,8])(\d{7})$/;
     if (phoneNumberRegex.test(phoneNumber)) {
       if (phoneNumber.length === 10 || phoneNumber.length === 9) {

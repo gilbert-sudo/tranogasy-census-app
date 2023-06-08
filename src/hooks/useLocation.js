@@ -72,9 +72,7 @@ export const useLocation = () => {
     setIsLoading(true);
     setMsgError(null);
     setResetLocationInput(false);
-    const link = locationLink.replace(/\s/g, "");
-    const address = inputedAddress.trim().replace(/\s{2,}/g, ' ');
-    if (!address.length || !link.length) {
+    if (!inputedAddress.length || !locationLink.length) {
       setBootstrap("alert alert-warning");
       setMsgError(
         "l'addresse et le lien sont obligatoires."
@@ -82,6 +80,8 @@ export const useLocation = () => {
       setIsLoading(false);
       return;
     }
+    const link = locationLink.replace(/\s/g, "");
+    const address = inputedAddress.trim().replace(/\s{2,}/g, ' ');
         try {  const response = await fetch(
             `${process.env.REACT_APP_PROXY}/api/Location/${locationId}`,
             {

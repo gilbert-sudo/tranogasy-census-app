@@ -1,20 +1,26 @@
 import { BiLogOutCircle } from "react-icons/bi";
-import { FaUserEdit, FaLock, FaPhoneAlt, FaMailBulk } from "react-icons/fa";
+import {
+  FaUserEdit,
+  FaLock,
+  FaPhoneAlt,
+  FaMailBulk,
+} from "react-icons/fa";
 import { useSelector } from "react-redux";
-import { useLogout } from "../hooks/useLogout"
-import { useNavigate } from "react-router-dom";
+import { useLogout } from "../hooks/useLogout";
+import { useNavigate, Link } from "react-router-dom";
 import { useEffect } from "react";
 import { updateActiveLink } from "../redux/redux";
 import { useDispatch } from "react-redux";
 const UserPage = () => {
   const { logout } = useLogout();
   const navigate = useNavigate();
-  
+
   //redux
   const user = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const topProperties = useSelector((state) => state.topProperties);
   const links = useSelector((state) => state.pagination);
+  const censusTakerId = useSelector((state) =>state.user._id);
   // Render the main content
   useEffect(() => {
     const verifyState = () => {
@@ -23,11 +29,10 @@ const UserPage = () => {
       }
     };
     verifyState();
-    if(links[2].activeLink != "/user"){
-      dispatch(updateActiveLink("/user"))
+    if (links[2].activeLink !== "/user") {
+      dispatch(updateActiveLink("/user"));
     }
-  }, [topProperties, navigate, links]);
-
+  }, [topProperties, navigate, links, dispatch]);
 
   return (
     <>
@@ -61,40 +66,54 @@ const UserPage = () => {
                 <h6 className="mt-2 mb-0">{user && user.username}</h6>
                 <i className="fas fa-angle-down mr-3 text-muted"> </i>
               </div>
-              <p className="text-muted">{user && user.googleID || user.facebookID ? user.email : user.phone}</p>
+              <p className="text-muted">
+                {(user && user.googleID) || user.facebookID
+                  ? user.email
+                  : user.phone}
+              </p>
             </div>
           </div>
           <ul className="list text-muted mt-3 pl-0">
+            <Link to= {`/update-fullname/${censusTakerId}`}>
             <li>
               <i className="fas mr-3 ml-1">
-                <FaUserEdit className="mr-2" style={{fontSize: "20px"}}/>
+                <FaUserEdit className="mr-2" style={{ fontSize: "20px" }} />
                 Modifier votre nom d'utisateur
               </i>
             </li>
+            </Link>
+            <Link to={`/update-password/${censusTakerId}`}>
             <li>
               <i className="fas mr-3 ml-1">
-                <FaLock className="mr-2" style={{fontSize: "20px"}}/>
+                <FaLock className="mr-2" style={{ fontSize: "20px" }} />
                 Modifier votre mot de passe
               </i>
             </li>
+            </Link>
+            <Link to={`/update-contact/${censusTakerId}`}>
             <li>
               <i className="fas mr-3 ml-1">
-                <FaPhoneAlt className="mr-2" style={{fontSize: "20px"}}/>
+                <FaPhoneAlt className="mr-2" style={{ fontSize: "20px" }} />
                 Modifier votre contact
               </i>
             </li>
+            </Link>
+            <Link to={`/update-email/${censusTakerId}`}>
             <li>
               <i className="fas mr-3 ml-1">
-                <FaMailBulk className="mr-2" style={{fontSize: "20px"}}/>
+                <FaMailBulk className="mr-2" style={{ fontSize: "20px" }} />
                 Modifier votre Adresse Email
               </i>
             </li>
+            </Link>
+           
             <li onClick={logout}>
-              <i className="fas mr-3 ml-1" style={{color: "#7cbd1e"}}>
-                <BiLogOutCircle className="mr-2" style={{fontSize: "20px"}}/>
+              <i className="fas mr-3 ml-1" style={{ color: "#7cbd1e" }}>
+                <BiLogOutCircle className="mr-2" style={{ fontSize: "20px" }} />
                 Se déconnecter
               </i>
             </li>
+            
           </ul>
         </div>
       </div>

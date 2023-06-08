@@ -4,9 +4,8 @@ import {FaUserPlus } from "react-icons/fa";
 import { useLoader } from "../hooks/useLoader";
 import OwnerDetails from "../components/OwnerDetails";
 import { useEffect, useState } from "react";
-import { setTotalPage, updateCurrentPage} from "../redux/redux";
-import OwnerPaging from "../components/OwnerPaging";
-import { updateActiveLink } from "../redux/redux";
+import SquarePaging from "../components/SquarePaging";
+import { updateActiveLink, updateIsSearch, setTotalPage} from "../redux/redux";
 
 const OwnerListPage = () => {
   const { loadOwners } = useLoader();
@@ -38,19 +37,18 @@ const OwnerListPage = () => {
       );
     });
     if (searchText.length !== 0) {
+      dispatch(updateIsSearch({index: 1, isSearch:true}))
       setSearchResult(matches);
+      dispatch(setTotalPage({index: 1, subjectLength: matches.length}));
     }
     if (searchText.length === 0) {
+      dispatch(updateIsSearch({index: 1, isSearch:false}));
       setSearchResult(owners);
       dispatch(setTotalPage({index: 1, subjectLength: owners.length}));
-      
     }
     if (matches.length === 0) {
       setSearchResult(null);
-    }
-    if (searchResult) {
-      dispatch(setTotalPage({index: 1, subjectLength: searchResult.length}));
-      dispatch(updateCurrentPage({index: 1, newCurrentPage: 1}));
+      dispatch(updateIsSearch({index: 1, isSearch:false}));
     }
     if (paginationIndex[0].currentPage[1] !== 1) {
       // scroll to top of the page
@@ -122,7 +120,7 @@ const OwnerListPage = () => {
                       <OwnerDetails key={owner._id} owner={owner} />
                     ))}
                 <hr></hr>
-                {searchResult && <OwnerPaging />}
+                {searchResult && <SquarePaging index = {1} linkKey = "/owner-list"/>}
               </div>
             )}
           </div>

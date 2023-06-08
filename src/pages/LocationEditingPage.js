@@ -33,6 +33,7 @@ const locations = useSelector(state => state.location);
     msgError,
     bootstrapClassname,
     resetLocationInput,
+    setResetLocationInput
   } = useLocation();
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -41,8 +42,9 @@ const locations = useSelector(state => state.location);
   useEffect(() => {
     if (resetLocationInput) {
       resetAllInputs();
+      setResetLocationInput(false);
     }
-  }, [resetLocationInput]);
+  }, [resetLocationInput, setResetLocationInput]);
 
   return (
     <div className="bg-white widget border mt-5 rounded">
@@ -63,7 +65,8 @@ const locations = useSelector(state => state.location);
               id="address"
               className="form-control"
               value={Address}
-              onChange={(e) => setAddress(e.target.value)}
+              onChange={(e) => {
+              const address = e.target.value.trim().replace(/\s{2,}/g, ' '); setAddress(address)}}
               // required="ON"
             />
           </div>
@@ -81,7 +84,7 @@ const locations = useSelector(state => state.location);
               id="link"
               className="form-control"
               value={addressLink}
-              onChange={(e) => setAddressLink(e.target.value)}
+              onChange={(e) =>{ const link = e.target.value.replace(/\s/g, "");setAddressLink(link)}}
               // required="ON"
             />
           </div>

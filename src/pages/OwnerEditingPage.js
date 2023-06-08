@@ -18,6 +18,7 @@ const OwnerEditingPage = () => {
     msgError,
     bootstrapClassname,
     resetOwnerInput,
+    setResetOwnerInput
   } = useOwner();
   const { ownerId, fullName, address, phoneOne, phoneTwo } = useParams();
   const [fullname, setFullName] = useState(fullName);
@@ -61,11 +62,12 @@ const OwnerEditingPage = () => {
     if (resetOwnerInput && isValidReset) {
       resetAllInputs();
       setIsValidReset(false);
+      setResetOwnerInput(false);
     }
     if (!locationsName) {
       pageLoader();
     }
-  }, [resetOwnerInput, loadLocationsName]);
+  }, [resetOwnerInput, loadLocationsName, setResetOwnerInput, isValidReset, locationsName]);
 
   const handleAddressChange = (value) => {
     setNewAdresse(value);
@@ -90,7 +92,15 @@ const OwnerEditingPage = () => {
               id="name"
               className="form-control"
               value={fullname}
-              onChange={(e) => setFullName(e.target.value)}
+              onChange={(e) => {
+                const fullname = e.target.value
+                  .trim()
+                  .replace(/\s{2,}/g, " ")
+                  .replace(/(^|\s)\S/g, function (match) {
+                    return match.toUpperCase(); // capitalize first letter of each word
+                  });
+                setFullName(fullname);
+              }}
               // required="ON"
             />
           </div>
@@ -125,7 +135,10 @@ const OwnerEditingPage = () => {
               id="phone"
               className="form-control"
               value={phone1}
-              onChange={(e) => setPhone1(e.target.value)}
+              onChange={(e) => {
+                let phone1 = e.target.value.replace(/\s/g, "");
+                setPhone1(phone1);
+              }}
               // required="ON"
             />
           </div>
@@ -141,7 +154,10 @@ const OwnerEditingPage = () => {
               id="phone"
               className="form-control"
               value={phone2}
-              onChange={(e) => setPhone2(e.target.value)}
+              onChange={(e) => {
+                let phone2 = e.target.value.replace(/\s/g, "");
+                setPhone2(phone2);
+              }}
             />
           </div>
         </div>
@@ -153,7 +169,7 @@ const OwnerEditingPage = () => {
             className="btn btn-primary"
             defaultValue="Insérer"
             disabled={
-              newAdresse === "" || 
+              newAdresse === "" &&
               fullname === fullName &&
               phone1 === phoneOne &&
               newAdresse === address &&
