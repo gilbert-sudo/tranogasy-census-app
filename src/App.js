@@ -1,13 +1,11 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import Home from "./pages/Home";
 import PageLoader from "./pages/PageLoader";
-import PropertyDetailsPage from "./pages/PropertyDetailsPage";
+import PropertyListPage from "./pages/PropertyListPage";
 import LoginPage from "./pages/LoginPage";
 import UserPage from "./pages/UserPage";
 import SignUpPage from "./pages/SignUpPage";
 import MessagePage from "./pages/MessagePage";
 import AddingPage from "./pages/AddingPage";
-import FavoritePage from "./pages/FavoritePage";
 import Navbar from "./components/Navbar";
 import OwnerCreation from "./pages/OwnerCreation";
 import OwnerListPage from "./pages/OwnerListPage";
@@ -19,7 +17,10 @@ import { useSelector, useDispatch } from "react-redux";
 import { setUser } from "./redux/redux";
 import { useEffect } from "react";
 import { useLogin } from "./hooks/useLogin";
-
+import FullNameUpdating from "./pages/FullNameUpdating";
+import EmailUpdating from "./pages/EmailUpdating";
+import ContactUpdating from "./pages/ContactUpdating";
+import PasswordUpdating from "./pages/PasswordUpdating";
 function App() {
   // const topProperties = useSelector((state) => state.topProperties);
   const topProperties = useSelector((state) => state.topProperties);
@@ -56,13 +57,29 @@ function App() {
           <Routes>
             <Route
               path="/"
-              element={topProperties ? <Home /> : <Navigate to="/loader" />}
+              element={topProperties ? <PropertyListPage/> : <Navigate to="/loader" />}
             />
-            <Route path="/property/:id" element={<PropertyDetailsPage />} />
+            <Route path="/property/:id" element={<PropertyListPage />} />
             <Route path="/loader" element={<PageLoader />} />
             <Route
               path="/user"
               element={user ? <UserPage /> : <Navigate to="/login" />}
+            />
+            <Route
+              path="/update-fullname/:censusTakerId"
+              element={user ? <FullNameUpdating /> : <Navigate to="/login" />}
+            />
+            <Route
+              path="/update-contact/:censusTakerId"
+              element={user ? <ContactUpdating /> : <Navigate to="/login" />}
+            />
+            <Route
+              path="/update-password/:censusTakerId"
+              element={user ? <PasswordUpdating /> : <Navigate to="/login" />}
+            />
+            <Route
+              path="/update-email/:censusTakerId"
+              element={user ? <EmailUpdating /> : <Navigate to="/login" />}
             />
             <Route
               path="/login"

@@ -2,9 +2,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { useLoader } from "../hooks/useLoader";
 import LocationDetails from "../components/LocationDetails";
 import { useEffect, useState } from "react";
-import { updateCurrentPage } from "../redux/redux";
-import LocationPaging from "../components/LocationPaging";
-import { setTotalPage } from "../redux/redux";
+import SquarePaging from "../components/SquarePaging";
+import { setTotalPage, updateIsSearch } from "../redux/redux";
 import { updateActiveLink } from "../redux/redux";
 import { Link } from "react-router-dom";
 import { MdAddLocationAlt } from "react-icons/md";
@@ -34,18 +33,18 @@ const LocationListPage = () => {
       return state.address.match(regex) || state.locationLink.match(regex);
     });
     if (searchText.length !== 0) {
+      dispatch(updateIsSearch({index: 2, isSearch:true}));
       setSearchResult(matches);
+      dispatch(setTotalPage({ index: 2, subjectLength: matches.length }));
     }
     if (searchText.length === 0) {
+      dispatch(updateIsSearch({index: 2, isSearch:false}));
       setSearchResult(locations);
-      dispatch(setTotalPage({ index: 1, subjectLength: locations.length }));
+      dispatch(setTotalPage({ index: 2, subjectLength: locations.length }));
     }
     if (matches.length === 0) {
       setSearchResult(null);
-    }
-    if (searchResult) {
-      dispatch(setTotalPage({ index: 2, subjectLength: searchResult.length }));
-      dispatch(updateCurrentPage({ index: 2, newCurrentPage: 1 }));
+      dispatch(updateIsSearch({index: 2, isSearch:false}));
     }
     if (paginationIndex[0].currentPage[2] !== 1) {
       // scroll to top of the page
@@ -104,11 +103,6 @@ const LocationListPage = () => {
                     <MdAddLocationAlt />
                   </Link>
                 </div>
-                <div className="border border-secondary align-items-center ">
-                  <h6 className="text-black widget-title m-3 d-flex justify-content-center">
-                    ADRESSE ET LOCALISATION
-                  </h6>
-                </div>
                 <div className="list-group list-group-flush border-bottom scrollarea">
                   {!searchResult ? (
                     <div className="mt-4 ml-3">
@@ -137,7 +131,7 @@ const LocationListPage = () => {
                     <img src="https://ik.imagekit.io/ryxb55mhk/Tranogasy/loading/Double_Ring-1s-200px__1_.gif?updatedAt=1683022393415" alt="" />
                   </div>
                 )}
-                {searchResult && <LocationPaging />}
+                {searchResult && <SquarePaging index={2} linkKey = "/location-list"/>}
               </div>
             </div>
           </div>

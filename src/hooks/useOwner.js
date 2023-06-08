@@ -13,8 +13,10 @@ export const useOwner = () => {
     setIsLoading(true);
     setMsgError(null);
     setResetOwnerInput(false);
-    const fullname = fullName.trim().replace(/\s{2,}/g, ' ');
-    const phone1 = phoneOne.replace(/\s/g, "");
+    const fullname = fullName.trim().replace(/\s{2,}/g, ' ').replace(/(^|\s)\S/g, function(match) {
+      return match.toUpperCase(); // capitalize first letter of each word
+    });;
+    const phone1 = phoneOne.trim().replace(/\s/g, "");
     if (!fullname.length || !phone1.length) {
       setBootstrap("alert alert-warning");
       setMsgError(
@@ -115,9 +117,7 @@ export const useOwner = () => {
     setIsLoading(true);
     setMsgError(null);
     setResetOwnerInput(false);
-    const fullname = fullName.trim().replace(/\s{2,}/g, ' ');
-    const phone1 = phoneNumberOne.replace(/\s/g, "");
-    if (!fullname.length || !phone1.length) {
+    if (!fullName.length || !phoneNumberOne.length) {
       setBootstrap("alert alert-warning");
       setMsgError(
         "Le nom complet et le prémier numéro de téléphone sont obligatoires."
@@ -125,6 +125,10 @@ export const useOwner = () => {
       setIsLoading(false);
       return;
     }
+    const fullname = fullName.trim().replace(/\s{2,}/g, ' ').replace(/(^|\s)\S/g, function(match) {
+      return match.toUpperCase(); // capitalize first letter of each word
+    });
+    const phone1 = phoneNumberOne.replace(/\s/g, "");
     if(phoneNumberTwo){
     var phone2 = phoneNumberTwo.replace(/\s/g, "");
     }
@@ -216,5 +220,6 @@ export const useOwner = () => {
     msgError,
     bootstrapClassname,
     resetOwnerInput,
+    setResetOwnerInput
   };
 };

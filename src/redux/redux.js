@@ -8,10 +8,13 @@ const userSlice = createSlice({
     setUser: (state, action) => {
       return action.payload;
     },
+    updateOneUserById: (state, action) => {
+    return action.payload;
+    }
   },
 });
 
-export const { setUser } = userSlice.actions;
+export const { setUser, updateOneUserById } = userSlice.actions;
 //connected user
 const googleLoginSlice = createSlice({
   name: "googleLogin",
@@ -52,7 +55,7 @@ export const { setOwner, addOwner, updateOneOwnerById } = ownerSlice.actions;
 const paginationSlice = createSlice({
   name: "pagination",
   initialState: [
-    { currentPage: [1, 1, 1], totalPage: [0, 0, 0]},
+    { currentPage: [1, 1, 1], totalPage: [0, 0, 0], isSearch:[false, false, false]},
     { itemsPerPage: [1, 3, 3], startIndex: [0,0,0], endIndex: [0, 0, 0] },
     { activeLink: "/" },
   ],
@@ -60,22 +63,28 @@ const paginationSlice = createSlice({
     updateCurrentPage: (state, action) => {
       state[0].currentPage[action.payload.index] = action.payload.newCurrentPage;
     },
+    updateIsSearch:(state, action) =>{
+      state[0].isSearch[action.payload.index] = action.payload.isSearch;
+    },
     updateActiveLink: (state, action) => {
       state[2].activeLink = action.payload;
     },
-    updateCurrentPageHistory(state, action){
-      state[0].search[action.payload.index] = true
-    },
     setTotalPage: (state, action) => {
-      state[0].totalPage[action.payload.index] = Math.ceil(action.payload.subjectLength / state[1].itemsPerPage[action.payload.index]);
-      state[1].startIndex[action.payload.index]= (state[0].currentPage[action.payload.index]- 1) * state[1].itemsPerPage[action.payload.index];
-      state[1].endIndex[action.payload.index]= state[1].startIndex[action.payload.index] + state[1].itemsPerPage[action.payload.index];
+      if(state[0].isSearch[action.payload.index]){
+        state[0].totalPage[action.payload.index] = Math.ceil(action.payload.subjectLength / state[1].itemsPerPage[action.payload.index]);
+        state[1].startIndex[action.payload.index]= (1- 1) * state[1].itemsPerPage[action.payload.index];
+        state[1].endIndex[action.payload.index]= state[1].startIndex[action.payload.index] + state[1].itemsPerPage[action.payload.index];
+      }else{
+        state[0].totalPage[action.payload.index] = Math.ceil(action.payload.subjectLength / state[1].itemsPerPage[action.payload.index]);
+        state[1].startIndex[action.payload.index]= (state[0].currentPage[action.payload.index]- 1) * state[1].itemsPerPage[action.payload.index];
+        state[1].endIndex[action.payload.index]= state[1].startIndex[action.payload.index] + state[1].itemsPerPage[action.payload.index];
+      }
     },
   },
 });
 export const {
   updateCurrentPage,
-  updateCurrentPageHistory,
+  updateIsSearch,
   setTotalPage,
   setResetAgentInput,
   updateActiveLink,

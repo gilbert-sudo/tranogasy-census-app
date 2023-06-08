@@ -2,14 +2,14 @@ import { useBooking } from "../hooks/useBooking";
 
 import { Link } from "react-router-dom";
 
-function BookingDetails({ booking }) {
+function PropertyDetails({ booking }) {
 
   const { cancelBooking } = useBooking();
 
   const cancelMessage = (messageId) => {
     cancelBooking(messageId);
   };
-
+console.log(booking);
   return (
     <div className="card border-0">
       <div className="row set-p justify-content-center">
@@ -85,4 +85,4 @@ function BookingDetails({ booking }) {
   );
 }
 
-export default BookingDetails;
+export default PropertyDetails;
