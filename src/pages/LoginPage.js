@@ -30,10 +30,10 @@ const LoginPage = () => {
       }
     };
     verifyState();
-    if(links[2].activeLink != "/login"){
+    if(links[2].activeLink !== "/login"){
       dispatch(updateActiveLink("/login"))
     }
-  }, [topProperties, navigate, links]);
+  }, [topProperties, navigate, links, dispatch]);
 
   return (
     <>

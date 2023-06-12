@@ -5,7 +5,6 @@ import {
   BiHome,
   BiUser,
   BiPlusCircle,
-  BiMessageSquareDetail,
 } from "react-icons/bi";
 import { HiOutlineUserGroup } from "react-icons/hi";
 import { MdNotListedLocation } from "react-icons/md";

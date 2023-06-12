@@ -33,13 +33,19 @@ const getSuggestions = (value, suggestions) => {
 class AutocompleteInput extends React.Component {
   constructor(props) {
     super(props);
-
     this.state = {
-      value: "",
+      value: props.initialValue || "",
       suggestions: [],
     };
+  };
+  
+  componentDidUpdate(prevProps) {
+    if (this.props.reset !== prevProps.reset && this.props.reset) {
+      this.setState({
+        value: "", // Reset the value to an empty string
+      });
+    }
   }
-
   onChange = (event, { newValue }) => {
     this.setState({
       value: newValue,
@@ -47,6 +53,9 @@ class AutocompleteInput extends React.Component {
     // Call the onValueChange prop with the new value
     if (this.props.onValueChange) {
       this.props.onValueChange(newValue);
+    }
+    if (this.props.onNameChange) {
+      this.props.onNameChange(newValue);
     }
   };
 
@@ -68,7 +77,9 @@ class AutocompleteInput extends React.Component {
     this.setState({
       value: suggestion.name,
     });
-
+    if (this.props.onOwnerNameChange) {
+      this.props.onOwnerNameChange(suggestion.name);
+    }
     // Do whatever you want with the selected suggestion
     console.log("Selected suggestion:", suggestion);
   };
@@ -98,7 +109,7 @@ class AutocompleteInput extends React.Component {
           boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
         }}
       >
-        {showNoSuggestions ? (
+        {showNoSuggestions ? (this.props.initialValue === this.state.value?null:(
           <div
             style={{
               padding: "10px",
@@ -107,7 +118,7 @@ class AutocompleteInput extends React.Component {
             }}
           >
             Aucun suggestion trouvé
-          </div>
+          </div>)
         ) : (
           children
         )}
