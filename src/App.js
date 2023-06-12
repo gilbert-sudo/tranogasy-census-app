@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import PageLoader from "./pages/PageLoader";
 import PropertyListPage from "./pages/PropertyListPage";
+import PropertyEditingPage from "./pages/PropertyEditingPage";
 import LoginPage from "./pages/LoginPage";
 import UserPage from "./pages/UserPage";
 import SignUpPage from "./pages/SignUpPage";
@@ -55,12 +56,13 @@ function App() {
         {topProperties && <Navbar />}
         <div className="pages">
           <Routes>
+          <Route path="/loader" element={<PageLoader />} />
             <Route
               path="/"
               element={topProperties ? <PropertyListPage/> : <Navigate to="/loader" />}
             />
-            <Route path="/property/:id" element={<PropertyListPage />} />
-            <Route path="/loader" element={<PageLoader />} />
+            
+
             <Route
               path="/user"
               element={user ? <UserPage /> : <Navigate to="/login" />}
@@ -89,14 +91,15 @@ function App() {
               path="/signup"
               element={!user ? <SignUpPage /> : <Navigate to="/user" />}
             />
-            <Route
-              path="/message"
-              element={user ? <MessagePage /> : <Navigate to="/login" />}
+         <Route
+              path="/property-list"
+              element={user ? <PropertyListPage /> : <Navigate to="/login" />}
             />
             <Route
-              path="/adding"
-              element={user ? <AddingPage /> : <Navigate to="/login" />}
+              path="/edit-property/:propertyId"
+              element={user ? <PropertyEditingPage /> : <Navigate to="/login" />}
             />
+      
             <Route
               path="/owner-list"
               element={user ? <OwnerListPage /> : <Navigate to="/login" />}
@@ -128,6 +131,14 @@ function App() {
               element={
                 user ? <LocationEditingPage /> : <Navigate to="/login" />
               }
+            />
+             <Route
+              path="/message"
+              element={user ? <MessagePage /> : <Navigate to="/login" />}
+            />
+            <Route
+              path="/adding"
+              element={user ? <AddingPage /> : <Navigate to="/login" />}
             />
           </Routes>
         </div>

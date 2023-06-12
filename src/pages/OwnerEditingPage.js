@@ -18,21 +18,25 @@ const OwnerEditingPage = () => {
     msgError,
     bootstrapClassname,
     resetOwnerInput,
-    setResetOwnerInput
+    setResetOwnerInput,
   } = useOwner();
   const { ownerId, fullName, address, phoneOne, phoneTwo } = useParams();
   const [fullname, setFullName] = useState(fullName);
-  const [newAdresse, setNewAdresse] = useState("");
+  const [newAdress, setNewAdress] = useState(address);
   const [locationsName, setLocationsName] = useState(null);
   const [phone1, setPhone1] = useState(phoneOne);
   const [phone2, setPhone2] = useState(phoneTwo);
   const [isValidReset, setIsValidReset] = useState(false);
+  const [resetAutocomplete, setResetAutocomplete] = useState(false);
+  const [docErrorClass, setDocErrorClass] = useState("");
+  const [documentIdError, setDocumentIdError] = useState("");
   // const owner = useSelector((state) => state.owner);
 
   const resetAllInputs = () => {
     setFullName("");
     setPhone1("");
     setPhone2("");
+    setResetAutocomplete(true);
   };
 
   //get the autocomplete id value
@@ -42,7 +46,13 @@ const OwnerEditingPage = () => {
       const documentId = data.filter(
         (document) => document.name === inputValue
       );
-      return documentId[0].id;
+      if (documentId.length) {
+        return documentId[0].id;
+      } else {
+        setDocErrorClass("alert alert-danger");
+        setDocumentIdError("veuillez selectionner un choix suggéré ");
+        return;
+      }
     } else {
       return;
     }
@@ -52,7 +62,13 @@ const OwnerEditingPage = () => {
     e.preventDefault();
     // fetch the location's id
     const locationId = getDocId("address-input", locationsName);
-    updateOwner(ownerId, fullname, locationId, phone1, phone2);
+    if (locationId) {
+      updateOwner(ownerId, fullname, locationId, phone1, phone2);
+    } else {
+      setDocErrorClass("alert alert-danger");
+      setDocumentIdError("veuillez selectionner une addresse suggéré ");
+      return;
+    }
     setIsValidReset(true);
   };
   useEffect(() => {
@@ -67,12 +83,18 @@ const OwnerEditingPage = () => {
     if (!locationsName) {
       pageLoader();
     }
-  }, [resetOwnerInput, loadLocationsName, setResetOwnerInput, isValidReset, locationsName]);
+  }, [
+    resetOwnerInput,
+    loadLocationsName,
+    setResetOwnerInput,
+    isValidReset,
+    locationsName,
+  ]);
 
   const handleAddressChange = (value) => {
-    setNewAdresse(value);
+    setNewAdress(value);
+    console.log(newAdress)
   };
-
   return (
     <div className="bg-white widget border mt-5 rounded">
       <h3 className="h4 text-black widget-title mb-3">
@@ -116,11 +138,13 @@ const OwnerEditingPage = () => {
             </Link>
           </label>
           <AutocompleteInput
+            reset={resetAutocomplete}
             className="form-control auto-input"
             placeholder="Une adresse exacte"
             inputId="address-input"
+            initialValue={address}
             suggestions={locationsName}
-            onValueChange={handleAddressChange} // pass the callback function
+            onNameChange={handleAddressChange} // pass the callback function
             style={{ width: "100%" }} // add style prop
           />
         </div>
@@ -169,20 +193,25 @@ const OwnerEditingPage = () => {
             className="btn btn-primary"
             defaultValue="Insérer"
             disabled={
-              newAdresse === "" &&
-              fullname === fullName &&
-              phone1 === phoneOne &&
-              newAdresse === address &&
-              phone2 === phoneTwo
+              (fullName === fullname &&
+              phoneOne === phone1  &&
+              address === newAdress && phoneTwo === phone2
                 ? true
-                : false || isLoading
+                : false) || (fullName === fullname &&
+                phoneOne === phone1  &&
+                address === newAdress && phone2 === "" 
+                  ? true: false) || isLoading
             }
           >
             Sauvegarder
           </button>
         </div>
       </form>
-      {msgError && <div className={bootstrapClassname}>{msgError}</div>}
+      {(msgError || documentIdError) && (
+        <div className={bootstrapClassname || docErrorClass}>
+          {msgError || documentIdError}
+        </div>
+      )}
       {/* {!client && (
         <div className="alert alert-danger">
           Veuillez d'abord vous connecter pour envoyer une demande{" "}
