@@ -24,7 +24,7 @@ import ContactUpdating from "./pages/ContactUpdating";
 import PasswordUpdating from "./pages/PasswordUpdating";
 function App() {
   // const topProperties = useSelector((state) => state.topProperties);
-  const topProperties = useSelector((state) => state.topProperties);
+  //const topProperties = useSelector((state) => state.topProperties);
   const user = useSelector((state) => state.user);
   const googleLogin = useSelector((state) => state.googleLogin);
   const dispatch = useDispatch();
@@ -53,13 +53,13 @@ function App() {
   return (
     <div className="App">
       <BrowserRouter>
-        {topProperties && <Navbar />}
+        {user && <Navbar />}
         <div className="pages">
           <Routes>
-          <Route path="/loader" element={<PageLoader />} />
+          {user && <Route path="/loader" element={<PageLoader />} />}
             <Route
               path="/"
-              element={topProperties ? <PropertyListPage/> : <Navigate to="/loader" />}
+              element={user ? <PropertyListPage/> : <Navigate to="/login" />}
             />
             
 

@@ -18,21 +18,21 @@ const UserPage = () => {
   //redux
   const user = useSelector((state) => state.user);
   const dispatch = useDispatch();
-  const topProperties = useSelector((state) => state.topProperties);
+  const properties = useSelector((state) => state.properties);
   const links = useSelector((state) => state.pagination);
   const censusTakerId = useSelector((state) =>state.user._id);
   // Render the main content
   useEffect(() => {
     const verifyState = () => {
-      if (topProperties === null) {
-        navigate("/");
+      if (properties === null) {
+        navigate("/user");
       }
     };
     verifyState();
     if (links[2].activeLink !== "/user") {
       dispatch(updateActiveLink("/user"));
     }
-  }, [topProperties, navigate, links, dispatch]);
+  }, [properties, navigate, links, dispatch]);
 
   return (
     <>

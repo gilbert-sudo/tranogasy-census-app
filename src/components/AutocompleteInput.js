@@ -36,6 +36,7 @@ class AutocompleteInput extends React.Component {
     this.state = {
       value: props.initialValue || "",
       suggestions: [],
+      shouldResetValue:false
     };
   };
   
@@ -45,19 +46,33 @@ class AutocompleteInput extends React.Component {
         value: "", // Reset the value to an empty string
       });
     }
+    if (this.props.shouldResetValue !== prevProps.shouldResetValue && this.props.shouldResetValue) {
+      this.setState({
+        shouldResetValue: true, // Set shouldResetValue state to true
+      });
+    }
   }
   onChange = (event, { newValue }) => {
-    this.setState({
-      value: newValue,
-    });
-    // Call the onValueChange prop with the new value
-    if (this.props.onValueChange) {
-      this.props.onValueChange(newValue);
-    }
-    if (this.props.onNameChange) {
-      this.props.onNameChange(newValue);
+    if (this.state.shouldResetValue) {
+      // Reset the input value and shouldResetValue state
+      this.setState({
+        value: "",
+        shouldResetValue: false,
+      });
+    } else {
+      this.setState({
+        value: newValue,
+      });
+      // Call the onValueChange prop with the new value
+      if (this.props.onValueChange) {
+        this.props.onValueChange(newValue);
+      }
+      if (this.props.onNameChange) {
+        this.props.onNameChange(newValue);
+      }
     }
   };
+  
 
   onSuggestionsFetchRequested = ({ value }) => {
     this.setState({
@@ -77,8 +92,8 @@ class AutocompleteInput extends React.Component {
     this.setState({
       value: suggestion.name,
     });
-    if (this.props.onOwnerNameChange) {
-      this.props.onOwnerNameChange(suggestion.name);
+    if (this.props.onNameChange) {
+      this.props.onNameChange(suggestion.name);
     }
     // Do whatever you want with the selected suggestion
     console.log("Selected suggestion:", suggestion);

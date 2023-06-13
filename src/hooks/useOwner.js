@@ -1,11 +1,12 @@
 import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addOwner , updateOneOwnerById} from "../redux/redux";
 export const useOwner = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [msgError, setMsgError] = useState(null);
   const [bootstrapClassname, setBootstrap] = useState(null);
   const [resetOwnerInput, setResetOwnerInput] = useState(false); // new state
+  const censusTaker = useSelector((state) => state.user._id);
   const dispatch = useDispatch();
   //redux
 
@@ -13,9 +14,15 @@ export const useOwner = () => {
     setIsLoading(true);
     setMsgError(null);
     setResetOwnerInput(false);
+    if(locationId === undefined){
+      setIsLoading(false);
+      setBootstrap("alert alert-warning");
+      setMsgError("veuillez selectionner un choix suggéré ")
+      return
+    }
     const fullname = fullName.trim().replace(/\s{2,}/g, ' ').replace(/(^|\s)\S/g, function(match) {
       return match.toUpperCase(); // capitalize first letter of each word
-    });;
+    });
     const phone1 = phoneOne.trim().replace(/\s/g, "");
     if (!fullname.length || !phone1.length) {
       setBootstrap("alert alert-warning");
@@ -56,6 +63,7 @@ export const useOwner = () => {
                 locationId,
                 phone1,
                 phone2,
+                censusTaker
               }),
             }
           );
