@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addLocation, updateOneLocationById } from "../redux/redux";
 
 export const useLocation = () => {
@@ -7,7 +7,7 @@ export const useLocation = () => {
   const [msgError, setMsgError] = useState(null);
   const [bootstrapClassname, setBootstrap] = useState(null);
   const [resetLocationInput, setResetLocationInput] = useState(false); // new state
-
+  const censusTaker = useSelector((state) => state.user._id);
   const dispatch = useDispatch();
   //redux
 
@@ -36,7 +36,8 @@ export const useLocation = () => {
               },
               body: JSON.stringify({
                 address,
-                link
+                link,
+                censusTaker
               }),
             }
           );

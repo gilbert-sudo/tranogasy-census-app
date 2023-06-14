@@ -1,5 +1,4 @@
-// import { useSelector } from "react-redux";
-// import BookingDetails from "../components/BookingDetails";
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 import { useState, useEffect } from "react";
@@ -24,19 +23,31 @@ const OwnerCreation = () => {
   const [locationsName, setLocationsName] = useState(null);
   const [phone1, setPhone1] = useState("");
   const [phone2, setPhone2] = useState("");
+  const [resetAutocomplete, setResetAutocomplete] = useState(false);
   const [isValidReset, setIsValidReset] = useState(false);
+  const [docErrorClass, setDocErrorClass] = useState("");
+  const [documentIdError, setDocumentIdError] = useState("");
   // const owner = useSelector((state) => state.owner);
   const resetAllInputs = () => {
     setFullName("");
     setPhone1("");
     setPhone2("");
+    setResetAutocomplete(false);
+    setResetAutocomplete(true);
   };
   //get the autocomplete id value
   const getDocId = (inputClassName, data) => {
     const inputValue = document.getElementById(inputClassName).value;
     if(inputValue){
       const documentId = data.filter((document) => document.name === inputValue);
-      return documentId[0].id;
+    if(documentId.length){
+        return documentId[0].id;
+    } else {
+      setDocErrorClass("alert alert-danger");
+      setDocumentIdError("veuillez selectionner un choix suggéré ");
+      setResetAutocomplete(true);
+      return
+    }
     }else{
       return;
     }
@@ -47,8 +58,11 @@ const OwnerCreation = () => {
     e.preventDefault();
       // fetch the location's id 
     const locationId = getDocId("address-input", locationsName);
-    createOwner(fullname, locationId, phone1, phone2);
-    setIsValidReset(true);
+    if(locationId === undefined){
+      setResetAutocomplete(true);
+    }
+      createOwner(fullname, locationId, phone1, phone2);
+      setIsValidReset(true);
   };
   useEffect(() => {
     const pageLoader = async () => {
@@ -100,6 +114,7 @@ const OwnerCreation = () => {
           <AutocompleteInput
             className="form-control auto-input"
             placeholder="Une adresse exacte"
+            reset = {resetAutocomplete}
             inputId="address-input"
             suggestions={locationsName}
             style={{ width: "100%" }} // add style prop
@@ -149,7 +164,11 @@ const OwnerCreation = () => {
           </button>
         </div>
       </form>
-      {msgError && <div className={bootstrapClassname}>{msgError}</div>}
+      {(msgError || documentIdError) && (
+          <div className={bootstrapClassname || docErrorClass}>
+            {msgError || documentIdError}
+          </div>
+        )}
       {/* {!client && (
         <div className="alert alert-danger">
           Veuillez d'abord vous connecter pour envoyer une demande{" "}

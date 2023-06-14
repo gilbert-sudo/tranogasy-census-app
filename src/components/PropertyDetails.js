@@ -1,5 +1,5 @@
 //import { useBooking } from "../hooks/useBooking";
-
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
 function PropertyDetails({ property }) {
@@ -8,7 +8,7 @@ function PropertyDetails({ property }) {
   // const cancelMessage = (messageId) => {
   //   cancelBooking(messageId);
   // };
-
+  const censusTaker = useSelector((state) => state.user._id);
   return (
     <div className="card border-0">
       <div className="row set-p justify-content-center">
@@ -62,12 +62,9 @@ function PropertyDetails({ property }) {
               {property.rent.toLocaleString("en-US")} <small>AR/mois</small>
             </h2>
           </div>
-          {/* <div class="row px-3 mb-3">
-              <p class="text-muted mb-0">+ $14 taxes and charges</p>
-          </div> */}
-      
+         
             <div className="row px-3 mt-2 d-flex justify-content-end">
-            <Link to={"/edit-property/" + property._id}>
+            {censusTaker === property.censusTaker._id?(<Link to={"/edit-property/" + property._id}>
               <p
                 className="rating mb-0 px-2"
                 style={{ fontSize: "3vw", backgroundColor: "#ec1c24" }}
@@ -75,7 +72,7 @@ function PropertyDetails({ property }) {
               >
                 <strong>Editer</strong>
               </p>
-               </Link>
+               </Link>):null}
             </div>
          
         </div>

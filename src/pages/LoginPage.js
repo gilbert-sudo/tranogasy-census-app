@@ -14,7 +14,7 @@ const LoginPage = () => {
   const { login, isLoading, error, bootstrapClassname } = useLogin();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const topProperties = useSelector((state) => state.topProperties);
+  const properties = useSelector((state) => state.properties);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -25,15 +25,15 @@ const LoginPage = () => {
   // Render the main content
   useEffect(() => {
     const verifyState = () => {
-      if (topProperties === null) {
-        navigate("/");
+      if (properties === null) {
+        navigate("/login");
       }
     };
     verifyState();
     if(links[2].activeLink !== "/login"){
       dispatch(updateActiveLink("/login"))
     }
-  }, [topProperties, navigate, links, dispatch]);
+  }, [properties, navigate, links, dispatch]);
 
   return (
     <>

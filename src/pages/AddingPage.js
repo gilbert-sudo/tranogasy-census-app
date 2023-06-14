@@ -63,6 +63,7 @@ const AddingPage = () => {
       } else {
         setDocErrorClass("alert alert-danger");
         setDocumentIdError("veuillez selectionner un choix suggéré ");
+        return;
       }
     } else {
       return;
@@ -104,6 +105,7 @@ const AddingPage = () => {
     } else {
       setDocErrorClass("alert alert-danger");
       setDocumentIdError("veuillez selectionner un choix suggéré ");
+      return;
     }
   };
 
@@ -185,7 +187,7 @@ const AddingPage = () => {
             <textarea
               style={{ minHeight: "100px" }}
               value={description}
-              onChange={(e) => setDescription(e.target.value.trim().replace(/\s+/g, " "))}
+              onChange={(e) => setDescription(e.target.value)}
               id="description"
               className="form-control"
               required="ON"
