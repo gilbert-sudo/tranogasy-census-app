@@ -3,11 +3,15 @@ import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
 function PropertyDetails({ property }) {
-  // const { cancelBooking } = useBooking();
-
-  // const cancelMessage = (messageId) => {
-  //   cancelBooking(messageId);
-  // };
+  const date = new Date(property.created_at);
+  const formattedDate = `${date.getDate().toString().padStart(2, "0")}/${(
+    date.getMonth() + 1
+  )
+    .toString()
+    .padStart(2, "0")}/${date.getFullYear()} ${date
+    .getHours()
+    .toString()
+    .padStart(2, "0")}:${date.getMinutes().toString().padStart(2, "0")}`;
   const censusTaker = useSelector((state) => state.user._id);
   return (
     <div className="card border-0">
@@ -22,7 +26,7 @@ function PropertyDetails({ property }) {
         <div className="col">
           <div className="row px-3 mt-2">
             <p className="rating mb-0 px-2 mr-3" style={{ fontSize: "2.5vw" }}>
-              <strong>10/10/23</strong>
+            Ajouté le: <strong>  {formattedDate}</strong>
             </p>
             <p
               className="text-success mb-0 mr-2 grade"
@@ -51,7 +55,7 @@ function PropertyDetails({ property }) {
           <div className="line" />
           <div className="row px-3 mt-3">
             <h5 className="text-secondary mb-1" style={{ fontSize: "3vw" }}>
-              Prix du loyer
+              Prix du {property.type === "rent"?'loyer':'vente'}
             </h5>
           </div>
           <div className="row px-3">
@@ -59,7 +63,7 @@ function PropertyDetails({ property }) {
               className="text-success mb-1 font-weight-bold"
               style={{ fontSize: "4vw" }}
             >
-              {property.rent.toLocaleString("en-US")} <small>AR/mois</small>
+              {property.type === "sale"?property.price.toLocaleString("en-US"):property.rent.toLocaleString("en-US")}  <small>{property.type ==="sale"?"AR":"AR/mois"}</small>
             </h2>
           </div>
          

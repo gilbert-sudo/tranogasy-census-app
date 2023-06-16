@@ -54,6 +54,8 @@ export const useProperty = () => {
       setMsgError("Veuilléz remplir toutes les champs correctemment");
       setIsLoading(false);
     } else {
+      title.trim().replace(/\s+/g, " ");
+      description.trim().replace(/\s+/g, " ");
       try {
         const response = await fetch(
           `${process.env.REACT_APP_PROXY}/api/properties`,
@@ -149,6 +151,9 @@ export const useProperty = () => {
       setMsgError("Veuilléz remplir toutes les champs correctemment");
       setIsLoading(false);
     } else {
+      console.log("the type is ", type);
+      title.trim().replace(/\s+/g, " ");
+      description.trim().replace(/\s+/g, " ");
       try {
         console.log("the propertyId is ", propertyId);
         const response = await fetch(
@@ -183,7 +188,7 @@ export const useProperty = () => {
           setMsgError("l'immobilier a été modifié avec succès!");
           setIsLoading(false);
           setResetPropertyInput(true);
-          console.log(json);
+          console.log("the updated propertyis ", json);
           dispatch(updateOnePropertyById(json));
         }
         if (!response.ok) {

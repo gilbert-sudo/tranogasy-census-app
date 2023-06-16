@@ -177,7 +177,7 @@ const AddingPage = () => {
                 id="title"
                 className="form-control"
                 value={title}
-                onChange={(e) => setTitle(e.target.value.trim().replace(/\s+/g, " "))}
+                onChange={(e) => setTitle(e.target.value)}
                 required="ON"
               />
             </div>

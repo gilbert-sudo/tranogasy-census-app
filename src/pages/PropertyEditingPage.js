@@ -20,7 +20,7 @@ const PropertyEditingPage = () => {
   const properties = useSelector((state) => state.properties);
   const property = properties.find((property) => property._id === propertyId);
   const [disabledPriceInput, setDisabledPriceInput] = useState(
-    property.price === 0 ? true : false
+    property.type === "rent" ? true : false
   );
   const { loadOwnersName, loadQuartersName, loadLocationsName } = useLoader();
   const {
@@ -60,6 +60,7 @@ const PropertyEditingPage = () => {
   const [docErrorClass, setDocErrorClass] = useState("");
   const [documentIdError, setDocumentIdError] = useState("");
   const [resetAutocomplete, setResetAutocomplete] = useState(false);
+  const [checked, setChecked] = useState(false);
   const links = useSelector((state) => state.pagination);
   const resetAllInputs = () => {
     setTitle("");
@@ -214,7 +215,7 @@ const PropertyEditingPage = () => {
                 id="title"
                 className="form-control"
                 value={title}
-                onChange={(e) => setTitle(e.target.value.trim().replace(/\s+/g, " "))}
+                onChange={(e) => setTitle(e.target.value)}
                 required="ON"
               />
             </div>
@@ -224,7 +225,7 @@ const PropertyEditingPage = () => {
             <textarea
               style={{ minHeight: "100px" }}
               value={description}
-              onChange={(e) => setDescription(e.target.value.trim().replace(/\s+/g, " "))}
+              onChange={(e) => setDescription(e.target.value)}
               id="description"
               className="form-control"
               required="ON"
@@ -338,6 +339,7 @@ const PropertyEditingPage = () => {
                 id="flexRadioDefault1"
                 onClick={(e) => {
                   setDisabledPriceInput(true);
+                  setChecked(true)
                 }}
               />
 
@@ -355,6 +357,7 @@ const PropertyEditingPage = () => {
                 id="flexRadioDefault2"
                 onClick={(e) => {
                   setDisabledPriceInput(false);
+                  setChecked(true)
                 }}
                 defaultChecked=""
               />
@@ -418,7 +421,7 @@ const PropertyEditingPage = () => {
               type="submit"
               className="btn btn-primary"
               disabled={
-                ((property.owner ? property.owner.fullName : "") ===  ownerName) &&
+                (((property.owner ? property.owner.fullName : "") ===  ownerName) &&
                ((property? `${property.city.quarter} ${property.city.district} ${property.city.reference} Arr`
                 : "")  === quarterName) &&
                 ((property ? property.address : "") === locationName) &&
@@ -428,9 +431,9 @@ const PropertyEditingPage = () => {
                  property.bathrooms === bathrooms &&
                  property.bedrooms === bedrooms &&
                  property.rent  === rent &&
-                property.price ===  price
+                property.price ===  price && !checked
                   ? true
-                  : false || isLoading
+                  : false) || isLoading 
               }
             >
               sauvegarder

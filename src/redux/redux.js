@@ -45,8 +45,11 @@ const ownerSlice = createSlice({
           return {
             ...owner,
             fullName: action.payload.fullName,
+            location:action.payload.location,
             phone1: action.payload.phone1,
             phone2: action.payload.phone2,
+            censusTaker:action.payload.censusTaker,
+            property:action.payload.property
           };
         } else {
           return owner;

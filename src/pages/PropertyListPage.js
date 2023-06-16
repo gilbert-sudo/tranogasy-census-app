@@ -1,11 +1,11 @@
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import {FaUserPlus } from "react-icons/fa";
+import { FaUserPlus } from "react-icons/fa";
 import PropertyDetails from "../components/PropertyDetails";
 import { useEffect, useState } from "react";
 import { useLoader } from "../hooks/useLoader";
 import SquarePaging from "../components/SquarePaging";
-import { updateActiveLink, updateIsSearch, setTotalPage} from "../redux/redux";
+import { updateActiveLink, updateIsSearch, setTotalPage } from "../redux/redux";
 const PropertyListPage = () => {
   const dispatch = useDispatch();
   const { loadProperties } = useLoader();
@@ -15,7 +15,7 @@ const PropertyListPage = () => {
   const [isLoading, setIsLoading] = useState(null);
   //set the total of the page
   if (searchResult) {
-    dispatch(setTotalPage({index: 0, subjectLength: searchResult.length}));
+    dispatch(setTotalPage({ index: 0, subjectLength: searchResult.length }));
   }
   if (paginationIndex[0].currentPage[0] !== 1) {
     // scroll to top of the page
@@ -27,27 +27,31 @@ const PropertyListPage = () => {
   //search states and filter it
   const searchStates = async (searchText) => {
     //get matches to current text input
+    console.log("all properties is ", properties);
     let matches = properties.filter((state) => {
       const regex = new RegExp(`^${searchText}`, "gi");
       return (
-        state.fullName.match(regex) ||
-        state.phone1.match(regex) ||
-        state.phone2.match(regex)
+        state.owner.fullName.match(regex) ||
+        state.title.match(regex) ||
+        state.description.match(regex) ||
+        state.censusTaker.username.match(regex) ||
+        state.city.quarter.match(regex) ||
+        state.address.match(regex) 
       );
     });
     if (searchText.length !== 0) {
-      dispatch(updateIsSearch({index: 0, isSearch:true}))
+      dispatch(updateIsSearch({ index: 0, isSearch: true }));
       setSearchResult(matches);
-      dispatch(setTotalPage({index: 0, subjectLength: matches.length}));
+      dispatch(setTotalPage({ index: 0, subjectLength: matches.length }));
     }
     if (searchText.length === 0) {
-      dispatch(updateIsSearch({index: 0, isSearch:false}));
+      dispatch(updateIsSearch({ index: 0, isSearch: false }));
       setSearchResult(properties);
-      dispatch(setTotalPage({index: 0, subjectLength: properties.length}));
+      dispatch(setTotalPage({ index: 0, subjectLength: properties.length }));
     }
     if (matches.length === 0) {
       setSearchResult(null);
-      dispatch(updateIsSearch({index: 0, isSearch:false}));
+      dispatch(updateIsSearch({ index: 0, isSearch: false }));
     }
     if (paginationIndex[0].currentPage[0] !== 1) {
       // scroll to top of the page
@@ -70,10 +74,10 @@ const PropertyListPage = () => {
       setIsLoading(true);
       pageLoader();
     }
-    if(paginationIndex[2].activeLink !=="/"){
-      dispatch(updateActiveLink("/"))
+    if (paginationIndex[2].activeLink !== "/") {
+      dispatch(updateActiveLink("/"));
     }
-  }, [loadProperties, properties, paginationIndex, dispatch,]);
+  }, [loadProperties, properties, paginationIndex, dispatch]);
   return (
     <>
       <style
@@ -88,7 +92,7 @@ const PropertyListPage = () => {
             <div class="d-flex mb-2">
               <input
                 className="form-control auto-input"
-                placeholder="🔍 Addresse complet"
+                placeholder="🔍Entrer un mot clé"
                 id="owner-input"
                 style={{ width: "100%" }} // add style prop
                 onInput={(e) => searchStates(e.target.value)}
@@ -99,7 +103,10 @@ const PropertyListPage = () => {
             </div>
             {isLoading && (
               <div className="mt-4 ml-3 d-flex justify-content-center">
-                <img src="https://ik.imagekit.io/ryxb55mhk/Tranogasy/loading/Double_Ring-1s-200px__1_.gif?updatedAt=1683022393415" alt="" />
+                <img
+                  src="https://ik.imagekit.io/ryxb55mhk/Tranogasy/loading/Double_Ring-1s-200px__1_.gif?updatedAt=1683022393415"
+                  alt=""
+                />
               </div>
             )}
             {!searchResult ? (
@@ -118,7 +125,7 @@ const PropertyListPage = () => {
                       <PropertyDetails key={property._id} property={property} />
                     ))}
                 <hr></hr>
-                {searchResult && <SquarePaging index = {0} linkKey = ""/>}
+                {searchResult && <SquarePaging index={0} linkKey="" />}
               </div>
             )}
           </div>
