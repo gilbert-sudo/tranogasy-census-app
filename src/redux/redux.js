@@ -64,11 +64,11 @@ const paginationSlice = createSlice({
   name: "pagination",
   initialState: [
     {
-      currentPage: [1, 1, 1],
-      totalPage: [0, 0, 0],
-      isSearch: [false, false, false],
+      currentPage: [1, 1, 1, 1],
+      totalPage: [0, 0, 0, 0],
+      isSearch: [false, false, false, false],
     },
-    { itemsPerPage: [3, 3, 3], startIndex: [0, 0, 0], endIndex: [0, 0, 0] },
+    { itemsPerPage: [3, 3, 3, 3], startIndex: [0, 0, 0, 0], endIndex: [0, 0, 0, 0]},
     { activeLink: "/" },
   ],
   reducers: {
@@ -129,7 +129,7 @@ const topPropertiesSlice = createSlice({
 
 export const { setTopProperties } = topPropertiesSlice.actions;
 
-//properties
+//properties houses and lands
 const propertiesSlice = createSlice({
   name: "properties",
   initialState: [],
@@ -173,6 +173,52 @@ const propertiesSlice = createSlice({
 });
 
 export const { pushProperty, setProperties, updateOnePropertyById } = propertiesSlice.actions;
+
+//redux lands
+
+const landSlice = createSlice({
+  name: "lands",
+  initialState: [],
+  reducers: {
+    pushLand: (state, action) => {
+      state.push(action.payload);
+    },
+    setLands: (state, action) => {
+      return action.payload;
+    },
+    updateOneLandById: (state, action) => {
+      return state.map((land) => {
+        if (land._id === action.payload._id) {
+          return {
+            ...land,
+            title: action.payload.title,
+            description: action.payload.description,
+            location: action.payload.location,
+            city: action.payload.city,
+            price: action.payload.price,
+            rent: action.payload.rent,
+            squarePerMeter: action.payload.squarePerMeter,
+            area: action.payload.area,
+            propertyNumber: action.payload.propertyNumber,
+            features: action.payload.features,
+            images: action.payload.images,
+            type: action.payload.type,
+            owner: action.payload.owner,
+            status: action.payload.status,
+            created_at: action.payload.created_at,
+            updated_at: action.payload.update_at,
+            censusTaker: action.payload.censusTaker,
+          };
+        } else {
+          return land;
+        }
+      });
+    },
+  },
+});
+
+export const { pushLand, setLands, updateOneLandById } = landSlice.actions;
+
 
 //liked properties
 const likedPropertiesSlice = createSlice({
@@ -249,6 +295,7 @@ export const store = configureStore({
     pagination: paginationSlice.reducer,
     topProperties: topPropertiesSlice.reducer,
     properties: propertiesSlice.reducer,
+    lands: landSlice.reducer,
     booking: bookingSlice.reducer,
     location: locationSlice.reducer,
     likedProperties: likedPropertiesSlice.reducer,

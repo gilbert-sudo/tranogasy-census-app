@@ -2,7 +2,7 @@
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
-function PropertyDetails({ property }) {
+function PropertyDetails({ property, type }) {
   const date = new Date(property.created_at);
   const formattedDate = `${date.getDate().toString().padStart(2, "0")}/${(
     date.getMonth() + 1
@@ -40,18 +40,6 @@ function PropertyDetails({ property }) {
               {property.title}
             </h3>
           </div>
-          {/* <div class="row px-3 mb-2 mt-2">
-              <span class="fa fa-star text-warning mr-1"></span>
-              <span class="fa fa-star text-warning mr-1"></span>
-              <span class="fa fa-star text-warning mr-1"></span>
-              <span class="fa fa-star text-warning mr-1"></span>
-          </div> */}
-          {/* <div class="row px-3">
-              <h5 class="mb-1">1 bedroom &middot; 1 living &middot; 2 beds</h5>
-          </div>
-          <div class="row px-3">
-              <p class="">Mitte, Berlin &middot; 2.6 km from center</p>
-          </div> */}
           <div className="line" />
           <div className="row px-3 mt-3">
             <h5 className="text-secondary mb-1" style={{ fontSize: "3vw" }}>
@@ -68,7 +56,7 @@ function PropertyDetails({ property }) {
           </div>
          
             <div className="row px-3 mt-2 d-flex justify-content-end">
-            {censusTaker === property.censusTaker._id?(<Link to={"/edit-property/" + property._id}>
+            {censusTaker === property.censusTaker._id?(<Link to={type === "home"?"/edit-property/" + property._id:"/edit-land/"+ property._id}>
               <p
                 className="rating mb-0 px-2"
                 style={{ fontSize: "3vw", backgroundColor: "#ec1c24" }}

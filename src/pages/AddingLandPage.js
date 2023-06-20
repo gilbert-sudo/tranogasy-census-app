@@ -6,20 +6,19 @@ import { useProperty } from "../hooks/useProperty";
 import AutocompleteInput from "../components/AutocompleteInput";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPersonShelter, faShower } from "@fortawesome/free-solid-svg-icons";
+import { faLocation } from "@fortawesome/free-solid-svg-icons";
 import { FaGripHorizontal, FaMoneyBill } from "react-icons/fa";
 import { GiPayMoney } from "react-icons/gi";
 import { MdTitle } from "react-icons/md";
 import { useSelector } from "react-redux";
 import { updateActiveLink } from "../redux/redux";
 import { useDispatch } from "react-redux";
-
-const AddingPage = () => {
+const AddingLandPage = () => {
   const dispatch = useDispatch();
   const [disabledPriceInput, setDisabledPriceInput] = useState(false);
   const { loadOwnersName, loadQuartersName, loadLocationsName } = useLoader();
   const {
-    addProperty,
+    addLand,
     resetPropertyInput,
     msgError,
     bootstrapClassname,
@@ -28,16 +27,14 @@ const AddingPage = () => {
   const censusTaker = useSelector((state) => state.user._id);
   const [ownersName, setOwnersName] = useState(null);
   const [quartersName, setQuartersName] = useState(null);
-  const [locationsName, setLocationsName] = useState(null);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [bedrooms, setBedrooms] = useState("");
-  const [bathrooms, setBathrooms] = useState("");
   const [area, setArea] = useState("");
   const [price, setPrice] = useState("0");
   const [rent, setRent] = useState("0");
   const [docErrorClass, setDocErrorClass] = useState("");
   const [documentIdError, setDocumentIdError] = useState("");
+  const [location, setLocation] = useState("");
   const [isValidReset, setIsValidReset] = useState(false);
   const [resetAutocomplete, setResetAutocomplete] = useState(false);
   const links = useSelector((state) => state.pagination);
@@ -45,12 +42,11 @@ const AddingPage = () => {
     setTitle("");
     setResetAutocomplete(true);
     setDescription("");
-    setBedrooms("");
     setArea("");
-    setBathrooms("");
     setArea("");
     setPrice("0");
     setRent("0");
+    setLocation("");
   };
   //get the autocomplete id value
   const getDocId = (inputClassName, data) => {
@@ -70,7 +66,6 @@ const AddingPage = () => {
       return;
     }
   };
-
   //handle the property form submiting
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -78,43 +73,38 @@ const AddingPage = () => {
     const owner = getDocId("owner-input", ownersName);
     // fetch the quarter's id
     const city = getDocId("quarter-input", quartersName);
-    // fetch the address
-    const address = getDocId("address-input", locationsName);
-
     var type = "sale";
     //get the property type
     if (disabledPriceInput) {
       type = "rent";
     }
-    if (city && owner && address) {
-      const addressName = document.getElementById("address-input").value;
-      addProperty(
+    // fetch the address
+    if (owner && city) {
+      const squarePerMeter = price;
+      addLand(
         title,
         description,
-        addressName,
+        location,
         city,
         price,
         rent,
-        bedrooms,
-        bathrooms,
+        squarePerMeter,
         area,
         type,
         owner,
         censusTaker
       );
-      setIsValidReset(true);
     } else {
       setDocErrorClass("alert alert-danger");
       setDocumentIdError("veuillez selectionner un choix suggéré ");
-      return;
     }
+    setIsValidReset(true);
   };
 
   useEffect(() => {
     const pageLoader = async () => {
       setOwnersName(await loadOwnersName());
       setQuartersName(await loadQuartersName());
-      setLocationsName(await loadLocationsName());
     };
     if (resetPropertyInput && isValidReset) {
       resetAllInputs();
@@ -138,12 +128,12 @@ const AddingPage = () => {
   ]);
   return (
     <>
-     <div className="d-flex justify-content-between mt-5" style={{ backgroundColor: "#f1f1f1" }}>
+      <div className="d-flex justify-content-between mt-5" style={{ backgroundColor: "#f1f1f1" }}>
           <div className="p-2">
-            <Link to="/AddingPage" >
+            <Link to="/AddingPage">
               <button
                 id="btnHome"
-                className="btn btn-outline-success active"
+                className="btn btn-outline-success"
                 type="button"
               >
                 ajouter un immobilier
@@ -154,7 +144,7 @@ const AddingPage = () => {
             <Link to="/AddingLandPage">
               <button
                 id="btnLand"
-                className="btn btn-outline-success"
+                className="btn btn-outline-success active"
                 type="button"
               >
                 ajouter un terrain
@@ -167,7 +157,7 @@ const AddingPage = () => {
         style={{ backgroundColor: "#f1f1f1" }}
       >
         <h3 className="h4 text-black widget-title mt-2 mb-3">
-          Ajouter votre immobilier
+          Ajouter votre terrain
         </h3>
         <form action="" className="form-contact-agent" onSubmit={handleSubmit}>
           <div className="form-group">
@@ -218,25 +208,25 @@ const AddingPage = () => {
               required="ON"
             ></textarea>
           </div>
-          <div className="form-group">
-            <label htmlFor="email">
-              L'adresse (Lot){" "}
-              <Link to="/create-location">
-                <nb style={{ color: "blue" }}>
-                  {" "}
-                  &nbsp;<small>Ajouter un nouveau</small>
-                </nb>
-              </Link>
-            </label>
-            <AutocompleteInput
-              reset={resetAutocomplete}
-              className="form-control auto-input"
-              placeholder="Une adresse exacte"
-              inputId="address-input"
-              suggestions={locationsName}
-              style={{ width: "100%" }} // add style prop
-            />
+
+          <div className="form-group hidden">
+            <label htmlFor="phone">location</label>
+            <div className="input-group">
+              <div className="input-group-prepend">
+                <span className="input-group-text">
+                  <FontAwesomeIcon icon={faLocation} />
+                </span>
+              </div>
+              <input
+                type="text"
+                id="location"
+                className="form-control"
+                value={location}
+                onChange={(e) => setLocation(e.target.value)}
+              />
+            </div>
           </div>
+
           <div className="form-group">
             <label>Quartier</label>
             <div className="input-group">
@@ -250,42 +240,7 @@ const AddingPage = () => {
               />
             </div>
           </div>
-          <div className="form-group">
-            <label htmlFor="phone">Nombre de chambre</label>
-            <div className="input-group">
-              <div className="input-group-prepend">
-                <span className="input-group-text">
-                  <FontAwesomeIcon icon={faPersonShelter} />
-                </span>
-              </div>
-              <input
-                type="number"
-                id="bedrooms"
-                className="form-control"
-                value={bedrooms}
-                onChange={(e) => setBedrooms(e.target.value)}
-                required="ON"
-              />
-            </div>
-          </div>
-          <div className="form-group">
-            <label htmlFor="bathrooms">Salle de bain</label>
-            <div className="input-group">
-              <div className="input-group-prepend">
-                <span className="input-group-text">
-                  <FontAwesomeIcon icon={faShower} />
-                </span>
-              </div>
-              <input
-                type="number"
-                id="bathrooms"
-                className="form-control"
-                value={bathrooms}
-                onChange={(e) => setBathrooms(e.target.value)}
-                required="ON"
-              />
-            </div>
-          </div>
+
           <div className="form-group">
             <label htmlFor="area">
               Surface habitable
@@ -344,7 +299,7 @@ const AddingPage = () => {
           {!disabledPriceInput ? (
             <div className="form-group">
               <label htmlFor="price">
-                Prix de vente
+                Prix de vente par m3
                 <nb style={{ color: "blue" }}>
                   &nbsp; &nbsp; <small>(en Ariary)</small>
                 </nb>
@@ -412,4 +367,4 @@ const AddingPage = () => {
   );
 };
 
-export default AddingPage;
+export default AddingLandPage;

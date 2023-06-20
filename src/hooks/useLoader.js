@@ -1,5 +1,5 @@
 import { useDispatch } from "react-redux";
-import { setLikedPropreties, setBooking, setOwner, setLocation, setProperties } from "../redux/redux";
+import { setLikedPropreties, setLands, setBooking, setOwner, setLocation, setProperties } from "../redux/redux";
 
 export const useLoader = () => {
   //redux
@@ -138,8 +138,23 @@ export const useLoader = () => {
         return json;
       }
     };
-    
+    const loadLands = async () => {
+      const response = await fetch(
+        `${process.env.REACT_APP_PROXY}/api/lands`,
+        {
+          headers: {
+            "Access-Control-Allow-Origin": "*",
+            "Content-Type": "aplication/json",
+          },
+        }
+      );
+      const json = await response.json();
+      if (response.ok) {
+        dispatch(setLands(json));
+        return json;
+      }
+    };
 
-  return { loadLikes, loadBooking, loadOwnersName, loadLocationsName ,loadOwners, loadQuartersName, loadProperties, loadLocations };
+  return { loadLikes,loadLands, loadBooking, loadOwnersName, loadLocationsName ,loadOwners, loadQuartersName, loadProperties, loadLocations };
 };
 

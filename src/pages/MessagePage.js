@@ -13,11 +13,11 @@ const MessagePage = () => {
             <div className="d-flex justify-content-between align-items-center">
               <div className="d-flex flex-row align-items-center">
                 <div className="image">
-                  <img src="https://i.imgur.com/jhsYqVT.png" width={70} />
+                  <img src="https://i.imgur.com/jhsYqVT.png" alt="" width={70} />
                   <span className="type">
                     <img
                       src="https://ik.imagekit.io/ryxb55mhk/Tranogasy/logo2.png?updatedAt=1679052755455"
-                      width={20}
+                      alt=""  width={20}
                     />
                   </span>
                 </div>
@@ -35,10 +35,10 @@ const MessagePage = () => {
             <div className="d-flex justify-content-between align-items-center mt-2">
               <div className="d-flex flex-row align-items-center">
                 <div className="image">
-                  <img src="https://i.imgur.com/vxEWOFl.png" width={70} />
+                  <img alt="" src="https://i.imgur.com/vxEWOFl.png" width={70} />
                   <span className="type">
                     <img
-                      src="https://ik.imagekit.io/ryxb55mhk/Tranogasy/logo2.png?updatedAt=1679052755455"
+                     alt=""  src="https://ik.imagekit.io/ryxb55mhk/Tranogasy/logo2.png?updatedAt=1679052755455"
                       width={20}
                     />
                   </span>
@@ -57,10 +57,10 @@ const MessagePage = () => {
             <div className="d-flex justify-content-between align-items-center mt-2">
               <div className="d-flex flex-row align-items-center">
                 <div className="image">
-                  <img src="https://i.imgur.com/jhsYqVT.png" width={70} />
+                  <img alt="" src="https://i.imgur.com/jhsYqVT.png" width={70} />
                   <span className="type">
                     <img
-                      src="https://ik.imagekit.io/ryxb55mhk/Tranogasy/logo2.png?updatedAt=1679052755455"
+                      alt="" src="https://ik.imagekit.io/ryxb55mhk/Tranogasy/logo2.png?updatedAt=1679052755455"
                       width={20}
                     />
                   </span>
