@@ -11,6 +11,7 @@ export const useProfil = () => {
     setIsLoading(true);
     setMsgError(null);
     setResetProfilInput(false);
+    // validation
     if (!fullName.length || !fullName.length > 3) {
       setBootstrap("alert alert-warning");
       setMsgError("Veuillez entrer une exacte nom complet");
@@ -43,10 +44,10 @@ export const useProfil = () => {
         let msg = result.message;
         let bootstrapClass = "alert alert-success";
         setBootstrap(bootstrapClass);
-        setMsgError(msg);
+        setMsgError(msg || "votre nom a changé avec succès");
         setIsLoading(false);
         setResetProfilInput(true);
-        dispatch(updateOneUserById(result.updatedCensusTaker));
+        dispatch(updateOneUserById(result.client));
         return;
       } else if (result.success === false) {
         let msg = result.message;
@@ -116,10 +117,10 @@ export const useProfil = () => {
             let msg = result.message;
             let bootstrapClass = "alert alert-success";
             setBootstrap(bootstrapClass);
-            setMsgError(msg);
+            setMsgError(msg || "votre numéro de téléphone a changé avec succès");
             setIsLoading(false);
             setResetProfilInput(true);
-            dispatch(updateOneUserById(result.updatedCensusTaker));
+            dispatch(updateOneUserById(result.client));
             return;
           } else if (result.success === false) {
             let msg = result.message;
@@ -187,10 +188,10 @@ export const useProfil = () => {
         let msg = result.message;
         let bootstrapClass = "alert alert-success";
         setBootstrap(bootstrapClass);
-        setMsgError(msg);
+        setMsgError(msg || "votre email a changé avec succès");
         setIsLoading(false);
         setResetProfilInput(true);
-        dispatch(updateOneUserById(result.updatedCensusTaker));
+        dispatch(updateOneUserById(result.client));
         return;
       } else if (result.success === false) {
         let msg = result.message;
@@ -232,6 +233,12 @@ export const useProfil = () => {
     const oldPassword= inputedOldPassword.trim().replace(/\s/g, "");
     const newPassword = inputedNewPassword.trim().replace(/\s/g, "");
     const confirmPasswordRef = confirmPassword.trim().replace(/\s/g, "");
+    if(newPassword === oldPassword){
+      setBootstrap("alert alert-warning");
+      setMsgError("Veuillez changer votre mot de passe");
+      setIsLoading(false);
+      return;
+    }
     if (
       (!newPassword.length > 8 && !newPassword.length < 12) ||
       (!confirmPasswordRef.length > 8 && !confirmPasswordRef.length < 12)
@@ -270,10 +277,10 @@ export const useProfil = () => {
         let msg = result.message;
         let bootstrapClass = "alert alert-success";
         setBootstrap(bootstrapClass);
-        setMsgError(msg);
+        setMsgError(msg || "votre mot de passe a changé avec succès");
         setIsLoading(false);
         setResetProfilInput(true);
-        dispatch(updateOneUserById(result.updatedCensusTaker));
+        dispatch(updateOneUserById(result.client));
         return;
       } else if (result.success === false) {
         let msg = result.message;

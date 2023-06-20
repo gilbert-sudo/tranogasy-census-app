@@ -75,7 +75,7 @@ const SignUpPage = () => {
                       <input
                         value={phone}
                         onChange={(e) => setPhone(e.target.value)}
-                        type="text"
+                        type="number"
                         placeholder="Votre numéro de téléphone"
                         required
                       />

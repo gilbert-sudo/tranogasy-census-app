@@ -8,10 +8,10 @@ import SquarePaging from "../components/SquarePaging";
 import { updateActiveLink, updateIsSearch, setTotalPage } from "../redux/redux";
 const PropertyListPage = () => {
   const dispatch = useDispatch();
-  const { loadProperties } = useLoader();
-  const properties = useSelector((state) => state.properties);
+  const { loadLands } = useLoader();
+  const lands = useSelector((state) => state.lands);
   const paginationIndex = useSelector((state) => state.pagination);
-  const [searchResult, setSearchResult] = useState(properties);
+  const [searchResult, setSearchResult] = useState(lands);
   const [isLoading, setIsLoading] = useState(null);
   //set the total of the page
   if (searchResult) {
@@ -27,8 +27,7 @@ const PropertyListPage = () => {
   //search states and filter it
   const searchStates = async (searchText) => {
     //get matches to current text input
-    console.log("all properties is ", properties);
-    let matches = properties.filter((state) => {
+    let matches = lands.filter((state) => {
       const regex = new RegExp(`^${searchText}`, "gi");
       return (
         state.owner.fullName.match(regex) ||
@@ -36,7 +35,7 @@ const PropertyListPage = () => {
         state.description.match(regex) ||
         state.censusTaker.username.match(regex) ||
         state.city.quarter.match(regex) ||
-        state.address.match(regex) 
+        state.location.match(regex)
       );
     });
     if (searchText.length !== 0) {
@@ -46,8 +45,8 @@ const PropertyListPage = () => {
     }
     if (searchText.length === 0) {
       dispatch(updateIsSearch({ index: 0, isSearch: false }));
-      setSearchResult(properties);
-      dispatch(setTotalPage({ index: 0, subjectLength: properties.length }));
+      setSearchResult(lands);
+      dispatch(setTotalPage({ index: 0, subjectLength: lands.length }));
     }
     if (matches.length === 0) {
       setSearchResult(null);
@@ -64,20 +63,20 @@ const PropertyListPage = () => {
 
   useEffect(() => {
     const pageLoader = async () => {
-      const propertiesPreoad = await loadProperties();
-      if (propertiesPreoad) {
+      const landsPreoad = await loadLands();
+      if (landsPreoad) {
         setIsLoading(null);
       }
-      setSearchResult(propertiesPreoad);
+      setSearchResult(landsPreoad);
     };
-    if (!properties.length) {
+    if (!lands.length) {
       setIsLoading(true);
       pageLoader();
     }
     if (paginationIndex[2].activeLink !== "/") {
       dispatch(updateActiveLink("/"));
     }
-  }, [loadProperties, properties, paginationIndex, dispatch]);
+  }, [loadLands, lands, paginationIndex, dispatch]);
   return (
     <>
       <style
@@ -86,12 +85,12 @@ const PropertyListPage = () => {
             '::-webkit-scrollbar {\n                                  width: 8px;\n                                }\n                                /* Track */\n                                ::-webkit-scrollbar-track {\n                                  background: #f1f1f1; \n                                }\n                                 \n                                /* Handle */\n                                ::-webkit-scrollbar-thumb {\n                                  background: #888; \n                                }\n                                \n                                /* Handle on hover */\n                                ::-webkit-scrollbar-thumb:hover {\n                                  background: #555; \n                                } @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800&display=swap");\n\n\n   body{\n\n    background-color: #eeeff3;\n    font-family: "Poppins", sans-serif;\n    font-weight: 300;\n\n   }\n\n   .container{\n\n\n      display: flex;\n      align-items: center;\n      padding: 10px;\n\n   }\n\n\n   .card{\n\n      width: 100%;\n      \n      border-radius: 10px;  \n      border: none;\n\n   }\n\n   .top{\n\n      background-color: #eee;\n      padding: 10px;\n      padding-left: 20px;\n      border-top-right-radius: 10px;\n      border-top-left-radius: 10px;\n   }\n\n   .bottom{\n     \n     padding:10px;\n     background-color: #fff;\n     border-bottom-right-radius: 10px;\n      border-bottom-left-radius: 10px;\n\n   }\n\n   .image{\n      \n       position: relative;\n\n   }\n\n   .image .type{\n     \n        position: absolute;\n    left: 49px;\n    bottom: 0;\n    background: #fff;\n    height: 30px;\n    width: 30px;\n    display: flex;\n    justify-content: center;\n    align-items: center;\n    border-radius: 50%;\n\n   }\n\n   .line-height{\n\n        line-height: 20px;\n   }\n\n   .live{\n\n          height: 10px;\n    width: 10px;\n    border-radius: 50%;\n    background: green;\n    margin-left: 1px;\n    display: flex;\n    margin-right: 5px;\n\n\n   }\n\n   .l-now{\n\n    font-size: 12px;\n   }\n\n\n   .dots{\n     \n           height: 10px;\n   margin-left: 1px;\n    display: flex;\n    margin-right: 5px;\n\n   }',
         }}
       />
-      <div className="d-flex justify-content-between mt-5 pt-1" style={{ backgroundColor: "#f1f1f1" }}>
+       <div className="d-flex justify-content-between mt-5" style={{ backgroundColor: "#f1f1f1" }}>
           <div className="p-2">
             <Link to="/PropertyListPage">
               <button
                 id="btnHome"
-                className="btn btn-outline-success active"
+                className="btn btn-outline-success"
                 type="button"
               >
                 liste des immobilier
@@ -102,7 +101,7 @@ const PropertyListPage = () => {
             <Link to="/LandListPage">
               <button
                 id="btnLand"
-                className="btn btn-outline-success"
+                className="btn btn-outline-success active"
                 type="button"
               >
                 liste des terrains
@@ -110,8 +109,8 @@ const PropertyListPage = () => {
             </Link>
           </div>
           </div>
-      <div className="container pt-1 mb-5">
-        <div className="card mt-3">
+      <div className="container pt-4 mb-5">
+        <div className="card">
           <div className="bottom">
             <div class="d-flex mb-2">
               <input
@@ -125,6 +124,7 @@ const PropertyListPage = () => {
                 <FaUserPlus />
               </Link>
             </div>
+            
             {isLoading && (
               <div className="mt-4 ml-3 d-flex justify-content-center">
                 <img
@@ -146,10 +146,10 @@ const PropertyListPage = () => {
                       paginationIndex[1].endIndex[0]
                     )
                     .map((property) => (
-                      <PropertyDetails key={property._id} property={property} type="home" />
+                      <PropertyDetails key={property._id} property={property} type="land" />
                     ))}
                 <hr></hr>
-                {searchResult && <SquarePaging index={0} linkKey="" />}
+                {searchResult && <SquarePaging index={3} linkKey="/LandListPage" />}
               </div>
             )}
           </div>

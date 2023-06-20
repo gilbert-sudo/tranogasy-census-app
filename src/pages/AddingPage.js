@@ -13,6 +13,7 @@ import { MdTitle } from "react-icons/md";
 import { useSelector } from "react-redux";
 import { updateActiveLink } from "../redux/redux";
 import { useDispatch } from "react-redux";
+
 const AddingPage = () => {
   const dispatch = useDispatch();
   const [disabledPriceInput, setDisabledPriceInput] = useState(false);
@@ -137,11 +138,35 @@ const AddingPage = () => {
   ]);
   return (
     <>
+     <div className="d-flex justify-content-between mt-5" style={{ backgroundColor: "#f1f1f1" }}>
+          <div className="p-2">
+            <Link to="/AddingPage" >
+              <button
+                id="btnHome"
+                className="btn btn-outline-success active"
+                type="button"
+              >
+                ajouter un immobilier
+              </button>
+            </Link>
+          </div>
+          <div className="p-2">
+            <Link to="/AddingLandPage">
+              <button
+                id="btnLand"
+                className="btn btn-outline-success"
+                type="button"
+              >
+                ajouter un terrain
+              </button>
+            </Link>
+          </div>
+          </div>
       <div
         className="widget border rounded"
         style={{ backgroundColor: "#f1f1f1" }}
       >
-        <h3 className="h4 text-black widget-title mt-5 mb-3">
+        <h3 className="h4 text-black widget-title mt-2 mb-3">
           Ajouter votre immobilier
         </h3>
         <form action="" className="form-contact-agent" onSubmit={handleSubmit}>
@@ -156,7 +181,7 @@ const AddingPage = () => {
               </Link>
             </label>
             <AutocompleteInput
-              reset = {resetAutocomplete}
+              reset={resetAutocomplete}
               className="form-control auto-input"
               placeholder="Nom complet"
               inputId="owner-input"
@@ -177,7 +202,7 @@ const AddingPage = () => {
                 id="title"
                 className="form-control"
                 value={title}
-                onChange={(e) => setTitle(e.target.value.trim().replace(/\s+/g, " "))}
+                onChange={(e) => setTitle(e.target.value)}
                 required="ON"
               />
             </div>
@@ -204,7 +229,7 @@ const AddingPage = () => {
               </Link>
             </label>
             <AutocompleteInput
-              reset = {resetAutocomplete}
+              reset={resetAutocomplete}
               className="form-control auto-input"
               placeholder="Une adresse exacte"
               inputId="address-input"
@@ -216,7 +241,7 @@ const AddingPage = () => {
             <label>Quartier</label>
             <div className="input-group">
               <AutocompleteInput
-                reset = {resetAutocomplete}
+                reset={resetAutocomplete}
                 className="form-control auto-input"
                 placeholder="Nom du quartier"
                 inputId="quarter-input"

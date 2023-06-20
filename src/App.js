@@ -7,10 +7,13 @@ import UserPage from "./pages/UserPage";
 import SignUpPage from "./pages/SignUpPage";
 import MessagePage from "./pages/MessagePage";
 import AddingPage from "./pages/AddingPage";
+import AddingLandPage from "./pages/AddingLandPage";
 import Navbar from "./components/Navbar";
 import OwnerCreation from "./pages/OwnerCreation";
 import OwnerListPage from "./pages/OwnerListPage";
 import OwnerEditingPage from "./pages/OwnerEditingPage";
+import LandListPage from "./pages/LandListPage";
+import LandEditingPage from "./pages/LandEditingPage";
 import LocationCreationPage from "./pages/LocationCreationPage";
 import LocationEditingPage from "./pages/LocationEditingPage";
 import LocationListPage from "./pages/LocationListPage";
@@ -61,8 +64,13 @@ function App() {
               path="/"
               element={user ? <PropertyListPage/> : <Navigate to="/login" />}
             />
-            
-
+            <Route path="/AddingPage" element={user?<AddingPage/>:<Navigate to="/login"/>}/>
+            <Route path="/AddingLandPage" element={user?<AddingLandPage/>:<Navigate to="/login"/>}/>
+            <Route path="/LandListPage" element={user?<LandListPage/>:<Navigate to="/login"/>}/>
+            <Route
+              path="/PropertyListPage"
+              element={user ? <PropertyListPage /> : <Navigate to="/login" />}
+            />
             <Route
               path="/user"
               element={user ? <UserPage /> : <Navigate to="/login" />}
@@ -91,15 +99,14 @@ function App() {
               path="/signup"
               element={!user ? <SignUpPage /> : <Navigate to="/user" />}
             />
-         <Route
-              path="/property-list"
-              element={user ? <PropertyListPage /> : <Navigate to="/login" />}
-            />
             <Route
               path="/edit-property/:propertyId"
               element={user ? <PropertyEditingPage /> : <Navigate to="/login" />}
             />
-      
+          <Route
+              path="/edit-land/:landId"
+              element={user ? <LandEditingPage /> : <Navigate to="/login" />}
+            />
             <Route
               path="/owner-list"
               element={user ? <OwnerListPage /> : <Navigate to="/login" />}

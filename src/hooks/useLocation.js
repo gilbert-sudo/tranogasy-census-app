@@ -93,7 +93,8 @@ export const useLocation = () => {
               },
               body: JSON.stringify({
                 address,
-                link
+                link, 
+                censusTaker
               }),
             }
           );

@@ -21,6 +21,7 @@ const locations = useSelector(state => state.location);
   const locationLink = location[0].locationLink;
   const [Address, setAddress] = useState(address);
   const [addressLink, setAddressLink] = useState(locationLink);
+  const [isValidReset, setIsValidReset] = useState(false);
   // const Location = useSelector((state) => state.Location);
   const resetAllInputs = () => {
     setAddress("");
@@ -38,13 +39,14 @@ const locations = useSelector(state => state.location);
   const handleSubmit = async (e) => {
     e.preventDefault();
     updateLocation(locationId, Address, addressLink);
+    setIsValidReset(true);
   };
   useEffect(() => {
-    if (resetLocationInput) {
+    if (resetLocationInput && isValidReset) {
       resetAllInputs();
-      setResetLocationInput(false);
+      setIsValidReset(false)
     }
-  }, [resetLocationInput, setResetLocationInput]);
+  }, [resetLocationInput, isValidReset, setResetLocationInput]);
 
   return (
     <div className="bg-white widget border mt-5 rounded">
@@ -66,7 +68,7 @@ const locations = useSelector(state => state.location);
               className="form-control"
               value={Address}
               onChange={(e) => {
-              const address = e.target.value.trim().replace(/\s{2,}/g, ' '); setAddress(address)}}
+               setAddress(e.target.value)}}
               // required="ON"
             />
           </div>
