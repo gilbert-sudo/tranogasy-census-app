@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import PageLoader from "./pages/PageLoader";
 import PropertyListPage from "./pages/PropertyListPage";
 import PropertyEditingPage from "./pages/PropertyEditingPage";
@@ -17,7 +17,6 @@ import LocationListPage from "./pages/LocationListPage";
 import { useSelector, useDispatch } from "react-redux";
 import { setUser } from "./redux/redux";
 import { useEffect } from "react";
-import { useLogin } from "./hooks/useLogin";
 import FullNameUpdating from "./pages/FullNameUpdating";
 import EmailUpdating from "./pages/EmailUpdating";
 import ContactUpdating from "./pages/ContactUpdating";
@@ -26,9 +25,7 @@ function App() {
   // const topProperties = useSelector((state) => state.topProperties);
   //const topProperties = useSelector((state) => state.topProperties);
   const user = useSelector((state) => state.user);
-  const googleLogin = useSelector((state) => state.googleLogin);
   const dispatch = useDispatch();
-  const { loginWith } = useLogin();
 
   useEffect(() => {
     if (!user) {
@@ -39,20 +36,10 @@ function App() {
     }
   }, [user, dispatch]);
 
-  useEffect(() => {
-    if (!user) {
-      if (
-        googleLogin.googleLogin !== undefined &&
-        googleLogin.googleLogin === false
-      ) {
-        loginWith();
-      }
-    }
-  }, [user, loginWith, googleLogin]);
 
   return (
     <div className="App">
-      <BrowserRouter>
+      <Router>
         {user && <Navbar />}
         <div className="pages">
           <Routes>
@@ -62,7 +49,6 @@ function App() {
               element={user ? <PropertyListPage/> : <Navigate to="/login" />}
             />
             
-
             <Route
               path="/user"
               element={user ? <UserPage /> : <Navigate to="/login" />}
@@ -142,7 +128,7 @@ function App() {
             />
           </Routes>
         </div>
-      </BrowserRouter>
+      </Router>
     </div>
   );
 }

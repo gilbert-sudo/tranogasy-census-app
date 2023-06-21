@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { setUser, setGoogleLogin } from "../redux/redux";
-import axios from "axios";
+import { setUser } from "../redux/redux";
 
 export const useLogin = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -70,26 +69,6 @@ export const useLogin = () => {
     }
   };
 
-  const loginWith = async () => {
-    try {
-      const url = `${process.env.REACT_APP_PROXY}/connexion/login/success`;
-      axios
-        .get(url, { withCredentials: true })
-        .then((response) => {
-          if (response.data.client) {
-            localStorage.setItem("user", JSON.stringify(response.data));
-            dispatch(setUser(response.data.client));
-            dispatch(setGoogleLogin({ googleLogin: true }));
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   const loginWithFacebookID = async (facebookID) => {
     setIsLoading(true);
 
@@ -129,5 +108,5 @@ export const useLogin = () => {
     }
   };
 
-  return { loginWith, loginWithFacebookID, login, isLoading, error, bootstrapClassname, client };
+  return { loginWithFacebookID, login, isLoading, error, bootstrapClassname, client };
 };
