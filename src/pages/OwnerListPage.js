@@ -32,8 +32,8 @@ const OwnerListPage = () => {
       const regex = new RegExp(`^${searchText}`, "gi");
       return (
         state.fullName.match(regex) ||
-        state.phone1.match(regex) ||
-        state.phone2.match(regex)
+        (state.phone1?state.phone1.match(regex):"") ||
+        (state.phone2?state.phone2.match(regex):"")
       );
     });
     if (searchText.length !== 0) {
@@ -90,7 +90,7 @@ const OwnerListPage = () => {
             <div class="d-flex mb-2">
               <input
                 className="form-control auto-input"
-                placeholder="🔍 Nom complet"
+                placeholder="🔍 Nom ou téléphone complet"
                 id="owner-input"
                 style={{ width: "100%" }} // add style prop
                 onInput={(e) => searchStates(e.target.value)}

@@ -35,7 +35,7 @@ const PropertyListPage = () => {
         state.description.match(regex) ||
         state.censusTaker.username.match(regex) ||
         state.city.quarter.match(regex) ||
-        state.location.match(regex)
+        (state.location?state.location.match(regex):"")
       );
     });
     if (searchText.length !== 0) {

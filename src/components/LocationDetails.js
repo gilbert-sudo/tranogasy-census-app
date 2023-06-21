@@ -13,7 +13,7 @@ const LocationDetails = ({ location }) => {
           <MdEditLocationAlt />
         </Link>):null} 
       </div>
-      <div className="col-10 mb-1 small text-uppercase">
+      <div className=" mb-1 small text-uppercase">
         <Link style={{color: "#17a2b8"}} to={location.locationLink}><u><strong>{location.locationLink}</strong></u></Link>
          </div>
     </div>
