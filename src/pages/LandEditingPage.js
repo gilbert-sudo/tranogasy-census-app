@@ -6,7 +6,7 @@ import { useProperty } from "../hooks/useProperty";
 import AutocompleteInput from "../components/AutocompleteInput";
 import { Link, useParams } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPersonShelter, faShower } from "@fortawesome/free-solid-svg-icons";
+import { faLocation } from "@fortawesome/free-solid-svg-icons";
 import { FaGripHorizontal, FaMoneyBill } from "react-icons/fa";
 import { GiPayMoney } from "react-icons/gi";
 import { MdTitle } from "react-icons/md";
@@ -15,47 +15,42 @@ import { updateActiveLink } from "../redux/redux";
 import { useDispatch } from "react-redux";
 const PropertyEditingPage = () => {
   const dispatch = useDispatch();
-  const { propertyId } = useParams();
+  const { landId } = useParams();
 
-  const properties = useSelector((state) => state.properties);
-  const property = properties.find((property) => property._id === propertyId);
+  const lands = useSelector((state) => state.lands);
+  const property = lands.find((land) => land._id === landId);
+  console.log(property);
   const [disabledPriceInput, setDisabledPriceInput] = useState(
     property.type === "rent" ? true : false
   );
   const { loadOwnersName, loadQuartersName, loadLocationsName } = useLoader();
   const {
-    updateProperty,
+    updateLand,
     resetPropertyInput,
     msgError,
     bootstrapClassname,
     isLoading,
   } = useProperty();
   const censusTaker = useSelector((state) => state.user._id);
+  
   const [ownersName, setOwnersName] = useState(null);
   const [ownerName, setOwnerName] = useState(
     property.owner ? property.owner.fullName : ""
   );
   const [quartersName, setQuartersName] = useState(null);
   const [quarterName, setQuarterName] = useState(
-    property
+    property.city
     ? `${property.city.quarter} ${property.city.district} ${property.city.reference} Arr`
     : ""
-  );
-  const [locationsName, setLocationsName] = useState(null);
-  const [locationName, setLocationName] = useState(
-    property ? property.address : ""
   );
   const [title, setTitle] = useState(property ? property.title : "");
   const [description, setDescription] = useState(
     property ? property.description : ""
   );
-  const [bedrooms, setBedrooms] = useState(property ? property.bedrooms : "");
-  const [bathrooms, setBathrooms] = useState(
-    property ? property.bathrooms : ""
-  );
+  const [location, setLocation] = useState(property.location);
   const [area, setArea] = useState(property ? property.area : "");
-  const [price, setPrice] = useState(property ? property.price : "");
-  const [rent, setRent] = useState(property ? property.rent : "");
+  const [price, setPrice] = useState(property ? property.squarePerMeter: "");
+  const [rent, setRent] = useState(property.rent ? property.rent : "");
   const [isValidReset, setIsValidReset] = useState(false);
   const [docErrorClass, setDocErrorClass] = useState("");
   const [documentIdError, setDocumentIdError] = useState("");
@@ -66,11 +61,10 @@ const PropertyEditingPage = () => {
     setTitle("");
     setResetAutocomplete(true);
     setDescription("");
-    setBedrooms("");
     setArea("");
-    setBathrooms("");
     setPrice("0");
     setRent("0");
+    setLocation("")
   };
   //get the autocomplete id value
   const getDocId = (inputClassName, data) => {
@@ -101,25 +95,22 @@ const PropertyEditingPage = () => {
     // fetch the quarter's id
     const city = getDocId("quarter-input", quartersName);
     // fetch the address
-    const address = getDocId("address-input", locationsName);
-    console.log(city);
     var type = "sale";
     //get the property type
     if (disabledPriceInput) {
       type = "rent";
     }
-    if (owner && city && address) {
-      const addressName = document.getElementById("address-input").value;
-      updateProperty(
-        propertyId,
+    if (owner && city) {
+      const squarePerMeter = price;
+      console.log("zrzer", censusTaker);
+      updateLand(
+        landId,
         title,
         description,
-        addressName,
+         location,
         city,
-        price,
         rent,
-        bedrooms,
-        bathrooms,
+       squarePerMeter,
         area,
         type,
         owner,
@@ -136,13 +127,12 @@ const PropertyEditingPage = () => {
     const pageLoader = async () => {
       setOwnersName(await loadOwnersName());
       setQuartersName(await loadQuartersName());
-      setLocationsName(await loadLocationsName());
     };
     if (resetPropertyInput && isValidReset) {
       resetAllInputs();
       setIsValidReset(false);
     }
-    if (!ownersName && !quartersName && !locationsName) {
+    if (!ownersName && !quartersName) {
     pageLoader();
     }
     if (links[2].activeLink !== "/") {
@@ -155,7 +145,6 @@ const PropertyEditingPage = () => {
     dispatch,
     loadQuartersName,
     ownersName,
-    locationsName,
     quartersName,
     isValidReset,
     loadLocationsName,
@@ -163,9 +152,6 @@ const PropertyEditingPage = () => {
   ]);
   const handleOwnerName = (Name) => {
     setOwnerName(Name);
-  };
-  const handleLocationName = (Name) => {
-    setLocationName(Name);
   };
   const handleQuarterName = (Name) => {
     setQuarterName(Name);
@@ -178,7 +164,7 @@ const PropertyEditingPage = () => {
         style={{ backgroundColor: "#f1f1f1" }}
       >
         <h3 className="h4 text-black widget-title mt-5 mb-3">
-          Ajouter votre immobilier
+          Modifier votre terrain
         </h3>
         <form action="" className="form-contact-agent" onSubmit={handleSubmit}>
           <div className="form-group">
@@ -231,27 +217,24 @@ const PropertyEditingPage = () => {
               required="ON"
             ></textarea>
           </div>
-          <div className="form-group">
-            <label htmlFor="email">
-              L'adresse (Lot){" "}
-              <Link to="/create-location">
-                <nb style={{ color: "blue" }}>
-                  {" "}
-                  &nbsp;<small>Ajouter un nouveau</small>
-                </nb>
-              </Link>
-            </label>
-            <AutocompleteInput
-             reset={resetAutocomplete}
-              className="form-control auto-input"
-              placeholder="Une adresse exacte"
-              inputId="address-input"
-              initialValue={property ? property.address : ""}
-              onNameChange={handleLocationName}
-              suggestions={locationsName}
-              style={{ width: "100%" }} // add style prop
-            />
+          <div className="form-group hidden">
+            <label htmlFor="phone">location</label>
+            <div className="input-group">
+              <div className="input-group-prepend">
+                <span className="input-group-text">
+                  <FontAwesomeIcon icon={faLocation} />
+                </span>
+              </div>
+              <input
+                type="text"
+                id="location"
+                className="form-control"
+                value={location}
+                onChange={(e) => setLocation(e.target.value)}
+              />
+            </div>
           </div>
+
           <div className="form-group">
             <label>Quartier</label>
             <div className="input-group">
@@ -266,42 +249,6 @@ const PropertyEditingPage = () => {
                 onNameChange={handleQuarterName}
                 suggestions={quartersName}
                 style={{ width: "100%" }} // add style prop
-              />
-            </div>
-          </div>
-          <div className="form-group">
-            <label htmlFor="phone">Nombre de chambre</label>
-            <div className="input-group">
-              <div className="input-group-prepend">
-                <span className="input-group-text">
-                  <FontAwesomeIcon icon={faPersonShelter} />
-                </span>
-              </div>
-              <input
-                type="number"
-                id="bedrooms"
-                className="form-control"
-                value={bedrooms}
-                onChange={(e) => setBedrooms(parseInt(e.target.value.trim().replace(/\s+/g, " ").parseInt()))}
-                required="ON"
-              />
-            </div>
-          </div>
-          <div className="form-group">
-            <label htmlFor="bathrooms">Salle de bain</label>
-            <div className="input-group">
-              <div className="input-group-prepend">
-                <span className="input-group-text">
-                  <FontAwesomeIcon icon={faShower} />
-                </span>
-              </div>
-              <input
-                type="number"
-                id="bathrooms"
-                className="form-control"
-                value={bathrooms}
-                onChange={(e) => {setBathrooms(parseInt(e.target.value.trim().replace(/\s+/g, " ")))}}
-                required="ON"
               />
             </div>
           </div>
@@ -369,7 +316,7 @@ const PropertyEditingPage = () => {
           {!disabledPriceInput ? (
             <div className="form-group">
               <label htmlFor="price">
-                Prix de vente
+                Prix de vente par m3
                 <nb style={{ color: "blue" }}>
                   &nbsp; &nbsp; <small>(en Ariary)</small>
                 </nb>
@@ -424,14 +371,12 @@ const PropertyEditingPage = () => {
                 (((property.owner ? property.owner.fullName : "") ===  ownerName) &&
                ((property? `${property.city.quarter} ${property.city.district} ${property.city.reference} Arr`
                 : "")  === quarterName) &&
-                ((property ? property.address : "") === locationName) &&
+                property.location === location &&
                  property.title === title &&
                 property.area === area  &&
                  property.description === description &&
-                 property.bathrooms === bathrooms &&
-                 property.bedrooms === bedrooms &&
                  property.rent  === rent &&
-                property.price ===  price && !checked
+                property.squarePerMeter ===  price && !checked
                   ? true
                   : false) || isLoading 
               }

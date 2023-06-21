@@ -88,7 +88,7 @@ const LocationListPage = () => {
           <div className="bottom">
             <div className="wrapper">
               <div
-                className="d-flex flex-column align-items-stretch flex-shrink-0 bg-white"
+                className=" flex-column align-items-stretch flex-shrink-0 bg-white"
                 style={{ width: "100%" }}
               >
                 <div class="d-flex mb-2">

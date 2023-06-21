@@ -18,7 +18,6 @@ const OwnerEditingPage = () => {
     msgError,
     bootstrapClassname,
     resetOwnerInput,
-    setResetOwnerInput,
   } = useOwner();
   const { ownerId, fullName, address, phoneOne, phoneTwo } = useParams();
   const [fullname, setFullName] = useState(fullName);
@@ -78,7 +77,6 @@ const OwnerEditingPage = () => {
     if (resetOwnerInput && isValidReset) {
       resetAllInputs();
       setIsValidReset(false);
-      setResetOwnerInput(false);
     }
     if (!locationsName) {
       pageLoader();
@@ -86,7 +84,6 @@ const OwnerEditingPage = () => {
   }, [
     resetOwnerInput,
     loadLocationsName,
-    setResetOwnerInput,
     isValidReset,
     locationsName,
   ]);
@@ -115,13 +112,7 @@ const OwnerEditingPage = () => {
               className="form-control"
               value={fullname}
               onChange={(e) => {
-                const fullname = e.target.value
-                  .trim()
-                  .replace(/\s{2,}/g, " ")
-                  .replace(/(^|\s)\S/g, function (match) {
-                    return match.toUpperCase(); // capitalize first letter of each word
-                  });
-                setFullName(fullname);
+                setFullName(e.target.value);
               }}
               // required="ON"
             />
