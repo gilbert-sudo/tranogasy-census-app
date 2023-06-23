@@ -5,7 +5,7 @@ import PropertyDetails from "../components/PropertyDetails";
 import { useEffect, useState } from "react";
 import { useLoader } from "../hooks/useLoader";
 import SquarePaging from "../components/SquarePaging";
-import { updateActiveLink, updateIsSearch, setTotalPage } from "../redux/redux";
+import { updateActiveLink, updateIsSearch, setTotalPage, updateSearchCurrentPage } from "../redux/redux";
 const PropertyListPage = () => {
   const dispatch = useDispatch();
   const { loadProperties } = useLoader();
@@ -40,6 +40,7 @@ const PropertyListPage = () => {
       );
     });
     if (searchText.length !== 0) {
+      dispatch(updateSearchCurrentPage({index: 0, newSearchCurrentPage: 1}));
       dispatch(updateIsSearch({ index: 0, isSearch: true }));
       setSearchResult(matches);
       dispatch(setTotalPage({ index: 0, subjectLength: matches.length }));

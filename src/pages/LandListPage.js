@@ -5,7 +5,7 @@ import PropertyDetails from "../components/PropertyDetails";
 import { useEffect, useState } from "react";
 import { useLoader } from "../hooks/useLoader";
 import SquarePaging from "../components/SquarePaging";
-import { updateActiveLink, updateIsSearch, setTotalPage } from "../redux/redux";
+import { updateActiveLink, updateIsSearch, setTotalPage, updateSearchCurrentPage } from "../redux/redux";
 const PropertyListPage = () => {
   const dispatch = useDispatch();
   const { loadLands } = useLoader();
@@ -15,9 +15,9 @@ const PropertyListPage = () => {
   const [isLoading, setIsLoading] = useState(null);
   //set the total of the page
   if (searchResult) {
-    dispatch(setTotalPage({ index: 0, subjectLength: searchResult.length }));
+    dispatch(setTotalPage({ index: 3, subjectLength: searchResult.length }));
   }
-  if (paginationIndex[0].currentPage[0] !== 1) {
+  if (paginationIndex[0].currentPage[3] !== 1) {
     // scroll to top of the page
     const element = document.getElementById("prodisplay");
     if (element) {
@@ -39,20 +39,21 @@ const PropertyListPage = () => {
       );
     });
     if (searchText.length !== 0) {
-      dispatch(updateIsSearch({ index: 0, isSearch: true }));
+      dispatch(updateSearchCurrentPage({index: 3, newSearchCurrentPage: 1}));
+      dispatch(updateIsSearch({ index: 3, isSearch: true }));
       setSearchResult(matches);
-      dispatch(setTotalPage({ index: 0, subjectLength: matches.length }));
+      dispatch(setTotalPage({ index: 3, subjectLength: matches.length }));
     }
     if (searchText.length === 0) {
-      dispatch(updateIsSearch({ index: 0, isSearch: false }));
+      dispatch(updateIsSearch({ index: 3, isSearch: false }));
       setSearchResult(lands);
-      dispatch(setTotalPage({ index: 0, subjectLength: lands.length }));
+      dispatch(setTotalPage({ index: 3, subjectLength: lands.length }));
     }
     if (matches.length === 0) {
       setSearchResult(null);
-      dispatch(updateIsSearch({ index: 0, isSearch: false }));
+      dispatch(updateIsSearch({ index: 3, isSearch: false }));
     }
-    if (paginationIndex[0].currentPage[0] !== 1) {
+    if (paginationIndex[0].currentPage[3] !== 1) {
       // scroll to top of the page
       const element = document.getElementById("prodisplay");
       if (element) {
@@ -142,8 +143,8 @@ const PropertyListPage = () => {
                 {searchResult &&
                   searchResult
                     .slice(
-                      paginationIndex[1].startIndex[0],
-                      paginationIndex[1].endIndex[0]
+                      paginationIndex[1].startIndex[3],
+                      paginationIndex[1].endIndex[3]
                     )
                     .map((property) => (
                       <PropertyDetails key={property._id} property={property} type="land" />

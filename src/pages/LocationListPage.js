@@ -3,7 +3,7 @@ import { useLoader } from "../hooks/useLoader";
 import LocationDetails from "../components/LocationDetails";
 import { useEffect, useState } from "react";
 import SquarePaging from "../components/SquarePaging";
-import { setTotalPage, updateIsSearch } from "../redux/redux";
+import { setTotalPage, updateIsSearch, updateSearchCurrentPage } from "../redux/redux";
 import { updateActiveLink } from "../redux/redux";
 import { Link } from "react-router-dom";
 import { MdAddLocationAlt } from "react-icons/md";
@@ -33,6 +33,7 @@ const LocationListPage = () => {
       return state.address.match(regex) || state.locationLink.match(regex);
     });
     if (searchText.length !== 0) {
+      dispatch(updateSearchCurrentPage({index: 2, newSearchCurrentPage: 1}));
       dispatch(updateIsSearch({index: 2, isSearch:true}));
       setSearchResult(matches);
       dispatch(setTotalPage({ index: 2, subjectLength: matches.length }));

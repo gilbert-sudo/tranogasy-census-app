@@ -65,6 +65,7 @@ const paginationSlice = createSlice({
   initialState: [
     {
       currentPage: [1, 1, 1, 1],
+      searchCurrentPage: [1, 1, 1, 1],
       totalPage: [0, 0, 0, 0],
       isSearch: [false, false, false, false],
     },
@@ -75,6 +76,10 @@ const paginationSlice = createSlice({
     updateCurrentPage: (state, action) => {
       state[0].currentPage[action.payload.index] =
         action.payload.newCurrentPage;
+    },
+    updateSearchCurrentPage:(state, action) =>{
+      state[0].searchCurrentPage[action.payload.index] =
+      action.payload.newSearchCurrentPage;
     },
     updateIsSearch: (state, action) => {
       state[0].isSearch[action.payload.index] = action.payload.isSearch;
@@ -89,7 +94,7 @@ const paginationSlice = createSlice({
             state[1].itemsPerPage[action.payload.index]
         );
         state[1].startIndex[action.payload.index] =
-          (1 - 1) * state[1].itemsPerPage[action.payload.index];
+          (state[0].searchCurrentPage[action.payload.index] - 1) * state[1].itemsPerPage[action.payload.index];
         state[1].endIndex[action.payload.index] =
           state[1].startIndex[action.payload.index] +
           state[1].itemsPerPage[action.payload.index];
@@ -110,6 +115,7 @@ const paginationSlice = createSlice({
 });
 export const {
   updateCurrentPage,
+  updateSearchCurrentPage,
   updateIsSearch,
   setTotalPage,
   setResetAgentInput,
