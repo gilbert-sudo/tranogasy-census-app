@@ -5,7 +5,7 @@ import { useLoader } from "../hooks/useLoader";
 import OwnerDetails from "../components/OwnerDetails";
 import { useEffect, useState } from "react";
 import SquarePaging from "../components/SquarePaging";
-import { updateActiveLink, updateIsSearch, setTotalPage} from "../redux/redux";
+import { updateActiveLink, updateIsSearch, setTotalPage, updateSearchCurrentPage} from "../redux/redux";
 
 const OwnerListPage = () => {
   const { loadOwners } = useLoader();
@@ -14,6 +14,7 @@ const OwnerListPage = () => {
   const paginationIndex = useSelector((state) => state.pagination);
   const [searchResult, setSearchResult] = useState(owners);
   const [isLoading, setIsLoading] = useState(null);
+  console.log("the search result is", searchResult);
   //set the total of the page
   if (searchResult) {
     dispatch(setTotalPage({index: 1, subjectLength: searchResult.length}));
@@ -37,6 +38,7 @@ const OwnerListPage = () => {
       );
     });
     if (searchText.length !== 0) {
+      dispatch(updateSearchCurrentPage({index: 1, newSearchCurrentPage: 1}));
       dispatch(updateIsSearch({index: 1, isSearch:true}))
       setSearchResult(matches);
       dispatch(setTotalPage({index: 1, subjectLength: matches.length}));
