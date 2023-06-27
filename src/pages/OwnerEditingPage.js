@@ -18,6 +18,9 @@ const OwnerEditingPage = () => {
     msgError,
     bootstrapClassname,
     resetOwnerInput,
+    setResetOwnerInput, 
+    setMsgError,
+    setBootstrap
   } = useOwner();
   const { ownerId, fullName, address, phoneOne, phoneTwo } = useParams();
   const [fullname, setFullName] = useState(fullName);
@@ -25,8 +28,6 @@ const OwnerEditingPage = () => {
   const [locationsName, setLocationsName] = useState(null);
   const [phone1, setPhone1] = useState(phoneOne);
   const [phone2, setPhone2] = useState(phoneTwo);
-  const [isValidReset, setIsValidReset] = useState(false);
-  const [resetAutocomplete, setResetAutocomplete] = useState(false);
   const [docErrorClass, setDocErrorClass] = useState("");
   const [documentIdError, setDocumentIdError] = useState("");
   // const owner = useSelector((state) => state.owner);
@@ -35,7 +36,6 @@ const OwnerEditingPage = () => {
     setFullName("");
     setPhone1("");
     setPhone2("");
-    setResetAutocomplete(true);
   };
 
   //get the autocomplete id value
@@ -45,38 +45,37 @@ const OwnerEditingPage = () => {
       const documentId = data.filter(
         (document) => document.name === inputValue
       );
-      if (documentId.length) {
-        return documentId[0].id;
+      if(documentId && documentId.length){
+        setMsgError(null);
+        setBootstrap(null);
+        setDocErrorClass(null);
+        setDocumentIdError(null);
+          return documentId[0].id;
       } else {
+        setMsgError(null);
+        setBootstrap(null);
         setDocErrorClass("alert alert-danger");
-        setDocumentIdError("veuillez selectionner un choix suggéré ");
-        return;
+        setDocumentIdError("veuillez selectionner un propriètaire, addresse ou quartier suggéré ");
+        return
       }
-    } else {
-      return;
-    }
+    } 
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     // fetch the location's id
     const locationId = getDocId("address-input", locationsName);
-    if (locationId) {
+    if (locationId !== undefined) {
       updateOwner(ownerId, fullname, locationId, phone1, phone2);
-    } else {
-      setDocErrorClass("alert alert-danger");
-      setDocumentIdError("veuillez selectionner une addresse suggéré ");
-      return;
     }
-    setIsValidReset(true);
   };
   useEffect(() => {
     const pageLoader = async () => {
       setLocationsName(await loadLocationsName());
     };
-    if (resetOwnerInput && isValidReset) {
+    if (resetOwnerInput) {
       resetAllInputs();
-      setIsValidReset(false);
+      setResetOwnerInput(false);
     }
     if (!locationsName) {
       pageLoader();
@@ -84,13 +83,12 @@ const OwnerEditingPage = () => {
   }, [
     resetOwnerInput,
     loadLocationsName,
-    isValidReset,
     locationsName,
+    setResetOwnerInput
   ]);
 
   const handleAddressChange = (value) => {
     setNewAdress(value);
-    console.log(newAdress)
   };
   return (
     <div className="bg-white widget border mt-5 rounded">
@@ -129,7 +127,7 @@ const OwnerEditingPage = () => {
             </Link>
           </label>
           <AutocompleteInput
-            reset={resetAutocomplete}
+            reset={resetOwnerInput}
             className="form-control auto-input"
             placeholder="Une adresse exacte"
             inputId="address-input"

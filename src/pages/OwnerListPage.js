@@ -14,7 +14,6 @@ const OwnerListPage = () => {
   const paginationIndex = useSelector((state) => state.pagination);
   const [searchResult, setSearchResult] = useState(owners);
   const [isLoading, setIsLoading] = useState(null);
-  console.log("the search result is", searchResult);
   //set the total of the page
   if (searchResult) {
     dispatch(setTotalPage({index: 1, subjectLength: searchResult.length}));

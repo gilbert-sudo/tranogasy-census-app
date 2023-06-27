@@ -16,15 +16,15 @@ const OwnerCreation = () => {
     msgError,
     bootstrapClassname,
     resetOwnerInput,
-    setResetOwnerInput
+    setResetOwnerInput, 
+    setMsgError,
+    setBootstrap
   } = useOwner();
  
   const [fullname, setFullName] = useState("");
   const [locationsName, setLocationsName] = useState(null);
   const [phone1, setPhone1] = useState("");
   const [phone2, setPhone2] = useState("");
-  const [resetAutocomplete, setResetAutocomplete] = useState(false);
-  const [isValidReset, setIsValidReset] = useState(false);
   const [docErrorClass, setDocErrorClass] = useState("");
   const [documentIdError, setDocumentIdError] = useState("");
   // const owner = useSelector((state) => state.owner);
@@ -32,51 +32,48 @@ const OwnerCreation = () => {
     setFullName("");
     setPhone1("");
     setPhone2("");
-    setResetAutocomplete(false);
-    setResetAutocomplete(true);
   };
   //get the autocomplete id value
   const getDocId = (inputClassName, data) => {
     const inputValue = document.getElementById(inputClassName).value;
     if(inputValue){
       const documentId = data.filter((document) => document.name === inputValue);
-    if(documentId.length){
+    if(documentId && documentId.length){
+      setMsgError(null);
+      setBootstrap(null);
+      setDocErrorClass(null);
+      setDocumentIdError(null);
         return documentId[0].id;
     } else {
+      setMsgError(null);
+      setBootstrap(null);
       setDocErrorClass("alert alert-danger");
-      setDocumentIdError("veuillez selectionner un choix suggéré ");
-      setResetAutocomplete(true);
+      setDocumentIdError("veuillez selectionner un addresse suggéré ");
       return
     }
-    }else{
-      return;
-    }
-   
+    }   
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
       // fetch the location's id 
     const locationId = getDocId("address-input", locationsName);
-    if(locationId === undefined){
-      setResetAutocomplete(true);
-    }
+      if(locationId !== undefined){
       createOwner(fullname, locationId, phone1, phone2);
-      setIsValidReset(true);
+    }
   };
   useEffect(() => {
     const pageLoader = async () => {
       setLocationsName(await loadLocationsName());
     };
-    if (resetOwnerInput && isValidReset) {
+    if (resetOwnerInput) {
       resetAllInputs();
-     setIsValidReset(false);
      setResetOwnerInput(false);
     }
     if (!locationsName) {
       pageLoader();
     }
-  }, [resetOwnerInput, loadLocationsName, locationsName, isValidReset, setResetOwnerInput]);
+  }, [resetOwnerInput, loadLocationsName, locationsName,  setResetOwnerInput]);
   return (
     <div className="bg-white widget border mt-5 rounded">
       <h3 className="h4 text-black widget-title mb-3">
@@ -114,7 +111,7 @@ const OwnerCreation = () => {
           <AutocompleteInput
             className="form-control auto-input"
             placeholder="Une adresse exacte"
-            reset = {resetAutocomplete}
+            reset = {resetOwnerInput}
             inputId="address-input"
             suggestions={locationsName}
             style={{ width: "100%" }} // add style prop
