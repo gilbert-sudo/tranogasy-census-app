@@ -23,6 +23,9 @@ const AddingLandPage = () => {
     msgError,
     bootstrapClassname,
     isLoading,
+    setResetPropertyInput,
+    setBootstrap,
+    setMsgError
   } = useProperty();
   const censusTaker = useSelector((state) => state.user._id);
   const [ownersName, setOwnersName] = useState(null);
@@ -35,12 +38,9 @@ const AddingLandPage = () => {
   const [docErrorClass, setDocErrorClass] = useState("");
   const [documentIdError, setDocumentIdError] = useState("");
   const [location, setLocation] = useState("");
-  const [isValidReset, setIsValidReset] = useState(false);
-  const [resetAutocomplete, setResetAutocomplete] = useState(false);
   const links = useSelector((state) => state.pagination);
   const resetAllInputs = () => {
     setTitle("");
-    setResetAutocomplete(true);
     setDescription("");
     setArea("");
     setArea("");
@@ -55,16 +55,20 @@ const AddingLandPage = () => {
       const documentId = data.filter(
         (document) => document.name === inputValue
       );
-      if (documentId.length) {
-        return documentId[0].id;
+      if(documentId && documentId.length){
+        setMsgError(null);
+        setBootstrap(null);
+        setDocErrorClass(null);
+        setDocumentIdError(null);
+          return documentId[0].id;
       } else {
+        setMsgError(null);
+        setBootstrap(null);
         setDocErrorClass("alert alert-danger");
-        setDocumentIdError("veuillez selectionner un choix suggéré ");
-        return;
+        setDocumentIdError("veuillez selectionner un propriètaire ou quartier suggéré ");
+        return
       }
-    } else {
-      return;
-    }
+    } 
   };
   //handle the property form submiting
   const handleSubmit = async (e) => {
@@ -94,11 +98,7 @@ const AddingLandPage = () => {
         owner,
         censusTaker
       );
-    } else {
-      setDocErrorClass("alert alert-danger");
-      setDocumentIdError("veuillez selectionner un choix suggéré ");
-    }
-    setIsValidReset(true);
+    } 
   };
 
   useEffect(() => {
@@ -106,9 +106,9 @@ const AddingLandPage = () => {
       setOwnersName(await loadOwnersName());
       setQuartersName(await loadQuartersName());
     };
-    if (resetPropertyInput && isValidReset) {
+    if (resetPropertyInput) {
       resetAllInputs();
-      setIsValidReset(false);
+      setResetPropertyInput(false)
     }
     if (!ownersName) {
       pageLoader();
@@ -122,9 +122,9 @@ const AddingLandPage = () => {
     dispatch,
     loadQuartersName,
     ownersName,
-    isValidReset,
     loadLocationsName,
     resetPropertyInput,
+    setResetPropertyInput
   ]);
   return (
     <>
@@ -171,7 +171,7 @@ const AddingLandPage = () => {
               </Link>
             </label>
             <AutocompleteInput
-              reset={resetAutocomplete}
+              reset={resetPropertyInput}
               className="form-control auto-input"
               placeholder="Nom complet"
               inputId="owner-input"
@@ -231,7 +231,7 @@ const AddingLandPage = () => {
             <label>Quartier</label>
             <div className="input-group">
               <AutocompleteInput
-                reset={resetAutocomplete}
+                reset={resetPropertyInput}
                 className="form-control auto-input"
                 placeholder="Nom du quartier"
                 inputId="quarter-input"

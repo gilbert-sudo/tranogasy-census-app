@@ -29,6 +29,9 @@ const PropertyEditingPage = () => {
     msgError,
     bootstrapClassname,
     isLoading,
+    setMsgError,
+    setResetPropertyInput,
+    setBootstrap
   } = useProperty();
   const censusTaker = useSelector((state) => state.user._id);
   const [ownersName, setOwnersName] = useState(null);
@@ -56,15 +59,12 @@ const PropertyEditingPage = () => {
   const [area, setArea] = useState(property ? property.area : "");
   const [price, setPrice] = useState(property ? property.price : "");
   const [rent, setRent] = useState(property ? property.rent : "");
-  const [isValidReset, setIsValidReset] = useState(false);
   const [docErrorClass, setDocErrorClass] = useState("");
   const [documentIdError, setDocumentIdError] = useState("");
-  const [resetAutocomplete, setResetAutocomplete] = useState(false);
   const [checked, setChecked] = useState(false);
   const links = useSelector((state) => state.pagination);
   const resetAllInputs = () => {
     setTitle("");
-    setResetAutocomplete(true);
     setDescription("");
     setBedrooms("");
     setArea("");
@@ -76,20 +76,23 @@ const PropertyEditingPage = () => {
   const getDocId = (inputClassName, data) => {
     const inputValue = document.getElementById(inputClassName).value;
     if (inputValue) {
-      console.log(inputValue);
       const documentId = data.filter(
         (document) => document.name === inputValue
       );
-      if (documentId.length) {
-        return documentId[0].id;
+      if(documentId && documentId.length){
+        setMsgError(null);
+        setBootstrap(null);
+        setDocErrorClass(null);
+        setDocumentIdError(null);
+          return documentId[0].id;
       } else {
+        setMsgError(null);
+        setBootstrap(null);
         setDocErrorClass("alert alert-danger");
-        setDocumentIdError("veuillez selectionner un propriété, addresse, ou quartier suggéré ");
+        setDocumentIdError("veuillez selectionner un propriètaire, addresse ou quartier suggéré ");
         return
       }
-    } else {
-      return;
-    }
+    } 
   };
 
   //handle the property form submiting
@@ -125,11 +128,6 @@ const PropertyEditingPage = () => {
         owner,
         censusTaker
       );
-      setIsValidReset(true);
-    } else {
-      setDocErrorClass("alert alert-danger");
-      setDocumentIdError("veuillez selectionner un propriété, addresse, ou quartier suggéré ");
-      return
     }
   };
   useEffect(() => {
@@ -138,9 +136,9 @@ const PropertyEditingPage = () => {
       setQuartersName(await loadQuartersName());
       setLocationsName(await loadLocationsName());
     };
-    if (resetPropertyInput && isValidReset) {
+    if (resetPropertyInput) {
       resetAllInputs();
-      setIsValidReset(false);
+      setResetPropertyInput(false);
     }
     if (!ownersName && !quartersName && !locationsName) {
     pageLoader();
@@ -157,9 +155,9 @@ const PropertyEditingPage = () => {
     ownersName,
     locationsName,
     quartersName,
-    isValidReset,
     loadLocationsName,
     resetPropertyInput,
+    setResetPropertyInput
   ]);
   const handleOwnerName = (Name) => {
     setOwnerName(Name);
@@ -192,7 +190,7 @@ const PropertyEditingPage = () => {
               </Link>
             </label>
             <AutocompleteInput
-            reset ={resetAutocomplete}
+            reset ={resetPropertyInput}
               className="form-control auto-input"
               placeholder="Nom complet"
               inputId="owner-input"
@@ -242,7 +240,7 @@ const PropertyEditingPage = () => {
               </Link>
             </label>
             <AutocompleteInput
-             reset={resetAutocomplete}
+             reset={resetPropertyInput}
               className="form-control auto-input"
               placeholder="Une adresse exacte"
               inputId="address-input"
@@ -256,7 +254,7 @@ const PropertyEditingPage = () => {
             <label>Quartier</label>
             <div className="input-group">
               <AutocompleteInput
-                reset={resetAutocomplete}
+                reset={resetPropertyInput}
                 className="form-control auto-input"
                 placeholder="Nom du quartier"
                 inputId="quarter-input"

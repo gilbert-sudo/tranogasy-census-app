@@ -89,7 +89,6 @@ export const useProperty = () => {
           setMsgError("l'immobilier a été ajouter avc succès!");
           setIsLoading(false);
           setResetPropertyInput(true);
-          console.log(json);
           dispatch(pushProperty(json));
         }
         if (!response.ok) {
@@ -189,7 +188,6 @@ export const useProperty = () => {
           setMsgError("l'immobilier a été modifié avec succès!");
           setIsLoading(false);
           setResetPropertyInput(true);
-          console.log("the updated propertyis ", json);
           dispatch(updateOnePropertyById(json));
         }
         if (!response.ok) {
@@ -283,7 +281,6 @@ const addLand = async (
         setMsgError("le terrain a été ajouter avec succès!");
         setIsLoading(false);
         setResetPropertyInput(true);
-        console.log(json);
         dispatch(pushLand(json));
       }
       if (!response.ok) {
@@ -375,7 +372,6 @@ const updateLand = async (
         setMsgError("le terrain a été modifié avec succès!");
         setIsLoading(false);
         setResetPropertyInput(true);
-        console.log("the updated property is ", json);
         dispatch(updateOneLandById(json));
       }
       if (!response.ok) {
@@ -400,5 +396,8 @@ const updateLand = async (
     isLoading,
     msgError,
     bootstrapClassname,
+    setMsgError,
+    setBootstrap,
+    setResetPropertyInput
   };
 };

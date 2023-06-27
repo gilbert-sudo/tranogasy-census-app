@@ -14,10 +14,11 @@ export const useOwner = () => {
     setIsLoading(true);
     setMsgError(null);
     setResetOwnerInput(false);
+    console.log("the location id is", locationId);
     if(locationId === undefined){
       setIsLoading(false);
       setBootstrap("alert alert-warning");
-      setMsgError("veuillez selectionner un choix suggéré ")
+      setMsgError("veuillez selectionner un addresse suggéré ")
       return
     }
     const fullname = fullName.trim().replace(/\s{2,}/g, ' ').replace(/(^|\s)\S/g, function(match) {
@@ -77,11 +78,8 @@ export const useOwner = () => {
             setMsgError(msg);
             setIsLoading(false);
             setResetOwnerInput(true);
-            console.log("the new owner is" + result.newOwner)
             dispatch(addOwner(result.newOwner));
-            return;
           } else if (result.errors.fullname) {
-            console.log("the error is ", result.errors);
             let msg = result.errors.fullname 
             let bootstrapClass = "alert alert-danger";
             setBootstrap(bootstrapClass);
@@ -228,6 +226,8 @@ export const useOwner = () => {
     msgError,
     bootstrapClassname,
     resetOwnerInput,
-    setResetOwnerInput
+    setResetOwnerInput,
+    setMsgError, 
+    setBootstrap
   };
 };
