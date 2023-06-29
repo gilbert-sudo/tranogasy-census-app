@@ -5,7 +5,9 @@ import { useState, useEffect } from "react";
 import { useOwner } from "../hooks/useOwner";
 import { useLoader } from "../hooks/useLoader";
 import AutocompleteInput from "../components/AutocompleteInput";
+import Swal from "sweetalert2";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 // import { useSelector } from "react-redux";
 
 const OwnerCreation = () => {
@@ -20,9 +22,8 @@ const OwnerCreation = () => {
     setMsgError,
     setBootstrap
   } = useOwner();
- 
+  const locationsName= useSelector((state) => state.location[1].locationsName);
   const [fullname, setFullName] = useState("");
-  const [locationsName, setLocationsName] = useState(null);
   const [phone1, setPhone1] = useState("");
   const [phone2, setPhone2] = useState("");
   const [docErrorClass, setDocErrorClass] = useState("");
@@ -64,15 +65,26 @@ const OwnerCreation = () => {
   };
   useEffect(() => {
     const pageLoader = async () => {
-      setLocationsName(await loadLocationsName());
+      if (!locationsName.length) {
+        await loadLocationsName();
+        }
     };
     if (resetOwnerInput) {
       resetAllInputs();
-     setResetOwnerInput(false);
+      Swal.fire({
+        icon: "success",
+        title: "succès",
+        text: "le propriètaire a été ajouté avec succès!",
+        confirmButtonColor: "rgb(124, 189, 30)",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          setResetOwnerInput(false);
+        }
+      })
     }
-    if (!locationsName) {
+
       pageLoader();
-    }
+  
   }, [resetOwnerInput, loadLocationsName, locationsName,  setResetOwnerInput]);
   return (
     <div className="bg-white widget border mt-5 rounded">
@@ -161,6 +173,8 @@ const OwnerCreation = () => {
           </button>
         </div>
       </form>
+      
+         
       {(msgError || documentIdError) && (
           <div className={bootstrapClassname || docErrorClass}>
             {msgError || documentIdError}

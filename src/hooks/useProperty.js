@@ -85,11 +85,12 @@ export const useProperty = () => {
         const json = await response.json();
 
         if (response.ok) {
-          setBootstrap("alert alert-success");
-          setMsgError("l'immobilier a été ajouter avc succès!");
+          setBootstrap(null);
+          setMsgError(null);
           setIsLoading(false);
           setResetPropertyInput(true);
           dispatch(pushProperty(json));
+        
         }
         if (!response.ok) {
           setBootstrap("alert alert-danger");
@@ -184,8 +185,8 @@ export const useProperty = () => {
         const json = await response.json();
 
         if (response.ok) {
-          setBootstrap("alert alert-success");
-          setMsgError("l'immobilier a été modifié avec succès!");
+          setBootstrap(null);
+          setMsgError(null);
           setIsLoading(false);
           setResetPropertyInput(true);
           dispatch(updateOnePropertyById(json));
@@ -277,8 +278,8 @@ const addLand = async (
       const json = await response.json();
 
       if (response.ok) {
-        setBootstrap("alert alert-success");
-        setMsgError("le terrain a été ajouter avec succès!");
+     setBootstrap(null);
+          setMsgError(null);
         setIsLoading(false);
         setResetPropertyInput(true);
         dispatch(pushLand(json));
@@ -368,8 +369,8 @@ const updateLand = async (
       const json = await response.json();
 
       if (response.ok) {
-        setBootstrap("alert alert-success");
-        setMsgError("le terrain a été modifié avec succès!");
+        setBootstrap(null);
+          setMsgError(null);
         setIsLoading(false);
         setResetPropertyInput(true);
         dispatch(updateOneLandById(json));

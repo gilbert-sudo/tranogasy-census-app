@@ -1,5 +1,6 @@
 // import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
+import Swal from "sweetalert2";
 // import BookingDetails from "../components/BookingDetails";
 import { useLoader } from "../hooks/useLoader";
 import { useProperty } from "../hooks/useProperty";
@@ -16,10 +17,8 @@ import { useDispatch } from "react-redux";
 const PropertyEditingPage = () => {
   const dispatch = useDispatch();
   const { landId } = useParams();
-
   const lands = useSelector((state) => state.lands);
   const property = lands.find((land) => land._id === landId);
-  console.log(property);
   const [disabledPriceInput, setDisabledPriceInput] = useState(
     property.type === "rent" ? true : false
   );
@@ -35,12 +34,11 @@ const PropertyEditingPage = () => {
     setResetPropertyInput
   } = useProperty();
   const censusTaker = useSelector((state) => state.user._id);
-  
-  const [ownersName, setOwnersName] = useState(null);
+  const ownersName = useSelector((state) => state.owner[1].ownersName);
+  const quartersName= useSelector((state) => state.quarter[1].quartersName);
   const [ownerName, setOwnerName] = useState(
     property.owner ? property.owner.fullName : ""
   );
-  const [quartersName, setQuartersName] = useState(null);
   const [quarterName, setQuarterName] = useState(
     property.city
     ? `${property.city.quarter} ${property.city.district} ${property.city.reference} Arr`
@@ -70,7 +68,6 @@ const PropertyEditingPage = () => {
   const getDocId = (inputClassName, data) => {
     const inputValue = document.getElementById(inputClassName).value;
     if (inputValue) {
-      console.log(inputValue);
       const documentId = data.filter(
         (document) => document.name === inputValue
       );
@@ -81,14 +78,10 @@ const PropertyEditingPage = () => {
         setDocumentIdError(null);
           return documentId[0].id;
       } else {
-        setMsgError(null);
-        setBootstrap(null);
-        setDocErrorClass("alert alert-danger");
-        setDocumentIdError("veuillez selectionner un propriètaire, addresse ou quartier suggéré ");
-        return
+        return undefined
       }
     } else {
-      return;
+      return undefined;
     }
   };
 
@@ -106,7 +99,7 @@ const PropertyEditingPage = () => {
     if (disabledPriceInput) {
       type = "rent";
     }
-    if (owner && city) {
+    if ((owner && city) !== undefined) {
       const squarePerMeter = price;
       updateLand(
         landId,
@@ -121,25 +114,48 @@ const PropertyEditingPage = () => {
         owner,
         censusTaker
       );
-    } 
+    } else{
+      setMsgError(null);
+      setBootstrap(null);
+      setDocErrorClass("alert alert-danger");
+      setDocumentIdError("veuillez selectionner un propriètaire, addresse ou quartier suggéré ");
+    }
   };
   useEffect(() => {
     const pageLoader = async () => {
-      setOwnersName(await loadOwnersName());
-      setQuartersName(await loadQuartersName());
+      if (!ownersName.length) {
+      await loadOwnersName();
+      } else if (!quartersName.length) {
+      await loadQuartersName();
+      } 
     };
     if (resetPropertyInput) {
       resetAllInputs();
-     setResetPropertyInput(false)
-    }
-    if (!ownersName && !quartersName) {
-    pageLoader();
+      Swal.fire({
+        icon: "success",
+        title: "succès",
+        text: "le terrain a été modifié avec succès!",
+        confirmButtonColor: "rgb(124, 189, 30)",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          setResetPropertyInput(false);
+        }
+      })
     }
     if (links[2].activeLink !== "/") {
       dispatch(updateActiveLink("/"));
     }
+    if(document.getElementById("btnValidate").disabled){
+      setDocErrorClass(null);
+      setDocumentIdError(null);
+      setMsgError(null);
+      setBootstrap(null);
+    }
+    pageLoader();
   }, [
     property,
+    setMsgError,
+    setBootstrap,
     loadOwnersName,
     links,
     dispatch,
@@ -365,6 +381,7 @@ const PropertyEditingPage = () => {
 
           <div className="form-group">
             <button
+            id="btnValidate"
               type="submit"
               className="btn btn-primary"
               disabled={
@@ -385,7 +402,6 @@ const PropertyEditingPage = () => {
             </button>
           </div>
         </form>
-
         {(msgError || documentIdError) && (
           <div className={bootstrapClassname || docErrorClass}>
             {msgError || documentIdError}

@@ -1,5 +1,5 @@
 import { useDispatch } from "react-redux";
-import { setLikedPropreties, setLands, setBooking, setOwner, setLocation, setProperties } from "../redux/redux";
+import { setLikedPropreties, setLocationsName, setOwnersName, setQuartersName, setLands, setBooking, setOwner, setLocation, setProperties } from "../redux/redux";
 
 export const useLoader = () => {
   //redux
@@ -51,6 +51,7 @@ export const useLoader = () => {
       );
       const json = await response.json();
       if (response.ok) {
+        dispatch(setOwnersName(json));
         return json;
       }
     };
@@ -85,6 +86,7 @@ export const useLoader = () => {
       );
       const json = await response.json();
       if (response.ok) {
+        dispatch(setQuartersName(json));
         return json;
       }
     };
@@ -100,6 +102,7 @@ export const useLoader = () => {
       );
       const json = await response.json();
       if (response.ok) {
+        dispatch(setLocationsName(json));
         return json;
       }
     };
@@ -116,7 +119,6 @@ export const useLoader = () => {
       );
       const json = await response.json();
       if (response.ok) {
-        console.log("the result is ", json);
         dispatch(setLocation(json));
         return json;
       }

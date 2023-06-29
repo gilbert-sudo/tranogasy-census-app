@@ -13,7 +13,7 @@ import { MdTitle } from "react-icons/md";
 import { useSelector } from "react-redux";
 import { updateActiveLink } from "../redux/redux";
 import { useDispatch } from "react-redux";
-
+import Swal from "sweetalert2";
 const AddingPage = () => {
   const dispatch = useDispatch();
   const [disabledPriceInput, setDisabledPriceInput] = useState(false);
@@ -26,19 +26,19 @@ const AddingPage = () => {
     isLoading,
     setBootstrap,
     setMsgError,
-    setResetPropertyInput
+    setResetPropertyInput,
   } = useProperty();
   const censusTaker = useSelector((state) => state.user._id);
-  const [ownersName, setOwnersName] = useState(null);
-  const [quartersName, setQuartersName] = useState(null);
-  const [locationsName, setLocationsName] = useState(null);
+  const ownersName = useSelector((state) => state.owner[1].ownersName);
+  const quartersName = useSelector((state) => state.quarter[1].quartersName);
+  const locationsName = useSelector((state) => state.location[1].locationsName);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [bedrooms, setBedrooms] = useState("");
   const [bathrooms, setBathrooms] = useState("");
   const [area, setArea] = useState("");
-  const [price, setPrice] = useState("0");
-  const [rent, setRent] = useState("0");
+  const [price, setPrice] = useState("");
+  const [rent, setRent] = useState("");
   const [docErrorClass, setDocErrorClass] = useState("");
   const [documentIdError, setDocumentIdError] = useState("");
   const links = useSelector((state) => state.pagination);
@@ -49,8 +49,8 @@ const AddingPage = () => {
     setArea("");
     setBathrooms("");
     setArea("");
-    setPrice("0");
-    setRent("0");
+    setPrice("");
+    setRent("");
   };
   //get the autocomplete id value
   const getDocId = (inputClassName, data) => {
@@ -59,20 +59,18 @@ const AddingPage = () => {
       const documentId = data.filter(
         (document) => document.name === inputValue
       );
-      if(documentId && documentId.length){
+      if (documentId && documentId.length) {
         setMsgError(null);
         setBootstrap(null);
         setDocErrorClass(null);
         setDocumentIdError(null);
-          return documentId[0].id;
+        return documentId[0].id;
       } else {
-        setMsgError(null);
-        setBootstrap(null);
-        setDocErrorClass("alert alert-danger");
-        setDocumentIdError("veuillez selectionner un propriètaire, addresse ou quartier suggéré ");
-        return
+        return undefined;
       }
-    } 
+    } else {
+      return undefined;
+    }
   };
 
   //handle the property form submiting
@@ -90,7 +88,7 @@ const AddingPage = () => {
     if (disabledPriceInput) {
       type = "rent";
     }
-    if (city && owner && address) {
+    if ((city && owner && address) !== undefined) {
       const addressName = document.getElementById("address-input").value;
       addProperty(
         title,
@@ -106,61 +104,71 @@ const AddingPage = () => {
         owner,
         censusTaker
       );
+    } else {
+      setMsgError(null);
+      setBootstrap(null);
+      setDocErrorClass("alert alert-danger");
+      setDocumentIdError(
+        "veuillez selectionner un propriètaire, addresse ou quartier suggéré "
+      );
     }
   };
 
   useEffect(() => {
     const pageLoader = async () => {
-      setOwnersName(await loadOwnersName());
-      setQuartersName(await loadQuartersName());
-      setLocationsName(await loadLocationsName());
+      if (!ownersName.length) {
+        await loadOwnersName();
+      } else if (!quartersName.length) {
+        await loadQuartersName();
+      } else if (!locationsName.length) {
+        await loadLocationsName();
+      }
     };
     if (resetPropertyInput) {
       resetAllInputs();
-      setResetPropertyInput(false);
+      Swal.fire({
+        icon: "success",
+        title: "succès",
+        text: "l'immobilier a été ajouter avec succès!",
+        confirmButtonColor: "rgb(124, 189, 30)",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          setResetPropertyInput(false);
+        }
+      });
     }
-    if (!ownersName) {
-      pageLoader();
-    }
+
     if (links[2].activeLink !== "/adding") {
       dispatch(updateActiveLink("/adding"));
     }
+    pageLoader();
   }, [
     loadOwnersName,
+    quartersName,
+    locationsName,
     links,
     dispatch,
     loadQuartersName,
     ownersName,
     loadLocationsName,
     resetPropertyInput,
-    setResetPropertyInput
+    setResetPropertyInput,
   ]);
   return (
     <>
-     <div className="d-flex justify-content-between mt-5" style={{ backgroundColor: "#f1f1f1" }}>
-          <div className="p-2">
-            <Link to="/AddingPage" >
-              <button
-                id="btnHome"
-                className="btn btn-outline-success active"
-                type="button"
-              >
-                ajouter un immobilier
-              </button>
-            </Link>
-          </div>
-          <div className="p-2">
-            <Link to="/AddingLandPage">
-              <button
-                id="btnLand"
-                className="btn btn-outline-success"
-                type="button"
-              >
-                ajouter un terrain
-              </button>
-            </Link>
-          </div>
-          </div>
+      <div
+        className="d-flex border justify-content-between mt-5"
+        style={{ backgroundColor: "#f1f1f1" }}
+      >
+        <div className="p-2" style={{ backgroundColor: "rgb(124, 189, 30)" }}>
+          <Link to="/AddingPage" className="active">
+            ajouter un immobilier
+          </Link>
+        </div>
+        <div className="p-2">
+          <Link to="/AddingLandPage">ajouter un terrain</Link>
+        </div>
+      </div>
       <div
         className="widget border rounded"
         style={{ backgroundColor: "#f1f1f1" }}
@@ -179,14 +187,16 @@ const AddingPage = () => {
                 </nb>
               </Link>
             </label>
-            <AutocompleteInput
-              reset={resetPropertyInput}
-              className="form-control auto-input"
-              placeholder="Nom complet"
-              inputId="owner-input"
-              suggestions={ownersName}
-              style={{ width: "100%" }} // add style prop
-            />
+            {ownersName && (
+              <AutocompleteInput
+                reset={resetPropertyInput}
+                className="form-control auto-input"
+                placeholder="Nom complet"
+                inputId="owner-input"
+                suggestions={ownersName}
+                style={{ width: "100%" }} // add style prop
+              />
+            )}
           </div>
           <div className="form-group">
             <label htmlFor="name">Un titre</label>
@@ -227,26 +237,30 @@ const AddingPage = () => {
                 </nb>
               </Link>
             </label>
-            <AutocompleteInput
-              reset={resetPropertyInput}
-              className="form-control auto-input"
-              placeholder="Une adresse exacte"
-              inputId="address-input"
-              suggestions={locationsName}
-              style={{ width: "100%" }} // add style prop
-            />
+            {locationsName && (
+              <AutocompleteInput
+                reset={resetPropertyInput}
+                className="form-control auto-input"
+                placeholder="Une adresse exacte"
+                inputId="address-input"
+                suggestions={locationsName}
+                style={{ width: "100%" }} // add style prop
+              />
+            )}
           </div>
           <div className="form-group">
             <label>Quartier</label>
             <div className="input-group">
-              <AutocompleteInput
-                reset={resetPropertyInput}
-                className="form-control auto-input"
-                placeholder="Nom du quartier"
-                inputId="quarter-input"
-                suggestions={quartersName}
-                style={{ width: "100%" }} // add style prop
-              />
+              {quartersName && (
+                <AutocompleteInput
+                  reset={resetPropertyInput}
+                  className="form-control auto-input"
+                  placeholder="Nom du quartier"
+                  inputId="quarter-input"
+                  suggestions={quartersName}
+                  style={{ width: "100%" }} // add style prop
+                />
+              )}
             </div>
           </div>
           <div className="form-group">

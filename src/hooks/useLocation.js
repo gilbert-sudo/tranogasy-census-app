@@ -44,10 +44,8 @@ export const useLocation = () => {
 
           const result = await response.json();
           if (result.success === true) {
-            let msg = "le location est bien ajouté avec succès";
-            let bootstrapClass = "alert alert-success";
-            setBootstrap(bootstrapClass);
-            setMsgError(msg);
+            setBootstrap(null);
+             setMsgError(null);
             setIsLoading(false);
             setResetLocationInput(true);
             dispatch(addLocation(result.newLocation));
@@ -102,14 +100,11 @@ export const useLocation = () => {
           const result = await response.json();
           console.log(result);
           if (result.success === true) {
-            let msg = "le location est modifié avec succès";
-            let bootstrapClass = "alert alert-success";
-            setBootstrap(bootstrapClass);
-            setMsgError(msg);
+            setBootstrap(null);
+            setMsgError(null);
             setIsLoading(false);
             setResetLocationInput(true);
             dispatch(updateOneLocationById(result.modifiedLocation));
-            return;
           } 
           if (result.message) {
             let bootstrapClass = "alert alert-danger";

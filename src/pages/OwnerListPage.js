@@ -9,7 +9,8 @@ import { updateActiveLink, updateIsSearch, setTotalPage, updateSearchCurrentPage
 
 const OwnerListPage = () => {
   const { loadOwners } = useLoader();
-  const owners = useSelector((state) => state.owner);
+  const owners = useSelector((state) => state.owner[0].owners);
+
   const dispatch = useDispatch();
   const paginationIndex = useSelector((state) => state.pagination);
   const [searchResult, setSearchResult] = useState(owners);

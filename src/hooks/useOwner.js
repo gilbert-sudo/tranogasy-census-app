@@ -72,10 +72,8 @@ export const useOwner = () => {
           const result = await response.json();
           console.log(result);
           if (result.success === true) {
-            let msg = result.msg;
-            let bootstrapClass = "alert alert-success";
-            setBootstrap(bootstrapClass);
-            setMsgError(msg);
+            setBootstrap(null);
+            setMsgError(null);
             setIsLoading(false);
             setResetOwnerInput(true);
             dispatch(addOwner(result.newOwner));
@@ -172,10 +170,8 @@ export const useOwner = () => {
           const result = await response.json();
           console.log(result);
           if (result.success === true) {
-            let msg = result.msg;
-            let bootstrapClass = "alert alert-success";
-            setBootstrap(bootstrapClass);
-            setMsgError(msg);
+            setBootstrap(null);
+            setMsgError(null);
             setIsLoading(false);
             setResetOwnerInput(true);
             console.log("the new owner is" + result.modifiedOwner)

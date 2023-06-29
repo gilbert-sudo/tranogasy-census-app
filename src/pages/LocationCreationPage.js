@@ -3,6 +3,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState, useEffect } from "react";
 import { useLocation } from "../hooks/useLocation";
+import Swal from "sweetalert2";
 import {
     faLocationDot,
    faLink
@@ -27,6 +28,7 @@ const LocationCreationPage = () => {
     msgError,
     bootstrapClassname,
     resetLocationInput,
+    setResetLocationInput
   } = useLocation();
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -36,9 +38,19 @@ const LocationCreationPage = () => {
   useEffect(() => {
     if (resetLocationInput && isValidReset) {
       resetAllInputs();
+      Swal.fire({
+        icon: "success",
+        title: "succès",
+        text: "le location a été ajouté avec succès!",
+        confirmButtonColor: "rgb(124, 189, 30)",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          setResetLocationInput(false);
+        }
+      })
       setIsValidReset(false)
     }
-  }, [resetLocationInput, isValidReset]);
+  }, [resetLocationInput, isValidReset, setResetLocationInput]);
   return (
     <div className="bg-white widget border mt-5 rounded">
       <h3 className="h4 text-black widget-title mb-3">
@@ -93,6 +105,7 @@ const LocationCreationPage = () => {
          >Ajouter</button>
         </div>
       </form>
+    
       {msgError && (
         <div className={bootstrapClassname}>
           {msgError}

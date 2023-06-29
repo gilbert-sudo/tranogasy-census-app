@@ -2,12 +2,14 @@
 // import BookingDetails from "../components/BookingDetails";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
+import Swal from "sweetalert2";
 import { useState, useEffect } from "react";
 import { useOwner } from "../hooks/useOwner";
 import { useLoader } from "../hooks/useLoader";
 import AutocompleteInput from "../components/AutocompleteInput";
 import { Link } from "react-router-dom";
 import { useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
 // import { useSelector } from "react-redux";
 
 const OwnerEditingPage = () => {
@@ -25,7 +27,7 @@ const OwnerEditingPage = () => {
   const { ownerId, fullName, address, phoneOne, phoneTwo } = useParams();
   const [fullname, setFullName] = useState(fullName);
   const [newAdress, setNewAdress] = useState(address);
-  const [locationsName, setLocationsName] = useState(null);
+  const locationsName= useSelector((state) => state.location[1].locationsName);
   const [phone1, setPhone1] = useState(phoneOne);
   const [phone2, setPhone2] = useState(phoneTwo);
   const [docErrorClass, setDocErrorClass] = useState("");
@@ -71,18 +73,35 @@ const OwnerEditingPage = () => {
   };
   useEffect(() => {
     const pageLoader = async () => {
-      setLocationsName(await loadLocationsName());
+      if (!locationsName.length) {
+        await loadLocationsName();
+        }
     };
     if (resetOwnerInput) {
       resetAllInputs();
-      setResetOwnerInput(false);
+      Swal.fire({
+        icon: "success",
+        title: "succès",
+        text: "le propriètaire a été modifié avec succès!",
+        confirmButtonColor: "rgb(124, 189, 30)",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          setResetOwnerInput(false);
+        }
+      })
     }
-    if (!locationsName) {
-      pageLoader();
+    if(document.getElementById("btnValidate").disabled){
+      setDocErrorClass(null);
+      setDocumentIdError(null);
+      setMsgError(null);
+      setBootstrap(null);
     }
+  pageLoader(); 
   }, [
     resetOwnerInput,
     loadLocationsName,
+    setMsgError,
+    setBootstrap,
     locationsName,
     setResetOwnerInput
   ]);
@@ -178,7 +197,7 @@ const OwnerEditingPage = () => {
         <div className="form-group">
           <button
             type="submit"
-            id="phone"
+            id="btnValidate"
             className="btn btn-primary"
             defaultValue="Insérer"
             disabled={
@@ -196,6 +215,8 @@ const OwnerEditingPage = () => {
           </button>
         </div>
       </form>
+      
+         
       {(msgError || documentIdError) && (
         <div className={bootstrapClassname || docErrorClass}>
           {msgError || documentIdError}

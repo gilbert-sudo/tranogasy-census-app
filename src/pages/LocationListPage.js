@@ -9,7 +9,7 @@ import { Link } from "react-router-dom";
 import { MdAddLocationAlt } from "react-icons/md";
 const LocationListPage = () => {
   const { loadLocations } = useLoader();
-  const locations = useSelector((state) => state.location);
+  const locations = useSelector((state) => state.location[0].locations);
   const dispatch = useDispatch();
   const paginationIndex = useSelector((state) => state.pagination);
   const [isLoading, setIsLoading] = useState(false);

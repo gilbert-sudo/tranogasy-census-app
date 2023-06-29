@@ -13,6 +13,7 @@ import { MdTitle } from "react-icons/md";
 import { useSelector } from "react-redux";
 import { updateActiveLink } from "../redux/redux";
 import { useDispatch } from "react-redux";
+import Swal from "sweetalert2";
 const AddingLandPage = () => {
   const dispatch = useDispatch();
   const [disabledPriceInput, setDisabledPriceInput] = useState(false);
@@ -28,13 +29,13 @@ const AddingLandPage = () => {
     setMsgError
   } = useProperty();
   const censusTaker = useSelector((state) => state.user._id);
-  const [ownersName, setOwnersName] = useState(null);
-  const [quartersName, setQuartersName] = useState(null);
+  const ownersName = useSelector((state) => state.owner[1].ownersName);
+  const quartersName= useSelector((state) => state.quarter[1].quartersName);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [area, setArea] = useState("");
-  const [price, setPrice] = useState("0");
-  const [rent, setRent] = useState("0");
+  const [price, setPrice] = useState("");
+  const [rent, setRent] = useState("");
   const [docErrorClass, setDocErrorClass] = useState("");
   const [documentIdError, setDocumentIdError] = useState("");
   const [location, setLocation] = useState("");
@@ -44,8 +45,8 @@ const AddingLandPage = () => {
     setDescription("");
     setArea("");
     setArea("");
-    setPrice("0");
-    setRent("0");
+    setPrice("");
+    setRent("");
     setLocation("");
   };
   //get the autocomplete id value
@@ -62,13 +63,11 @@ const AddingLandPage = () => {
         setDocumentIdError(null);
           return documentId[0].id;
       } else {
-        setMsgError(null);
-        setBootstrap(null);
-        setDocErrorClass("alert alert-danger");
-        setDocumentIdError("veuillez selectionner un propriètaire ou quartier suggéré ");
-        return
+        return undefined;
       }
-    } 
+    }else{
+      return undefined;
+    }
   };
   //handle the property form submiting
   const handleSubmit = async (e) => {
@@ -83,7 +82,7 @@ const AddingLandPage = () => {
       type = "rent";
     }
     // fetch the address
-    if (owner && city) {
+    if ((owner && city) !== undefined) {
       const squarePerMeter = price;
       addLand(
         title,
@@ -98,26 +97,42 @@ const AddingLandPage = () => {
         owner,
         censusTaker
       );
-    } 
+    } else{
+      setMsgError(null);
+      setBootstrap(null);
+      setDocErrorClass("alert alert-danger");
+      setDocumentIdError("veuillez selectionner un propriètaire ou quartier suggéré ");
+    }
   };
 
   useEffect(() => {
     const pageLoader = async () => {
-      setOwnersName(await loadOwnersName());
-      setQuartersName(await loadQuartersName());
+      if (!ownersName.length) {
+      await loadOwnersName();
+      } else if (!quartersName.length) {
+      await loadQuartersName();
+      } 
     };
     if (resetPropertyInput) {
       resetAllInputs();
-      setResetPropertyInput(false)
-    }
-    if (!ownersName) {
-      pageLoader();
+      Swal.fire({
+        icon: "success",
+        title: "succès",
+        text: "le terrain a été ajouter avec succès!",
+        confirmButtonColor: "rgb(124, 189, 30)",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          setResetPropertyInput(false);
+        }
+      })
     }
     if (links[2].activeLink !== "/adding") {
       dispatch(updateActiveLink("/adding"));
     }
+    pageLoader();
   }, [
     loadOwnersName,
+   quartersName,
     links,
     dispatch,
     loadQuartersName,
@@ -128,27 +143,19 @@ const AddingLandPage = () => {
   ]);
   return (
     <>
-      <div className="d-flex justify-content-between mt-5" style={{ backgroundColor: "#f1f1f1" }}>
+      <div className="d-flex border justify-content-between mt-5" style={{ backgroundColor: "#f1f1f1" }}>
           <div className="p-2">
             <Link to="/AddingPage">
-              <button
-                id="btnHome"
-                className="btn btn-outline-success"
-                type="button"
-              >
+  
                 ajouter un immobilier
-              </button>
+  
             </Link>
           </div>
-          <div className="p-2">
-            <Link to="/AddingLandPage">
-              <button
-                id="btnLand"
-                className="btn btn-outline-success active"
-                type="button"
-              >
+          <div className="p-2" style={{ backgroundColor: "rgb(124, 189, 30)" }}>
+            <Link to="/AddingLandPage" >
+            
                 ajouter un terrain
-              </button>
+              
             </Link>
           </div>
           </div>
@@ -170,14 +177,14 @@ const AddingLandPage = () => {
                 </nb>
               </Link>
             </label>
-            <AutocompleteInput
+            {ownersName && <AutocompleteInput
               reset={resetPropertyInput}
               className="form-control auto-input"
               placeholder="Nom complet"
               inputId="owner-input"
               suggestions={ownersName}
               style={{ width: "100%" }} // add style prop
-            />
+            />}
           </div>
           <div className="form-group">
             <label htmlFor="name">Un titre</label>
@@ -230,14 +237,14 @@ const AddingLandPage = () => {
           <div className="form-group">
             <label>Quartier</label>
             <div className="input-group">
-              <AutocompleteInput
+             {quartersName && <AutocompleteInput
                 reset={resetPropertyInput}
                 className="form-control auto-input"
                 placeholder="Nom du quartier"
                 inputId="quarter-input"
                 suggestions={quartersName}
                 style={{ width: "100%" }} // add style prop
-              />
+              />}
             </div>
           </div>
 
@@ -357,6 +364,7 @@ const AddingLandPage = () => {
           </div>
         </form>
 
+         
         {(msgError || documentIdError) && (
           <div className={bootstrapClassname || docErrorClass}>
             {msgError || documentIdError}

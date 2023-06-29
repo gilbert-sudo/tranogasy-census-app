@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 // import BookingDetails from "../components/BookingDetails";
 import { useLoader } from "../hooks/useLoader";
 import { useProperty } from "../hooks/useProperty";
+import Swal from "sweetalert2";
 import AutocompleteInput from "../components/AutocompleteInput";
 import { Link, useParams } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -33,18 +34,18 @@ const PropertyEditingPage = () => {
     setResetPropertyInput,
     setBootstrap
   } = useProperty();
+  const ownersName = useSelector((state) => state.owner[1].ownersName);
+  const quartersName= useSelector((state) => state.quarter[1].quartersName);
+  const locationsName= useSelector((state) => state.location[1].locationsName);
   const censusTaker = useSelector((state) => state.user._id);
-  const [ownersName, setOwnersName] = useState(null);
   const [ownerName, setOwnerName] = useState(
     property.owner ? property.owner.fullName : ""
   );
-  const [quartersName, setQuartersName] = useState(null);
   const [quarterName, setQuarterName] = useState(
     property
     ? `${property.city.quarter} ${property.city.district} ${property.city.reference} Arr`
     : ""
   );
-  const [locationsName, setLocationsName] = useState(null);
   const [locationName, setLocationName] = useState(
     property ? property.address : ""
   );
@@ -72,6 +73,7 @@ const PropertyEditingPage = () => {
     setPrice("0");
     setRent("0");
   };
+
   //get the autocomplete id value
   const getDocId = (inputClassName, data) => {
     const inputValue = document.getElementById(inputClassName).value;
@@ -79,6 +81,7 @@ const PropertyEditingPage = () => {
       const documentId = data.filter(
         (document) => document.name === inputValue
       );
+      console.log(inputValue, documentId);
       if(documentId && documentId.length){
         setMsgError(null);
         setBootstrap(null);
@@ -86,12 +89,10 @@ const PropertyEditingPage = () => {
         setDocumentIdError(null);
           return documentId[0].id;
       } else {
-        setMsgError(null);
-        setBootstrap(null);
-        setDocErrorClass("alert alert-danger");
-        setDocumentIdError("veuillez selectionner un propriètaire, addresse ou quartier suggéré ");
-        return
+        return undefined
       }
+    }else{
+      return undefined;
     } 
   };
 
@@ -105,13 +106,12 @@ const PropertyEditingPage = () => {
     const city = getDocId("quarter-input", quartersName);
     // fetch the address
     const address = getDocId("address-input", locationsName);
-    console.log(city);
     var type = "sale";
     //get the property type
     if (disabledPriceInput) {
       type = "rent";
     }
-    if (owner && city && address) {
+    if ((owner && city && address) !== undefined) {
       const addressName = document.getElementById("address-input").value;
       updateProperty(
         propertyId,
@@ -128,26 +128,50 @@ const PropertyEditingPage = () => {
         owner,
         censusTaker
       );
+    }else{
+      setMsgError(null);
+      setBootstrap(null);
+      setDocErrorClass("alert alert-danger");
+      setDocumentIdError("veuillez selectionner un propriètaire, addresse ou quartier suggéré ");
     }
   };
   useEffect(() => {
     const pageLoader = async () => {
-      setOwnersName(await loadOwnersName());
-      setQuartersName(await loadQuartersName());
-      setLocationsName(await loadLocationsName());
+      if (!ownersName.length) {
+      await loadOwnersName();
+      } else if (!quartersName.length) {
+      await loadQuartersName();
+      } else if (!locationsName.length) {
+      await loadLocationsName();
+      }
     };
     if (resetPropertyInput) {
       resetAllInputs();
-      setResetPropertyInput(false);
+      Swal.fire({
+        icon: "success",
+        title: "succès",
+        text: "l'immobilier a été modifié avec succès!",
+        confirmButtonColor: "rgb(124, 189, 30)",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          setResetPropertyInput(false);
+        }
+      })
     }
-    if (!ownersName && !quartersName && !locationsName) {
-    pageLoader();
+    if(document.getElementById("btnValidate").disabled){
+      setDocErrorClass(null);
+      setDocumentIdError(null);
+      setMsgError(null);
+      setBootstrap(null)
     }
     if (links[2].activeLink !== "/") {
       dispatch(updateActiveLink("/"));
     }
+    pageLoader();
   }, [
     property,
+    setMsgError,
+    setBootstrap,
     loadOwnersName,
     links,
     dispatch,
@@ -176,7 +200,7 @@ const PropertyEditingPage = () => {
         style={{ backgroundColor: "#f1f1f1" }}
       >
         <h3 className="h4 text-black widget-title mt-5 mb-3">
-          Ajouter votre immobilier
+          Modifier cet immobilier
         </h3>
         <form action="" className="form-contact-agent" onSubmit={handleSubmit}>
           <div className="form-group">
@@ -321,7 +345,7 @@ const PropertyEditingPage = () => {
                 id="area"
                 className="form-control"
                 value={area}
-                onChange={(e) => setArea(parseInt(e.target.value.trim().replace(/\s+/g, " ").parseInt()))}
+                onChange={(e) => setArea(parseInt(e.target.value.trim().replace(/\s+/g, " ")))}
                 required="ON"
               />
             </div>
@@ -416,6 +440,7 @@ const PropertyEditingPage = () => {
 
           <div className="form-group">
             <button
+              id="btnValidate"
               type="submit"
               className="btn btn-primary"
               disabled={
@@ -429,8 +454,8 @@ const PropertyEditingPage = () => {
                  property.bathrooms === bathrooms &&
                  property.bedrooms === bedrooms &&
                  property.rent  === rent &&
-                property.price ===  price && !checked
-                  ? true
+                property.price ===  price && !checked 
+                  ?true
                   : false) || isLoading 
               }
             >
@@ -438,8 +463,7 @@ const PropertyEditingPage = () => {
             </button>
           </div>
         </form>
-
-        {(msgError || documentIdError) && (
+        {(msgError || documentIdError)  && (
           <div className={bootstrapClassname || docErrorClass}>
             {msgError || documentIdError}
           </div>

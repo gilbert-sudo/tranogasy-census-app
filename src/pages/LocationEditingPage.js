@@ -1,6 +1,7 @@
 // import { useSelector } from "react-redux";
 // import BookingDetails from "../components/BookingDetails";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Swal from "sweetalert2";
 import {
     faLocationDot,
    faLink
@@ -12,8 +13,8 @@ import { useSelector } from "react-redux";
 // import { useSelector } from "react-redux";
 
 const LocationEditingPage = () => {
-const locations = useSelector(state => state.location);
   const {locationId} = useParams();
+const locations = useSelector(state => state.location[0].locations);
   let location = locations.filter(function(location) {
     return location._id === locationId;
   });
@@ -34,7 +35,9 @@ const locations = useSelector(state => state.location);
     msgError,
     bootstrapClassname,
     resetLocationInput,
-    setResetLocationInput
+    setResetLocationInput,
+    setMsgError,
+    setBootstrap
   } = useLocation();
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -45,8 +48,22 @@ const locations = useSelector(state => state.location);
     if (resetLocationInput && isValidReset) {
       resetAllInputs();
       setIsValidReset(false)
+      Swal.fire({
+        icon: "success",
+        title: "succès",
+        text: "la location a été modifié avec succès!",
+        confirmButtonColor: "rgb(124, 189, 30)",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          setResetLocationInput(false);
+        }
+      })
     }
-  }, [resetLocationInput, isValidReset, setResetLocationInput]);
+    if(document.getElementById("btnValidate").disabled){
+      setMsgError(null);
+      setBootstrap(null);
+    }
+  }, [resetLocationInput, isValidReset, setResetLocationInput, setMsgError, setBootstrap]);
 
   return (
     <div className="bg-white widget border mt-5 rounded">
