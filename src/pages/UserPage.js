@@ -14,25 +14,23 @@ import { useDispatch } from "react-redux";
 const UserPage = () => {
   const { logout } = useLogout();
   const navigate = useNavigate();
-
   //redux
   const user = useSelector((state) => state.user);
   const dispatch = useDispatch();
-  const properties = useSelector((state) => state.properties);
   const links = useSelector((state) => state.pagination);
   const censusTakerId = useSelector((state) =>state.user._id);
   // Render the main content
   useEffect(() => {
     const verifyState = () => {
-      if (properties === null) {
-        navigate("/user");
+      if (!censusTakerId) {
+        navigate("/login");
       }
     };
     verifyState();
     if (links[2].activeLink !== "/user") {
       dispatch(updateActiveLink("/user"));
     }
-  }, [properties, navigate, links, dispatch]);
+  }, [ navigate, links, dispatch, censusTakerId]);
 
   return (
     <>
@@ -74,7 +72,7 @@ const UserPage = () => {
             </div>
           </div>
           <ul className="list text-muted mt-3 pl-0">
-            <Link to= {`/update-fullname/${censusTakerId}`}>
+            <Link to= {user?undefined:`/update-fullname/${censusTakerId}`}  className="disabled">
             <li>
               <i className="fas mr-3 ml-1">
                 <FaUserEdit className="mr-2" style={{ fontSize: "20px" }} />
@@ -82,7 +80,7 @@ const UserPage = () => {
               </i>
             </li>
             </Link>
-            <Link to={`/update-password/${censusTakerId}`}>
+            <Link to={user?undefined:`/update-password/${censusTakerId}`}>
             <li>
               <i className="fas mr-3 ml-1">
                 <FaLock className="mr-2" style={{ fontSize: "20px" }} />
@@ -90,7 +88,7 @@ const UserPage = () => {
               </i>
             </li>
             </Link>
-            <Link to={`/update-contact/${censusTakerId}`}>
+            <Link to={user?undefined:`/update-contact/${censusTakerId}`}>
             <li>
               <i className="fas mr-3 ml-1">
                 <FaPhoneAlt className="mr-2" style={{ fontSize: "20px" }} />
@@ -98,7 +96,7 @@ const UserPage = () => {
               </i>
             </li>
             </Link>
-            <Link to={`/update-email/${censusTakerId}`}>
+            <Link to={user?undefined:`/update-email/${censusTakerId}`}>
             <li>
               <i className="fas mr-3 ml-1">
                 <FaMailBulk className="mr-2" style={{ fontSize: "20px" }} />

@@ -32,7 +32,9 @@ function PropertyDetails({ property, type }) {
               className="text-success mb-0 mr-2 grade"
               style={{ fontSize: "3vw" }}
             >
-              <strong>...en atente</strong>
+              <strong>{property.pending?"...en atente":"validé!"}</strong><br></br>
+              <strong>{!property.pending && property.status === "available"?"disponible":""}</strong>
+              <strong>{!property.pending && property.status === "unavailable"?"indisponible":""}</strong>
             </p>
           </div>
           <div className="row px-3">

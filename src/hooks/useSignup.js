@@ -15,7 +15,7 @@ export const useSignup = () => {
 
     try {
       const response = await fetch(
-        `${process.env.REACT_APP_PROXY}/api/clients/facebook`,
+        `${process.env.REACT_APP_PROXY}/api/census-taker/facebook`,
         {
           method: "POST",
           headers: {
@@ -40,7 +40,7 @@ export const useSignup = () => {
         );
         setIsLoading(false);
         localStorage.setItem("user", JSON.stringify(json));
-        dispatch(setUser(json.client));
+        dispatch(setUser(json.censusTaker));
       }
       if (!response.ok) {
         setBootstrap("alert alert-danger");
@@ -84,7 +84,7 @@ export const useSignup = () => {
           if (password === confirmPassword) {
             try {
               const response = await fetch(
-                `${process.env.REACT_APP_PROXY}/api/clients`,
+                `${process.env.REACT_APP_PROXY}/api/census-taker`,
                 {
                   method: "POST",
                   headers: {
@@ -109,7 +109,7 @@ export const useSignup = () => {
                 );
                 setIsLoading(false);
                 localStorage.setItem("user", JSON.stringify(json));
-                dispatch(setUser(json.client));
+                dispatch(setUser(json.censusTaker));
                 window.location.href="/";
               }
               if (!response.ok) {

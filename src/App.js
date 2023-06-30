@@ -24,7 +24,7 @@ import LocationEditingPage from "./pages/LocationEditingPage";
 import LocationListPage from "./pages/LocationListPage";
 import { useSelector, useDispatch } from "react-redux";
 import { setUser } from "./redux/redux";
-import { useEffect } from "react";
+//import { useEffect } from "react";
 import FullNameUpdating from "./pages/FullNameUpdating";
 import EmailUpdating from "./pages/EmailUpdating";
 import ContactUpdating from "./pages/ContactUpdating";
@@ -34,15 +34,20 @@ function App() {
   //const topProperties = useSelector((state) => state.topProperties);
   const user = useSelector((state) => state.user);
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    if (!user) {
-      const localUser = JSON.parse(localStorage.getItem("user"));
-      if (localUser) {
-        dispatch(setUser(localUser.client));
-      }
+  if (!user) {
+    const localUser = JSON.parse(localStorage.getItem("user"));
+    if (localUser) {
+      dispatch(setUser(localUser.censusTaker));
     }
-  }, [user, dispatch]);
+  }
+  // useEffect(() => {
+  //   if (!user) {
+  //     const localUser = JSON.parse(localStorage.getItem("user"));
+  //     if (localUser) {
+  //       dispatch(setUser(localUser.censusTaker));
+  //     }
+  //   }
+  // }, [user, dispatch]);
 
   return (
     <div className="App">
@@ -93,7 +98,7 @@ function App() {
             />
             <Route
               path="/login"
-              element={!user ? <LoginPage /> : <Navigate to="/user" />}
+              element={user ?<PropertyListPage/>:<LoginPage />}
             />
             <Route
               path="/signup"

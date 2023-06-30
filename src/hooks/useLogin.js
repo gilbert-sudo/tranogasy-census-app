@@ -6,7 +6,7 @@ export const useLogin = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [bootstrapClassname, setBootstrap] = useState(null);
-  const [client, setClient] = useState(null);
+  const [censusTaker, setCensusTaker] = useState(null);
 
   //redux
   const dispatch = useDispatch();
@@ -50,9 +50,9 @@ export const useLogin = () => {
             setBootstrap("alert alert-success");
             setError("Vous vous êtes connecté(e) maintenant!");
             localStorage.setItem("user", JSON.stringify(json));
-            dispatch(setUser(json.client));
+            dispatch(setUser(json.censusTaker));
             setIsLoading(false);
-            setClient(json.client);
+            setCensusTaker(json.censusTaker);
             window.location.href="/";
           }
         } catch (error) {
@@ -96,10 +96,10 @@ export const useLogin = () => {
         setBootstrap("alert alert-success");
         setError("Vous vous êtes connecté(e) maintenant!");
         localStorage.setItem("user", JSON.stringify(json));
-        dispatch(setUser(json.client));
+        dispatch(setUser(json.censusTaker));
         setIsLoading(false);
-        setClient(json.client);
-        window.location.href="/";
+        setCensusTaker(json.censusTaker);
+        window.location.href="/loader";
       }
     } catch (error) {
       setBootstrap("alert alert-danger");
@@ -108,5 +108,5 @@ export const useLogin = () => {
     }
   };
 
-  return { loginWithFacebookID, login, isLoading, error, bootstrapClassname, client };
+  return { loginWithFacebookID, login, isLoading, error, bootstrapClassname, censusTaker };
 };

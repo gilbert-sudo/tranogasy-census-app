@@ -15,7 +15,7 @@ const LoginPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const properties = useSelector((state) => state.properties);
-
+  const user = useSelector((state) => state.user);
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(phoneNumber, password);
@@ -25,7 +25,7 @@ const LoginPage = () => {
   // Render the main content
   useEffect(() => {
     const verifyState = () => {
-      if (properties === null) {
+      if (!user &&properties === null) {
         navigate("/login");
       }
     };
@@ -33,7 +33,7 @@ const LoginPage = () => {
     if(links[2].activeLink !== "/login"){
       dispatch(updateActiveLink("/login"))
     }
-  }, [properties, navigate, links, dispatch]);
+  }, [properties, navigate, links, dispatch, user]);
 
   return (
     <>

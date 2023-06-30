@@ -47,7 +47,7 @@ export const useProfil = () => {
         setMsgError(msg || "votre nom a changé avec succès");
         setIsLoading(false);
         setResetProfilInput(true);
-        dispatch(updateOneUserById(result.client));
+        dispatch(updateOneUserById(result.censusTaker));
         return;
       } else if (result.success === false) {
         let msg = result.message;
@@ -120,7 +120,7 @@ export const useProfil = () => {
             setMsgError(msg || "votre numéro de téléphone a changé avec succès");
             setIsLoading(false);
             setResetProfilInput(true);
-            dispatch(updateOneUserById(result.client));
+            dispatch(updateOneUserById(result.censusTaker));
             return;
           } else if (result.success === false) {
             let msg = result.message;
@@ -191,7 +191,7 @@ export const useProfil = () => {
         setMsgError(msg || "votre email a changé avec succès");
         setIsLoading(false);
         setResetProfilInput(true);
-        dispatch(updateOneUserById(result.client));
+        dispatch(updateOneUserById(result.censusTaker));
         return;
       } else if (result.success === false) {
         let msg = result.message;
@@ -280,7 +280,7 @@ export const useProfil = () => {
         setMsgError(msg || "votre mot de passe a changé avec succès");
         setIsLoading(false);
         setResetProfilInput(true);
-        dispatch(updateOneUserById(result.client));
+        dispatch(updateOneUserById(result.censusTaker));
         return;
       } else if (result.success === false) {
         let msg = result.message;
